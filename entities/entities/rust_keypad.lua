@@ -20,6 +20,7 @@ if SERVER then
         self:SetUseType(SIMPLE_USE)
         self.Code, self.GuestCode = nil, nil
         self.Master, self.Guests, self.Fails, self.NextTry = {}, {}, {}, {}
+        self:SetLocked(false)
     end
 
     function ENT:HasAccess(ply)

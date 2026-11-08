@@ -132,7 +132,32 @@ ITEMS:RegisterItem("KeyPad", {
     Weapon = "rust_deploy_codelock",
     Count = 50,
     Stackable = true,
-    StackSize = 150,
+    StackSize = 1,
+    IzAdmin = true,
+    Craft = function()
+        return {
+            {
+                Time = 0,
+                CanCraft = false,
+                {
+                    ITEM = "Cloth",
+                    AMOUNT = 0,
+                },
+            },
+        }
+    end,
+}, "Construction")
+
+ITEMS:RegisterItem("DoubleDoorWood", {
+    Name = "Wood Double Door",
+    Info = "Wood Double Door",
+    InfoTag = "DoubleDoorWood",
+    Category = "Construction",
+    model = "materials/items/deployable/wood_double_door.png",
+    Weapon = nil,
+    Count = 50,
+    Stackable = true,
+    StackSize = 1,
     IzAdmin = true,
     Craft = function()
         return {
@@ -149,15 +174,15 @@ ITEMS:RegisterItem("KeyPad", {
 }, "Construction")
 
 ITEMS:RegisterItem("DoubleDoorMetal", {
-    Name = "Metal Double Door",
-    Info = "Metal Double Door",
+    Name = "Sheet Metal Double Door",
+    Info = "Sheet Metal Double Door",
     InfoTag = "DoubleDoorMetal",
     Category = "Construction",
     model = "materials/items/deployable/sheet_metal_double_door.png",
     Weapon = nil,
     Count = 50,
     Stackable = true,
-    StackSize = 150,
+    StackSize = 1,
     IzAdmin = true,
     Craft = function()
         return {
@@ -173,39 +198,16 @@ ITEMS:RegisterItem("DoubleDoorMetal", {
     end,
 }, "Construction")
 
-ITEMS:RegisterItem("rust_deploy_metaldd", {
-    Name = "Sheet Metal Double Door",
-    Info = "Sheet Metal Double Door",
-    Category = "Construction",
-    model = "materials/items/deployable/sheet_metal_double_door.png",
-    Weapon = "rust_deploy_metaldd",
-    Count = 50,
-    Stackable = true,
-    StackSize = 150,
-    IzAdmin = true,
-    Craft = function()
-        return {
-            {
-                Time = 0,
-                CanCraft = false,
-                {
-                    ITEM = "Cloth",
-                    AMOUNT = 0,
-                },
-            },
-        }
-    end,
-}, "Construction")
-
-ITEMS:RegisterItem("rust_deploy_doorway_armoredd", {
+ITEMS:RegisterItem("Arm_Double_Door", {
     Name = "Armored Double Door",
     Info = "Armored Double Door",
+    InfoTag = "Arm_Double_Door",
     Category = "Construction",
     model = "materials/items/deployable/armored_double_door.png",
-    Weapon = "rust_deploy_doorway_armoredd",
+    Weapon = nil,
     Count = 50,
     Stackable = true,
-    StackSize = 150,
+    StackSize = 1,
     IzAdmin = true,
     Craft = function()
         return {

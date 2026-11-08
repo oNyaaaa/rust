@@ -16,6 +16,8 @@ if SERVER then
         ["rust_furnace"] = "Furnace",
         ["sent_garagedoor"] = "GarageDoor",
         ["sent_door_dd_metal"] = "DoubleDoorMetal",
+        ["sent_door_dd_wood"] = "DoubleDoorWood",
+        ["sent_door_dd_hq"] = "Arm_Double_Door",
         ["rust_tc"] = "ToolCupboard",
         ["sent_door"] = "WoodDeployDoor",
         ["sent_metal_door"] = "MetalDeployDoor",
@@ -29,6 +31,8 @@ if SERVER then
         local pos, ang, name = DEPLOY:GetSocket(ply, bang)
         if name ~= "doorwayl" and IDS[bang] == "GarageDoor" then return end
         if name ~= "doorwayl" and IDS[bang] == "DoubleDoorMetal" then return end
+        if name ~= "doorwayl" and IDS[bang] == "DoubleDoorWood" then return end
+        if name ~= "doorwayl" and IDS[bang] == "Arm_Double_Door" then return end
         if name ~= "sent_foundation" and IDS[bang] == "ToolCupboard" then return end
         DEPLOY:SetSocket(ply, bang, pos, ang)
         GInv_RemoveItem(ply, IDS[bang], 1)
@@ -166,6 +170,17 @@ RustOfficial.ITEMS = {
         Craftable = true,
         BluePrint = false,
     },
+    HQMetal = {
+        name = "HQ Metal",
+        color = Color(200, 60, 60),
+        image = "materials/items/resources/hqmetal.png",
+        func = function(ply) end,
+        weapon = nil,
+        Max = 2000,
+        wModel = "models/environment/misc/loot_bag.mdl",
+        Craftable = true,
+        BluePrint = false,
+    },
     Furnace = {
         name = "Furnace",
         color = Color(200, 60, 60),
@@ -242,6 +257,25 @@ RustOfficial.ITEMS = {
         Craftable = true,
         BluePrint = false,
     },
+    Arm_Double_Door = {
+        name = "Double Metal Door",
+        color = Color(200, 60, 60),
+        image = "materials/items/deployable/armored_double_door.png",
+        func = function(ply)
+            if SERVER then
+                ply.SelectedGarageDoor = nil
+                net.Start("SendClientinfoGDL")
+                net.WriteBool(true)
+                net.WriteString("sent_door_dd_hq")
+                net.Send(ply)
+            end
+        end,
+        weapon = nil,
+        Max = 1,
+        wModel = "models/environment/misc/loot_bag.mdl",
+        Craftable = true,
+        BluePrint = false,
+    },
     DoubleDoorMetal = {
         name = "Double Metal Door",
         color = Color(200, 60, 60),
@@ -252,6 +286,25 @@ RustOfficial.ITEMS = {
                 net.Start("SendClientinfoGDL")
                 net.WriteBool(true)
                 net.WriteString("sent_door_dd_metal")
+                net.Send(ply)
+            end
+        end,
+        weapon = nil,
+        Max = 1,
+        wModel = "models/environment/misc/loot_bag.mdl",
+        Craftable = true,
+        BluePrint = false,
+    },
+    DoubleDoorWood = {
+        name = "Double Metal Door",
+        color = Color(200, 60, 60),
+        image = "materials/items/deployable/wood_double_door.png",
+        func = function(ply)
+            if SERVER then
+                ply.SelectedGarageDoor = nil
+                net.Start("SendClientinfoGDL")
+                net.WriteBool(true)
+                net.WriteString("sent_door_dd_wood")
                 net.Send(ply)
             end
         end,

@@ -13,6 +13,8 @@ DEPLOY.AllowedOn = {
         sent_hwall = true,
         sent_metal_door = true,
         sent_door_dd_metal = true,
+        sent_door_dd_wood = true,
+        sent_door_dd_hq = true,
     },
     sent_ceiling = {
         sent_stairs = true,
@@ -26,6 +28,8 @@ DEPLOY.AllowedOn = {
         sent_hwall = true,
         sent_metal_door = true,
         sent_door_dd_metal = true,
+        sent_door_dd_wood = true,
+        sent_door_dd_hq = true,
     },
     sent_doorwayl = {
         sent_garagedoor = true,
@@ -36,6 +40,8 @@ DEPLOY.AllowedOn = {
         sent_hwall = false,
         sent_metal_door = true,
         sent_door_dd_metal = true,
+        sent_door_dd_wood = true,
+        sent_door_dd_hq = true,
     }
 }
 
@@ -51,6 +57,8 @@ DEPLOY.ClassDist = {
     sent_garagedoor = 72.9,
     sent_doorwayl = 72.9,
     sent_door_dd_metal = 72.9,
+    sent_door_dd_wood = 72.9,
+    sent_door_dd_hq = 72.9,
 }
 
 DEPLOY.DefaultDist = 72.9
@@ -68,6 +76,8 @@ DEPLOY.ClassRot = {
     sent_garagedoor = 0,
     sent_doorwayl = 90,
     sent_door_dd_metal = 90,
+    sent_door_dd_wood = 90,
+    sent_door_dd_hq = 90,
 }
 
 -- false = keep the foundation's own yaw instead of facing the edge
@@ -90,6 +100,8 @@ DEPLOY.ClassZ = {
     sent_garagedoor = 0,
     sent_doorwayl = 0,
     sent_door_dd_metal = 0,
+    sent_door_dd_wood = 0,
+    sent_door_dd_hq = 0,
 }
 
 local EDGES = {
@@ -122,6 +134,8 @@ DEPLOY.CeilingZ = {
     sent_doorwayl = 0,
     sent_hwall = 0,
     sent_door_dd_metal = 0,
+    sent_door_dd_wood = 0,
+    sent_door_dd_hq = 0,
 }
 
 -- centred over the foundation (0 = no edge offset)
@@ -216,9 +230,21 @@ function DEPLOY:SetSocket(ply, class, pos, ang)
 
     -- doors only go where a doorway already exists (closest one wins)
     local doorway
-    if class == "sent_door" or class == "sent_door_dd_metal" or class == "sent_metal_door" or class == "sent_arm_door" then
+    if class == "sent_door" or class == "sent_metal_door" or class == "sent_arm_door" then
         local nearestDist = math.huge
         for _, e in ipairs(ents.FindByClass("sent_doorway")) do
+            local d = pos:Distance(e:GetPos())
+            if d < nearestDist then doorway, nearestDist = e, d end
+        end
+
+        if IsValid(doorway.Door) and nearestDist <= 100 then -- already has a door
+            return
+        end
+    end
+
+    if class == "sent_door_dd_metal" or class == "sent_door_dd_wood" or class == "sent_door_dd_hq" then
+        local nearestDist = math.huge
+        for _, e in ipairs(ents.FindByClass("sent_doorwayl")) do
             local d = pos:Distance(e:GetPos())
             if d < nearestDist then doorway, nearestDist = e, d end
         end
@@ -231,7 +257,7 @@ function DEPLOY:SetSocket(ply, class, pos, ang)
     local doorTarget
     if class == "rust_keylock" or class == "rust_keypad" then
         local nearestDist = math.huge
-        for _, cls in ipairs({"sent_door", "sent_metal_door", "sent_arm_door"}) do
+        for _, cls in ipairs({"sent_door", "sent_metal_door", "sent_arm_door", "door_metal_right", "door_metal_left", "door_wood_right", "door_wood_left", "door_hq_right", "door_hq_left",}) do
             for _, e in ipairs(ents.FindByClass(cls)) do
                 local d = pos:Distance(e:GetPos())
                 if d < nearestDist then doorTarget, nearestDist = e, d end
@@ -298,6 +324,8 @@ DEPLOY.SkipUpper = {
     rust_keylock = true,
     rust_keypad = true,
     sent_door_dd_metal = true,
+    sent_door_dd_wood = true,
+    sent_door_dd_hq = true,
 }
 
 DEPLOY.SkipUpper = DEPLOY.SkipUpper or {}
@@ -310,6 +338,8 @@ local IDS = {
     ["rust_furnace"] = "rust_furnace",
     ["sent_garagedoor"] = "sent_garagedoor",
     ["sent_door_dd_metal"] = "sent_door_dd_metal",
+    ["sent_door_dd_wood"] = "sent_door_dd_wood",
+    ["sent_door_dd_hq"] = "sent_door_dd_hq",
     ["rust_tc"] = "rust_tc",
 }
 
@@ -384,6 +414,20 @@ function DEPLOY:GetSocket(ply, class)
     end
 
     if class == "sent_door_dd_metal" then
+        local door = self:GetDoorwayL(ply)
+        if not IsValid(door) then return fallbackPos, fallbackAng, "none", tr.Entity end
+        local pos, ang = LocalToWorld(self.GarageOffset, Angle(0, 0, 0), door:GetPos(), door:GetAngles())
+        return pos, ang, "doorwayl", tr.Entity
+    end
+
+    if class == "sent_door_dd_hq" then
+        local door = self:GetDoorwayL(ply)
+        if not IsValid(door) then return fallbackPos, fallbackAng, "none", tr.Entity end
+        local pos, ang = LocalToWorld(self.GarageOffset, Angle(0, 0, 0), door:GetPos(), door:GetAngles())
+        return pos, ang, "doorwayl", tr.Entity
+    end
+
+    if class == "sent_door_dd_wood" then
         local door = self:GetDoorwayL(ply)
         if not IsValid(door) then return fallbackPos, fallbackAng, "none", tr.Entity end
         local pos, ang = LocalToWorld(self.GarageOffset, Angle(0, 0, 0), door:GetPos(), door:GetAngles())

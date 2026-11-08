@@ -49,6 +49,7 @@ end
 local SMELT = {
     ["Metal"] = "MetalOre",
     ["Sulfur"] = "SulfurOre",
+    ["HQMetalOre"] = "HQMetal",
 }
 
 local INPUT_ITEMS = SMELT

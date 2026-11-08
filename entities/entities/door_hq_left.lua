@@ -1,0 +1,86 @@
+AddCSLuaFile()
+ENT.Type = "anim"
+ENT.Base = "base_anim"
+ENT.PrintName = "Door left"
+ENT.Category = ""
+ENT.Spawnable = true
+ENT.AdminOnly = false
+ENT.CodeLockable = true
+if SERVER then
+	function ENT:Initialize()
+		self:SetModel("models/darky_m/rust/armored_door_l.mdl")
+		self:PhysicsInit(SOLID_VPHYSICS)
+		self:SetMoveType(MOVETYPE_NONE)
+		self:SetSolid(SOLID_VPHYSICS)
+		local phys = self:GetPhysicsObject()
+		if phys:IsValid() then phys:Sleep() end
+		--constraint.Weld(self, Entity(0), 0, 0, 0, true, true)
+		self.Ent_Health = 2500
+		self.Ent_HealthMax = 100
+		--self:SetMaterial("Model/effects/vol_light001")
+		self:DrawShadow()
+		self.SpawnTime = 0
+		self.EntCount = 0
+		self.DoorOpen = false
+		self:SetNWInt("health_" .. self:GetClass(), self.Ent_Health)
+	end
+
+	--[[ function ENT:SpawnFunction( ply, tr )
+	if ( !tr.Hit ) then return end
+	local ent = ents.Create( "zombie_tree1" )
+	ent:SetPos( tr.HitPos + tr.HitNormal * 32 ) `
+	ent:Spawn()
+	ent:Activate()
+
+	return ent
+end ]]
+	function ENT:Think()
+		local doors = 0
+		for k, v in pairs(ents.FindInSphere(self:GetPos(), 30)) do
+			if v:GetClass() == "sent_way_door" then doors = doors + 1 end
+		end
+
+		if doors <= 0 then
+			--if IsValid(self) then self:Remove() end
+			--if IsValid(self.doorLock) then self.doorLock:Remove() end
+		end
+	end
+
+	function ENT:OnTakeDamage(dmg)
+		local ply = dmg:GetAttacker()
+		local inflictor = dmg:GetInflictor()
+		--if type(inflictor) == "Entity" then return end
+		--if self.PropOwned != ply then return end
+		self.Ent_Health = self.Ent_Health - dmg:GetDamage()
+		if self.Ent_Health <= 0 then self:Remove() end
+		self:SetNWInt("health_" .. self:GetClass(), self.Ent_Health)
+	end
+
+	function ENT:Use(btn, ply)
+	end
+end
+
+if CLIENT then
+	ENT.RenderGroup = RENDERGROUP_TRANSLUCENT
+	function ENT:Initialize()
+	end
+
+	-- Draw some 3D text
+	function ENT:Draw(flags)
+		-- Draw the model
+		self:DrawModel(flags)
+		local DOOR_H = 100 -- target height, tune until the top touches the lintel
+		local mins, maxs = self:OBBMins(), self:OBBMaxs()
+		local sz = maxs.z - mins.z
+		if sz <= 0 then return end
+		local kz = DOOR_H / sz
+		-- bottom stays fixed, extra height grows upward
+		local pivot = Vector((mins.x + maxs.x) / 2, (mins.y + maxs.y) / 2, mins.z)
+		local m = Matrix()
+		m:Translate(pivot)
+		m:Scale(Vector(1.4, 1, kz)) -- this is the line that was missing
+		m:Translate(-pivot)
+		self:EnableMatrix("RenderMultiply", m)
+		self:SetRenderBounds(Vector(mins.x, mins.y, mins.z), Vector(maxs.x, maxs.y, mins.z + sz * kz))
+	end
+end

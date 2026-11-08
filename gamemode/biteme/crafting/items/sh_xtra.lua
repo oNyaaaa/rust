@@ -97,3 +97,28 @@ ITEMS:RegisterItem("MetalOre", {
         }
     end,
 }, "ADMIN")
+
+ITEMS:RegisterItem("HQMetal", {
+    Name = "HQ Metal",
+    Info = "HQ Metal",
+    InfoTag = "HQMetal",
+    Category = "ADMIN",
+    model = "materials/items/resources/hqmetal.png",
+    Weapon = "",
+    Count = 50,
+    Stackable = true,
+    StackSize = 2000,
+    IzAdmin = true,
+    Craft = function()
+        return {
+            {
+                Time = 0,
+                CanCraft = false,
+                {
+                    ITEM = "HQMetal",
+                    AMOUNT = 0,
+                },
+            },
+        }
+    end,
+}, "ADMIN")

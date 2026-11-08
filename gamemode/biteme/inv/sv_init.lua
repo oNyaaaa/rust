@@ -562,6 +562,7 @@ hook.Add("PlayerSpawn", "sendinv", function(ply)
         ply:SetPos(saved[2])
         ply:SetEyeAngles(saved[1])
     end
+    ply:SetJumpPower(200)
 end)
 
 net.Receive("grust_RequestInv", function(_, ply) SendInv(ply) end)
