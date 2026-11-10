@@ -108,6 +108,7 @@ function PANEL:AddItem(slotID, itemID, dur, count)
     item:Droppable("grust_item")
     item.DoDoubleClick = function(self) if self.takeFn then return self.takeFn() end end
     item.OnMousePressed = function(self, code)
+        if code == MOUSE_RIGHT and not self.takeFn and IsValid(RUST_CUPBOARD) and RUST_CUPBOARD.Deposit then return RUST_CUPBOARD:Deposit(self) end
         if self.takeFn and code == MOUSE_RIGHT then return self.takeFn() end
         self:MouseCapture(true)
         self:DragMousePress(code)
@@ -232,6 +233,16 @@ local function EnsureHotbar()
     if GRUST_LASTINV then hb:SetInventory(GRUST_LASTINV) end
     net.Start("grust_RequestInv")
     net.SendToServer()
+    local function RaiseCupboard()
+        if IsValid(RUST_CUPBOARD) then
+            RUST_CUPBOARD:MakePopup()
+            RUST_CUPBOARD:SetKeyboardInputEnabled(false)
+            RUST_CUPBOARD:MoveToFront()
+        end
+    end
+
+    RaiseCupboard()
+    timer.Simple(0.1, RaiseCupboard)
     return hb
 end
 
@@ -261,6 +272,9 @@ hook.Add("ScoreboardShow", "Scoreboard_Open", function()
     bg.Paint = function() end
     bg:Receiver("grust_item", function(_, panels, dropped)
         if not dropped then return end
+        local cup = panels[1]
+        print("[TC] bg receiver fired", cup, RUST_CUPBOARD)
+        if IsValid(RUST_CUPBOARD) and IsValid(cup) and RUST_CUPBOARD.HandleDrop and RUST_CUPBOARD:HandleDrop(cup) then return end
         timer.Simple(0, function() if IsValid(GRUST_HOTBAR) then GRUST_HOTBAR:MoveToFront() end end)
         local item = panels[1]
         local fromSlot = IsValid(item) and item:GetParent()
