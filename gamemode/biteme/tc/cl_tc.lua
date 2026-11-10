@@ -69,13 +69,11 @@ local function OpenCupboard(ent, cost, protectedUntil, toolRow, grid)
         local mx, my = gui.MousePos()
         local fx, fy = self:LocalToScreen(0, 0)
         local inside = mx >= fx and my >= fy and mx < fx + self:GetWide() and my < fy + self:GetTall()
-        print("[TC] HandleDrop", "mouse", mx, my, "inside", inside, "item", p.ItemID)
         if not inside then return false end
         for _, slot in ipairs(self:GetChildren()) do
             if slot.CupKind then
                 local x, y = slot:LocalToScreen(0, 0)
                 if mx >= x and mx < x + slot:GetWide() and my >= y and my < y + slot:GetTall() then
-                    print("[TC] drop on", slot.CupKind, slot.CupIndex, p.ItemID, p.CupKind)
                     net.Start("gRustCupboardDrop")
                     net.WriteEntity(ent)
                     net.WriteString(slot.CupKind)
@@ -202,15 +200,14 @@ local function OpenCupboard(ent, cost, protectedUntil, toolRow, grid)
                 local fx, fy = parent:LocalToScreen(0, 0)
                 if mx < fx or my < fy or mx > fx + parent:GetWide() or my > fy + parent:GetTall() then self.takeFn() end
             end)
+
             TC_GHOST = nil
         end
 
         s:Receiver("grust_item", function(self, panels, dropped)
-            print("[TC] receiver", dropped, IsValid(panels[1]) and panels[1].ItemID)
             if not dropped then return end
             local p = panels[1]
             if not IsValid(p) then return end
-            print("[TC] sending drop", kind, index)
             net.Start("gRustCupboardDrop")
             net.WriteEntity(ent)
             net.WriteString(kind)
@@ -254,11 +251,7 @@ local function OpenCupboard(ent, cost, protectedUntil, toolRow, grid)
 
     f.NextClose = CurTime() + 0.5
     f.Think = function(self)
-        if (self.DbgT or 0) < CurTime() then
-            self.DbgT = CurTime() + 1
-            print("[TC] hovered:", vgui.GetHoveredPanel())
-        end
-
+        if (self.DbgT or 0) < CurTime() then self.DbgT = CurTime() + 1 end
         if gui.IsGameUIVisible() then
             gui.HideGameUI()
             CloseCupboard()

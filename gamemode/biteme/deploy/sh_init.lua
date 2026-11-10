@@ -257,7 +257,7 @@ function DEPLOY:SetSocket(ply, class, pos, ang)
     local doorTarget
     if class == "rust_keylock" or class == "rust_keypad" then
         local nearestDist = math.huge
-        for _, cls in ipairs({"sent_door", "sent_metal_door", "sent_arm_door", "door_metal_right", "door_metal_left", "door_wood_right", "door_wood_left", "door_hq_right", "door_hq_left",}) do
+        for _, cls in ipairs({"sent_door", "sent_metal_door", "sent_arm_door", "door_metal_right", "door_metal_left", "door_wood_right", "door_wood_left", "door_hq_right", "door_hq_left", "rust_tc"}) do
             for _, e in ipairs(ents.FindByClass(cls)) do
                 local d = pos:Distance(e:GetPos())
                 if d < nearestDist then doorTarget, nearestDist = e, d end
@@ -326,6 +326,7 @@ DEPLOY.SkipUpper = {
     sent_door_dd_metal = true,
     sent_door_dd_wood = true,
     sent_door_dd_hq = true,
+    rust_tc = true,
 }
 
 DEPLOY.SkipUpper = DEPLOY.SkipUpper or {}
@@ -374,8 +375,23 @@ function DEPLOY:HasGroundSupport(pos, ang)
     return true, lowZ, highZ
 end
 
+DEPLOY.SocketsTC = {
+    codelock = {
+        pos = Vector(14, 0, 38),
+        ang = Angle(0, 0, 0)
+    },
+}
+
+function DEPLOY:GetSocketTC(name)
+    local s = self.SocketsTC[name]
+    if not s then return end
+    return self:LocalToWorld(s.pos), self:LocalToWorldAngles(s.ang)
+end
+
 DEPLOY.KeylockOffset = Vector(49.11, 2.08, 45.4)
 DEPLOY.KeylockAngle = Angle(0, 0, 0)
+DEPLOY.TCLockOffset = Vector(14, 0, 38)  -- guess, tune to the tool_cupboard model
+DEPLOY.TCLockAngle  = Angle(0, 90, 0)
 function DEPLOY:GetSocket(ply, class)
     if not IsValid(ply) then return end
     class = string.lower(class or "")
@@ -449,20 +465,13 @@ function DEPLOY:GetSocket(ply, class)
         if not IsValid(base) then return fallbackPos, fallbackAng, "none", tr.Entity end
     end
 
-    if class == "rust_keypad" then
-        local fnd = string.find(ent:GetClass(), "door", 1)
-        local door = IsValid(ent) and fnd and ent
-        if not door or door:GetNWBool("HasLock") then return fallbackPos, fallbackAng, "none", tr.Entity end
-        local pos, ang = LocalToWorld(self.KeylockOffset, self.KeylockAngle, door:GetPos(), door:GetAngles())
-        return pos, ang, "door", door
-    end
-
-    if class == "rust_keylock" then
-        local fnd = string.find(ent:GetClass(), "door", 1)
-        local door = IsValid(ent) and fnd and ent
-        if not door or door:GetNWBool("HasLock") then return fallbackPos, fallbackAng, "none", tr.Entity end
-        local pos, ang = LocalToWorld(self.KeylockOffset, self.KeylockAngle, door:GetPos(), door:GetAngles())
-        return pos, ang, "door", door
+    if class == "rust_keylock" or class == "rust_keypad" then
+        if not IsValid(ent) or ent:GetNWBool("HasLock") then return fallbackPos, fallbackAng, "none", tr.Entity end
+        local cls = ent:GetClass()
+        local isTC = cls == "rust_tc"
+        if not isTC and not string.find(cls, "door", 1, true) then return fallbackPos, fallbackAng, "none", tr.Entity end
+        local pos, ang = LocalToWorld(isTC and self.TCLockOffset or self.KeylockOffset, isTC and self.TCLockAngle or self.KeylockAngle, ent:GetPos(), ent:GetAngles())
+        return pos, ang, "door", ent
     end
 
     local baseClass = base:GetClass()

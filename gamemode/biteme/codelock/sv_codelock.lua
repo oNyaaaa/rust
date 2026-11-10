@@ -14,7 +14,7 @@ hook.Add("PlayerUse", "CodeLock_Block", function(ply, ent)
         if IsValid(p) then lock = p.CodeLock end
     end
 
-    if IsValid(lock) and lock:GetLocked() and not lock:HasAccess(ply) then
+    if IsValid(lock) and lock.GetLocked and lock.HasAccess and lock:GetLocked() and not lock:HasAccess(ply) then
         if (ply.NextLockDeny or 0) < CurTime() then
             ply.NextLockDeny = CurTime() + 1
             ent:EmitSound("buttons/button10.wav")

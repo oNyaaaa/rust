@@ -273,7 +273,6 @@ hook.Add("ScoreboardShow", "Scoreboard_Open", function()
     bg:Receiver("grust_item", function(_, panels, dropped)
         if not dropped then return end
         local cup = panels[1]
-        print("[TC] bg receiver fired", cup, RUST_CUPBOARD)
         if IsValid(RUST_CUPBOARD) and IsValid(cup) and RUST_CUPBOARD.HandleDrop and RUST_CUPBOARD:HandleDrop(cup) then return end
         timer.Simple(0, function() if IsValid(GRUST_HOTBAR) then GRUST_HOTBAR:MoveToFront() end end)
         local item = panels[1]

@@ -51,7 +51,12 @@ end ]]
     end
 
     function ENT:OnRemove()
-        self:EmitSound("zohart/building/wood_gib-4.wav")
+        self:EmitSound("player/item_break.wav")
+        for k, v in pairs(player.GetAll()) do
+            for new, sock in pairs(v.Sockets) do
+                if sock[1] == self:GetPos() then table.remove(v.Sockets, new) end
+            end
+        end
     end
 
     function ENT:Use(btn, ply)
