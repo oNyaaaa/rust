@@ -30,6 +30,7 @@ DEPLOY.AllowedOn = {
         sent_door_dd_metal = true,
         sent_door_dd_wood = true,
         sent_door_dd_hq = true,
+        sent_window = true,
     },
     sent_doorwayl = {
         sent_garagedoor = true,
@@ -42,6 +43,9 @@ DEPLOY.AllowedOn = {
         sent_door_dd_metal = true,
         sent_door_dd_wood = true,
         sent_door_dd_hq = true,
+    },
+    sent_window = {
+        sent_windowbars = true,
     }
 }
 
@@ -59,6 +63,8 @@ DEPLOY.ClassDist = {
     sent_door_dd_metal = 72.9,
     sent_door_dd_wood = 72.9,
     sent_door_dd_hq = 72.9,
+    sent_window = 72.9,
+    sent_windowbars = 72.9,
 }
 
 DEPLOY.DefaultDist = 72.9
@@ -78,6 +84,8 @@ DEPLOY.ClassRot = {
     sent_door_dd_metal = 90,
     sent_door_dd_wood = 90,
     sent_door_dd_hq = 90,
+    sent_window = 90,
+    sent_windowbars = 90,
 }
 
 -- false = keep the foundation's own yaw instead of facing the edge
@@ -102,6 +110,9 @@ DEPLOY.ClassZ = {
     sent_door_dd_metal = 0,
     sent_door_dd_wood = 0,
     sent_door_dd_hq = 0,
+    sent_stonebarricade = 0,
+    sent_window = 0,
+    sent_windowbars = 0,
 }
 
 local EDGES = {
@@ -136,6 +147,8 @@ DEPLOY.CeilingZ = {
     sent_door_dd_metal = 0,
     sent_door_dd_wood = 0,
     sent_door_dd_hq = 0,
+    sent_stonebarricade = 0,
+    sent_window = 0,
 }
 
 -- centred over the foundation (0 = no edge offset)
@@ -327,6 +340,7 @@ DEPLOY.SkipUpper = {
     sent_door_dd_wood = true,
     sent_door_dd_hq = true,
     rust_tc = true,
+    sent_window = true,
 }
 
 DEPLOY.SkipUpper = DEPLOY.SkipUpper or {}
@@ -390,8 +404,8 @@ end
 
 DEPLOY.KeylockOffset = Vector(49.11, 2.08, 45.4)
 DEPLOY.KeylockAngle = Angle(0, 0, 0)
-DEPLOY.TCLockOffset = Vector(14, 0, 38)  -- guess, tune to the tool_cupboard model
-DEPLOY.TCLockAngle  = Angle(0, 90, 0)
+DEPLOY.TCLockOffset = Vector(14, 0, 38) -- guess, tune to the tool_cupboard model
+DEPLOY.TCLockAngle = Angle(0, 90, 0)
 function DEPLOY:GetSocket(ply, class)
     if not IsValid(ply) then return end
     class = string.lower(class or "")
@@ -401,6 +415,12 @@ function DEPLOY:GetSocket(ply, class)
     local base = entTRR or DEPLOY:GetGround(ply, class)
     local pitch = ply:EyeAngles().p -- negative when looking up
     -- free-placement raised foundation (looking up, not aiming at another base)
+    if class == "sent_bed" or class == "sent_stonebarricade" or class == "sent_woodbarricade" or class == "sent_repairbench" or class == "sent_repairtable" or class == "sent_sleepingbag" then
+        local posty = tr.HitPos + tr.HitNormal * 2
+        local yaw = (ply:GetPos() - posty):Angle().y
+        return posty, Angle(0, yaw, 0), "sent_stonebarricade", tr.Entity
+    end
+
     local ids = IDS[class]
     if ids and IsValid(ent) and ent:GetClass() == "sent_foundation" then
         local mins, maxs = ent:OBBMins(), ent:OBBMaxs()

@@ -223,15 +223,16 @@ ITEMS:RegisterItem("Arm_Double_Door", {
     end,
 }, "Construction")
 
-ITEMS:RegisterItem("rust_deploy_doorway_stonebar", {
+ITEMS:RegisterItem("StoneBarricade", {
     Name = "Stone Barricade",
     Info = "Useful for pvp fights",
+    InfoTag = "StoneBarricade",
     Category = "Construction",
     model = "materials/items/deployable/stone_barricade.png",
-    Weapon = "rust_deploy_doorway_stonebar",
+    Weapon = nil,
     Count = 50,
     Stackable = true,
-    StackSize = 150,
+    StackSize = 1,
     IzAdmin = true,
     Craft = function()
         return {
@@ -247,15 +248,16 @@ ITEMS:RegisterItem("rust_deploy_doorway_stonebar", {
     end,
 }, "Construction")
 
-ITEMS:RegisterItem("rust_deploy_doorway_woodbar", {
+ITEMS:RegisterItem("WoodBarricade", {
     Name = "Wooden Barricade Cover",
     Info = "Useful for pvp fights",
+    InfoTag = "WoodBarricade",
     Category = "Construction",
     model = "materials/items/deployable/wooden_barricade.png",
-    Weapon = "rust_deploy_doorway_woodbar",
+    Weapon = nil,
     Count = 50,
     Stackable = true,
-    StackSize = 150,
+    StackSize = 1,
     IzAdmin = true,
     Craft = function()
         return {
@@ -271,15 +273,16 @@ ITEMS:RegisterItem("rust_deploy_doorway_woodbar", {
     end,
 }, "Construction")
 
-ITEMS:RegisterItem("rust_deploy_doorway_repairbench", {
+ITEMS:RegisterItem("RepairBench", {
     Name = "Repair Bench",
     Info = "Useful for repairing gears/weapons",
+    InfoTag = "RepairBench",
     Category = "Construction",
     model = "materials/items/deployable/repair_bench.png",
-    Weapon = "rust_deploy_doorway_repairbench",
+    Weapon = nil,
     Count = 50,
     Stackable = true,
-    StackSize = 150,
+    StackSize = 1,
     IzAdmin = true,
     Craft = function()
         return {
@@ -295,15 +298,16 @@ ITEMS:RegisterItem("rust_deploy_doorway_repairbench", {
     end,
 }, "Construction")
 
-ITEMS:RegisterItem("rust_deploy_doorway_researchtable", {
+ITEMS:RegisterItem("RepairTable", {
     Name = "Repair Bench",
     Info = "Useful for researching stuff",
+    InfoTag = "RepairTable",
     Category = "Construction",
     model = "materials/items/deployable/research_table.png",
-    Weapon = "rust_deploy_doorway_researchtable",
+    Weapon = nil,
     Count = 50,
     Stackable = true,
-    StackSize = 150,
+    StackSize = 1,
     IzAdmin = true,
     Craft = function()
         return {
@@ -319,15 +323,16 @@ ITEMS:RegisterItem("rust_deploy_doorway_researchtable", {
     end,
 }, "Construction")
 
-ITEMS:RegisterItem("rust_deploy_doorway_sleepingbag", {
+ITEMS:RegisterItem("SleepingBag", {
     Name = "Sleeping Bag",
     Info = "Spawn point",
+    InfoTag = "SleepingBag",
     Category = "Construction",
     model = "materials/items/deployable/sleeping_bag.png",
-    Weapon = "rust_deploy_doorway_sleepingbag",
+    Weapon = nil,
     Count = 50,
     Stackable = true,
-    StackSize = 150,
+    StackSize = 1,
     IzAdmin = true,
     Craft = function()
         return {
@@ -343,15 +348,16 @@ ITEMS:RegisterItem("rust_deploy_doorway_sleepingbag", {
     end,
 }, "Construction")
 
-ITEMS:RegisterItem("rust_deploy_doorway_bed", {
+ITEMS:RegisterItem("Bed", {
     Name = "Bed",
     Info = "Spawn point",
+    InfoTag = "Bed",
     Category = "Construction",
     model = "materials/items/deployable/bed.png",
-    Weapon = "rust_deploy_doorway_bed",
+    Weapon = nil,
     Count = 50,
     Stackable = true,
-    StackSize = 150,
+    StackSize = 1,
     IzAdmin = true,
     Craft = function()
         return {
@@ -367,15 +373,16 @@ ITEMS:RegisterItem("rust_deploy_doorway_bed", {
     end,
 }, "Construction")
 
-ITEMS:RegisterItem("rust_deploy_woodenwindowbars", {
+ITEMS:RegisterItem("WindowBars", {
     Name = "Wooden Window Bars",
     Info = "For windows",
+    InfoTag = "WindowBars",
     Category = "Construction",
     model = "materials/items/deployable/wood_window_bars.png",
-    Weapon = "rust_deploy_woodenwindowbars",
+    Weapon = nil,
     Count = 50,
     Stackable = true,
-    StackSize = 150,
+    StackSize = 1,
     IzAdmin = true,
     Craft = function()
         return {

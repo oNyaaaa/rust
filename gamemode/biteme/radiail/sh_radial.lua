@@ -24,6 +24,30 @@ RadialMenu2.Items = {
         UpgradeLevel = 1,
         Model = {
             ["sent_foundation"] = {"models/building_re/wood_foundation.mdl"},
+            ["sent_window"] = {
+                "models/building_re/twig_wind.mdl",
+                DoFuncWhat = function(ent)
+                    ent:DrawModel()
+                    local WALL_LENGTH = 137.78 + 14 -- match your DEPLOY.ClassDist entry for the wall class
+                    local mins, maxs = ent:OBBMins(), ent:OBBMaxs()
+                    local sx, sy = maxs.x - mins.x, maxs.y - mins.y
+                    local len = math.max(sx, sy)
+                    if len > 0 and len < WALL_LENGTH then
+                        local ak = WALL_LENGTH / len
+                        -- scale only the longer horizontal axis; thickness and height stay as-is
+                        local WALL_HEIGHT = 140.78 -- set to your floor-to-ceiling distance
+                        local sz = maxs.z - mins.z
+                        local kz = (sz > 0 and sz < WALL_HEIGHT) and (WALL_HEIGHT / sz) or 1
+                        ent:SetRenderBounds(Vector(mins.x * ak, mins.y * ak, mins.z * kz), Vector(maxs.x * ak, maxs.y * ak, maxs.z * kz))
+                        local pivot = Vector((mins.x + maxs.x) / 2, (mins.y + maxs.y) / 2, mins.z)
+                        local m = Matrix()
+                        m:Translate(pivot)
+                        m:Scale(sx >= sy and Vector(ak, 1, kz) or Vector(1, ak, kz))
+                        m:Translate(-pivot)
+                        ent:EnableMatrix("RenderMultiply", m)
+                    end
+                end
+            },
             ["sent_wall"] = {
                 "models/building_re/wood_wall.mdl",
                 DoFuncWhat = function(ent)
@@ -112,7 +136,6 @@ RadialMenu2.Items = {
                 end
             },
             ["sent_stairs"] = {"models/building_re/wood_lst.mdl",},
-            
         },
     },
     {

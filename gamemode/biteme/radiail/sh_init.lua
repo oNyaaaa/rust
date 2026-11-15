@@ -8,6 +8,10 @@ RadialMenu.Items = {
         class = "sent_foundation"
     },
     {
+        name = "Window",
+        class = "sent_window"
+    },
+    {
         name = "Wall",
         class = "sent_wall"
     },

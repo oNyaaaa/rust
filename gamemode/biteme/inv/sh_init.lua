@@ -4,10 +4,10 @@ RustOfficial.GhostGD.GhostModel = ""
 if SERVER then
     util.AddNetworkString("SendClientinfoGDL")
     util.AddNetworkString("GarageDoorPlaceL")
-    util.AddNetworkString("GInvneotryRust")
+    util.AddNetworkString("GInventory")
     util.AddNetworkString("SendDatagRust")
     net.Receive("SendDatagRust", function(len, ply)
-        net.Start("GInvneotryRust")
+        net.Start("GInventory")
         net.WriteTable(ply.GInv)
         net.Send(ply)
     end)
@@ -23,7 +23,14 @@ if SERVER then
         ["sent_metal_door"] = "MetalDeployDoor",
         ["sent_arm_door"] = "ArmouredDeployDoor",
         ["rust_keylock"] = "KeyLock",
-        ["rust_keypad"] = "KeyPad"
+        ["rust_keypad"] = "KeyPad",
+        ["sent_stonebarricade"] = "StoneBarricade",
+        ["sent_woodbarricade"] = "WoodBarricade",
+        ["sent_repairtable"] = "RepairTable",
+        ["sent_repairbench"] = "RepairBench",
+        ["sent_sleepingbag"] = "SleepingBag",
+        ["sent_bed"] = "Bed",
+        ["sent_windowbars"] = "WindowBars",
     }
 
     net.Receive("GarageDoorPlaceL", function(len, ply)
@@ -106,6 +113,139 @@ RustOfficial.ITEMS = {
                 net.Start("SendClientinfoGDL")
                 net.WriteBool(true)
                 net.WriteString("sent_garagedoor")
+                net.Send(ply)
+            end
+        end,
+        weapon = nil,
+        Max = 1,
+        wModel = "models/environment/misc/loot_bag.mdl",
+        Craftable = true,
+        BluePrint = true,
+    },
+    StoneBarricade = {
+        name = "Stone Barricade",
+        color = Color(200, 60, 60),
+        image = "materials/items/deployable/stone_barricade.png",
+        func = function(ply)
+            if SERVER then
+                ply.SelectedGarageDoor = nil
+                net.Start("SendClientinfoGDL")
+                net.WriteBool(true)
+                net.WriteString("sent_stonebarricade")
+                net.Send(ply)
+            end
+        end,
+        weapon = nil,
+        Max = 1,
+        wModel = "models/environment/misc/loot_bag.mdl",
+        Craftable = true,
+        BluePrint = true,
+    },
+    WoodBarricade = {
+        name = "Wood Barricade",
+        color = Color(200, 60, 60),
+        image = "materials/items/deployable/wooden_barricade.png",
+        func = function(ply)
+            if SERVER then
+                ply.SelectedGarageDoor = nil
+                net.Start("SendClientinfoGDL")
+                net.WriteBool(true)
+                net.WriteString("sent_woodbarricade")
+                net.Send(ply)
+            end
+        end,
+        weapon = nil,
+        Max = 1,
+        wModel = "models/environment/misc/loot_bag.mdl",
+        Craftable = true,
+        BluePrint = true,
+    },
+    RepairBench = {
+        name = "Repair Bench",
+        color = Color(200, 60, 60),
+        image = "materials/items/deployable/repair_bench.png",
+        func = function(ply)
+            if SERVER then
+                ply.SelectedGarageDoor = nil
+                net.Start("SendClientinfoGDL")
+                net.WriteBool(true)
+                net.WriteString("sent_repairbench")
+                net.Send(ply)
+            end
+        end,
+        weapon = nil,
+        Max = 1,
+        wModel = "models/environment/misc/loot_bag.mdl",
+        Craftable = true,
+        BluePrint = true,
+    },
+    RepairTable = {
+        name = "Repair Table",
+        color = Color(200, 60, 60),
+        image = "materials/items/deployable/research_table.png",
+        func = function(ply)
+            if SERVER then
+                ply.SelectedGarageDoor = nil
+                net.Start("SendClientinfoGDL")
+                net.WriteBool(true)
+                net.WriteString("sent_repairtable")
+                net.Send(ply)
+            end
+        end,
+        weapon = nil,
+        Max = 1,
+        wModel = "models/environment/misc/loot_bag.mdl",
+        Craftable = true,
+        BluePrint = true,
+    },
+    SleepingBag = {
+        name = "Sleeping Bag",
+        color = Color(200, 60, 60),
+        image = "materials/items/deployable/sleeping_bag.png",
+        func = function(ply)
+            if SERVER then
+                ply.SelectedGarageDoor = nil
+                net.Start("SendClientinfoGDL")
+                net.WriteBool(true)
+                net.WriteString("sent_sleepingbag")
+                net.Send(ply)
+            end
+        end,
+        weapon = nil,
+        Max = 1,
+        wModel = "models/environment/misc/loot_bag.mdl",
+        Craftable = true,
+        BluePrint = true,
+    },
+    Bed = {
+        name = "Bed",
+        color = Color(200, 60, 60),
+        image = "materials/items/deployable/bed.png",
+        func = function(ply)
+            if SERVER then
+                ply.SelectedGarageDoor = nil
+                net.Start("SendClientinfoGDL")
+                net.WriteBool(true)
+                net.WriteString("sent_bed")
+                net.Send(ply)
+            end
+        end,
+        weapon = nil,
+        Max = 1,
+        wModel = "models/environment/misc/loot_bag.mdl",
+        Craftable = true,
+        BluePrint = true,
+    },
+    WindowBars = {
+        name = "Wooden Window Bars",
+        color = Color(200, 60, 60),
+        image = "materials/items/deployable/wood_window_bars.png",
+        func = function(ply)
+            if SERVER then
+                ply.SelectedGarageDoor = nil
+                net.Start("SendClientinfoGDL")
+                net.WriteBool(true)
+                net.WriteString("sent_windowbars")
                 net.Send(ply)
             end
         end,

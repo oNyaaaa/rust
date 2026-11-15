@@ -16,7 +16,7 @@ local RUST_ACCENT = Color(0, 150, 150, 255)
 local RUST_TEXT = Color(200, 200, 180, 255)
 local RUST_TEXT_DIM = Color(150, 150, 140, 255)
 local gInv = {}
-net.Receive("GInvneotryRust", function() gInv = net.ReadTable() end)
+net.Receive("GInventory", function() gInv = net.ReadTable() end)
 local function CreateCraftRow(parent, materialName, needAmount, playerHave)
     local row = vgui.Create("DPanel", parent)
     row:SetTall(40)
