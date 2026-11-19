@@ -5,7 +5,7 @@ This is a Work in progress = W.I.P
 
 Counter: ![](https://komarev.com/ghpvc/?username=oNyaaa1&color=green)
 
-Required: https://steamcommunity.com/sharedfiles/filedetails/?id=3648406739
+Required: ![](https://steamcommunity.com/sharedfiles/filedetails/?id=3648406739)
 
 ![Map](https://github.com/oNyaaa1/rust/blob/main/assets/images/rust_highland0001.jpg)
 ![Preview](https://github.com/oNyaaa1/rust/blob/main/assets/images/rust_highland0002.jpg)
