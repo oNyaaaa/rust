@@ -31,6 +31,7 @@ if SERVER then
         ["sent_sleepingbag"] = "SleepingBag",
         ["sent_bed"] = "Bed",
         ["sent_windowbars"] = "WindowBars",
+        ["sent_windowglass"] = "WindowGlass",
     }
 
     net.Receive("GarageDoorPlaceL", function(len, ply)
@@ -113,6 +114,25 @@ RustOfficial.ITEMS = {
                 net.Start("SendClientinfoGDL")
                 net.WriteBool(true)
                 net.WriteString("sent_garagedoor")
+                net.Send(ply)
+            end
+        end,
+        weapon = nil,
+        Max = 1,
+        wModel = "models/environment/misc/loot_bag.mdl",
+        Craftable = true,
+        BluePrint = true,
+    },
+    WindowGlass = {
+        name = "Reinforced Window Glass",
+        color = Color(200, 60, 60),
+        image = "materials/items/deployable/reinforced_glass_window.png",
+        func = function(ply)
+            if SERVER then
+                ply.SelectedGarageDoor = nil
+                net.Start("SendClientinfoGDL")
+                net.WriteBool(true)
+                net.WriteString("sent_windowglass")
                 net.Send(ply)
             end
         end,

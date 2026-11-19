@@ -398,15 +398,16 @@ ITEMS:RegisterItem("WindowBars", {
     end,
 }, "Construction")
 
-ITEMS:RegisterItem("rust_deploy_glasswindow", {
+ITEMS:RegisterItem("WindowGlass", {
     Name = "Reinforced Glass Window",
     Info = "For windows",
+    InfoTag = "WindowGlass",
     Category = "Construction",
     model = "materials/items/deployable/reinforced_glass_window.png",
-    Weapon = "rust_deploy_glasswindow",
+    Weapon = nil,
     Count = 50,
     Stackable = true,
-    StackSize = 150,
+    StackSize = 1,
     IzAdmin = true,
     Craft = function()
         return {
