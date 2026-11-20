@@ -1,8 +1,8 @@
-ITEMS:RegisterItem("Sulfur", {
+ITEMS:RegisterItem("SulfurOre", {
     Name = "Sulfur Ore",
     Info = "For smelting and crafting stuff",
     Category = "ADMIN",
-    InfoTag = "Sulfur",
+    InfoTag = "SulfurOre",
     model = "materials/items/resources/sulfur_ore.png",
     Weapon = "",
     Count = 50,
@@ -15,7 +15,7 @@ ITEMS:RegisterItem("Sulfur", {
                 Time = 0,
                 CanCraft = false,
                 {
-                    ITEM = "Sulfur Ore",
+                    ITEM = "SulfurOre",
                     AMOUNT = 0,
                 },
             },
@@ -23,11 +23,11 @@ ITEMS:RegisterItem("Sulfur", {
     end,
 }, "ADMIN")
 
-ITEMS:RegisterItem("Metal", {
+ITEMS:RegisterItem("MetalOre", {
     Name = "Metal Ore",
     Info = "For smelting and crafting stuff",
     Category = "ADMIN",
-    InfoTag = "Metal",
+    InfoTag = "MetalOre",
     model = "materials/items/resources/metal_ore.png",
     Weapon = "",
     Count = 50,
@@ -40,7 +40,7 @@ ITEMS:RegisterItem("Metal", {
                 Time = 0,
                 CanCraft = false,
                 {
-                    ITEM = "Metal Ore",
+                    ITEM = "MetalOre",
                     AMOUNT = 0,
                 },
             },

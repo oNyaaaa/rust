@@ -12,13 +12,13 @@ local OreTypes = {
     {
         model = "models/darky_m/rust/worldmodels/sulfur_ore.mdl",
         item = "Sulfur Ore",
-        name = "Sulfur Ore",
+        name = "SulfurOre",
         amount = {10, 20}
     },
     {
         model = "models/darky_m/rust/worldmodels/stone.mdl", -- Using stone model for metal as specified
         item = "Metal Ore",
-        name = "Metal Ore",
+        name = "MetalOre",
         amount = {8, 15}
     }
 }

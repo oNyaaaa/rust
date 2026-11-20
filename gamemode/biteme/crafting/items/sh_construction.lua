@@ -512,7 +512,7 @@ ITEMS:RegisterItem("GarageDoor", {
                 Time = 0,
                 CanCraft = false,
                 {
-                    ITEM = "MetalOre",
+                    ITEM = "Metal",
                     AMOUNT = 0,
                 },
             },

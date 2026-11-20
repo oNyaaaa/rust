@@ -15,7 +15,7 @@ RustCupboard.Resources = {
         name = "Stone"
     },
     {
-        id = "MetalOre",
+        id = "Metal",
         name = "Metal Fragments"
     },
     {
@@ -39,7 +39,7 @@ RustCupboard.TierResource = {
     twig = "Wood",
     wood = "Wood",
     stone = "Stone",
-    metal = "MetalOre",
+    metal = "Metal",
     hqm = "HQMetal",
 }
 

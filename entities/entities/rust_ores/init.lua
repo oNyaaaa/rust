@@ -91,7 +91,7 @@ function ENT:OnTakeDamage(dmg)
             AddItemsToGmodCount(attacker, item.name, 100, nil, 30)
         end
     elseif self:GetSkin() == 2 then
-        local item = RustOfficial.GetItem("Sulfur")
+        local item = RustOfficial.GetItem("SulfurOre")
         if ent.amount == nil then ent.amount = 0 end
         if ent.amount >= #placeHolster then ent.amount = 0 end
         local mathd = GRUST_GetItemFromWep(attacker, "Stone")
@@ -103,7 +103,7 @@ function ENT:OnTakeDamage(dmg)
             AddItemsToGmodCount(attacker, item.name, 100, nil, 30)
         end
     else
-        local item = RustOfficial.GetItem("Metal")
+        local item = RustOfficial.GetItem("MetalOre")
         if ent.amount == nil then ent.amount = 0 end
         if ent.amount >= #placeHolster then ent.amount = 0 end
         local mathd = GRUST_GetItemFromWep(attacker, "Stone")

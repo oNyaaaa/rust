@@ -443,6 +443,10 @@ DEPLOY.SocketsTC = {
         pos = Vector(14, 0, 38),
         ang = Angle(0, 0, 0)
     },
+    keypad = {
+        pos = Vector(14, 0, 38),
+        ang = Angle(0, 0, 0)
+    },
 }
 
 function DEPLOY:GetSocketTC(name)

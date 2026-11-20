@@ -71,7 +71,7 @@ RustOfficial.ITEMS = {
         Craftable = true,
         BluePrint = false,
     },
-    SulfurOre = {
+    Sulfur = {
         name = "Sulfur",
         color = Color(200, 60, 60),
         image = "materials/items/resources/sulfur.png",
@@ -82,7 +82,7 @@ RustOfficial.ITEMS = {
         Craftable = true,
         BluePrint = false,
     },
-    MetalOre = {
+    Metal = {
         name = "Metal Fragments",
         color = Color(200, 60, 60),
         image = "materials/items/resources/metal_fragments.png",
@@ -308,8 +308,8 @@ RustOfficial.ITEMS = {
         Craftable = true,
         BluePrint = false,
     },
-    Sulfur = {
-        name = "Sulfur",
+    SulfurOre = {
+        name = "SulfurOre",
         color = Color(200, 60, 60),
         image = "materials/items/resources/sulfur_ore.png",
         func = function(ply) end,
@@ -319,8 +319,8 @@ RustOfficial.ITEMS = {
         Craftable = true,
         BluePrint = false,
     },
-    Metal = {
-        name = "Metal Ore",
+    MetalOre = {
+        name = "MetalOre",
         color = Color(200, 60, 60),
         image = "materials/items/resources/metal_ore.png",
         func = function(ply) end,
@@ -331,9 +331,20 @@ RustOfficial.ITEMS = {
         BluePrint = false,
     },
     HQMetal = {
-        name = "HQ Metal",
+        name = "HQMetal",
         color = Color(200, 60, 60),
         image = "materials/items/resources/hqmetal.png",
+        func = function(ply) end,
+        weapon = nil,
+        Max = 2000,
+        wModel = "models/environment/misc/loot_bag.mdl",
+        Craftable = true,
+        BluePrint = false,
+    },
+    HQMetalOre = {
+        name = "HQMetalOre",
+        color = Color(200, 60, 60),
+        image = "materials/items/resources/hqmetal_ore.png",
         func = function(ply) end,
         weapon = nil,
         Max = 2000,

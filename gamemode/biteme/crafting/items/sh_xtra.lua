@@ -73,10 +73,10 @@ ITEMS:RegisterItem("Wood", {
     end,
 }, "ADMIN")
 
-ITEMS:RegisterItem("MetalOre", {
+ITEMS:RegisterItem("Metal", {
     Name = "Metal Fragments",
     Info = "For Pickaxes etc",
-    InfoTag = "MetalOre",
+    InfoTag = "Metal",
     Category = "ADMIN",
     model = "materials/items/resources/metal_fragments.png",
     Weapon = "",
@@ -90,7 +90,7 @@ ITEMS:RegisterItem("MetalOre", {
                 Time = 0,
                 CanCraft = false,
                 {
-                    ITEM = "MetalOre",
+                    ITEM = "Metal",
                     AMOUNT = 0,
                 },
             },

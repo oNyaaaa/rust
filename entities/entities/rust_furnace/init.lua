@@ -47,8 +47,8 @@ function ENT:ToggleFurnace(state)
 end
 
 local SMELT = {
-    ["Metal"] = "MetalOre",
-    ["Sulfur"] = "SulfurOre",
+    ["MetalOre"] = "Metal",
+    ["SulfurOre"] = "Sulfur",
     ["HQMetalOre"] = "HQMetal",
 }
 
@@ -161,6 +161,7 @@ net.Receive("gRustFurnaceMove", function(_, ply)
     local slot = slots[idx]
     if mode == "put" then
         local allowed = (kind == "fuel" and FUEL_ITEMS[name]) or (kind == "input" and INPUT_ITEMS[name])
+        print(name)
         if not allowed then return end
         if slot and slot.name ~= name then return end
         local has, amount = CalcItem(ply, name)
@@ -174,7 +175,8 @@ net.Receive("gRustFurnaceMove", function(_, ply)
         if not slot then return end
         local item = RustOfficial.GetItem(slot.name)
         if not item then return end
-        AddItemsToGmodCount(ply, item.name, 100, nil, slot.amount) -- same call shape as your tree code, check the 100
+        print(item.name)
+        AddItemsToGmodCount(ply, slot.name, 100, nil, slot.amount) -- same call shape as your tree code, check the 100
         slots[idx] = nil
     else
         return
