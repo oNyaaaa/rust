@@ -7,9 +7,9 @@ SWEP.Primary.Automatic = true
 SWEP.Primary.ClipSize = 120
 SWEP.Primary.ClipSizeMaxSize = 120
 SWEP.Primary.DefaultClip = 30
-SWEP.Primary.Ammo = "ar2"
+SWEP.Primary.Ammo = "AR2"
 SWEP.Primary.Sound = "weapons/rust_distant/ak74u-attack.mp3"
-SWEP.Primary.NextFire = 0.2
+SWEP.Primary.NextFire = 0.1
 function SWEP:Initialize()
     self:SetHoldType("ar2")
     self.delay = 0
@@ -23,7 +23,6 @@ function SWEP:PrimaryAttack()
     if self.Primary.DefaultClip <= 0 then return end
     if not self:CanPrimaryAttack() then
         self.Reloaded = false
-        self.OldClip = nil
         return
     end
 
@@ -37,7 +36,7 @@ function SWEP:PrimaryAttack()
     bullet.Num = 1
     bullet.Src = pl:GetShootPos()
     bullet.Dir = pl:GetAimVector()
-    bullet.Spread = 0.4
+    bullet.Spread = Vector(0.04, 0.04, 0)
     bullet.Tracer = 3
     bullet.Force = 1
     bullet.Damage = 25

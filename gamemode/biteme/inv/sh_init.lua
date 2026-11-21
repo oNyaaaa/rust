@@ -71,7 +71,7 @@ RustOfficial.ITEMS = {
         image = "materials/items/resources/road_signs.png",
         func = function(ply) end,
         weapon = nil,
-        Max = 2000,
+        Max = 100,
         wModel = "models/items/roadsigns.mdl",
         Craftable = true,
         BluePrint = false,
@@ -82,7 +82,7 @@ RustOfficial.ITEMS = {
         image = "materials/items/resources/metal_pipe.png",
         func = function(ply) end,
         weapon = nil,
-        Max = 2000,
+        Max = 100,
         wModel = "models/items/metalpipe.mdl",
         Craftable = true,
         BluePrint = false,
@@ -665,6 +665,22 @@ RustOfficial.ITEMS = {
         image = "materials/items/weapons/salvaged_cleaver.png",
         func = function(ply) ply:Give("rust_salvagedcleaver") end,
         weapon = "rust_salvagedcleaver",
+        Max = 1,
+        wModel = "models/environment/misc/loot_bag.mdl",
+        Craftable = true,
+        BluePrint = false,
+    },
+    AssaultRifle = {
+        name = "AssaultRifle",
+        color = Color(200, 60, 60),
+        image = "materials/items/weapons/assault_rifle.png",
+        func = function(ply, clips)
+            ply:Give("rust_assaultrifle")
+            ply:SelectWeapon("rust_assaultrifle")
+            local wep = ply:GetActiveWeapon()
+            timer.Simple(0, function() if IsValid(wep) and clips ~= nil then wep:SetClip1(clips) end end)
+        end,
+        weapon = "rust_assaultrifle",
         Max = 1,
         wModel = "models/environment/misc/loot_bag.mdl",
         Craftable = true,

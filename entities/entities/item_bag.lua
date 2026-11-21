@@ -42,9 +42,13 @@ if SERVER then
 		self.Sizez = loot
 	end
 
+	function ENT:SetClipz(num)
+		self.Clipz = num
+	end
+
 	function ENT:Use(btn, ply)
 		local item = RustOfficial.GetItem(self.Item)
-		AddItemsToGmodCount(ply, self.Item, math.random(50, 60), item.weapon, self.Sizez)
+		AddItemsToGmodCount(ply, self.Item, math.random(50, 60), item.weapon, self.Sizez, self.Clipz)
 		self:Remove()
 	end
 

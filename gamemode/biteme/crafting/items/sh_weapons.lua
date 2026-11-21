@@ -91,9 +91,10 @@ ITEMS:RegisterItem("rust_stonespear", {
     end,
 }, "Weapons")
 
-ITEMS:RegisterItem("rust_assaultrifle", {
+ITEMS:RegisterItem("AssaultRifle", {
     Name = "Assault Rifle",
     Info = "Killing/Defending",
+    InfoTag = "AssaultRifle",
     Category = "Weapons",
     model = "materials/items/weapons/assault_rifle.png",
     Weapon = "rust_assaultrifle",

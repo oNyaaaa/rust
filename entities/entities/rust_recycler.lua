@@ -380,7 +380,6 @@ if CLIENT then
 		ToggleButton:DockMargin(Margin, Margin, Margin, Margin)
 		ToggleButton:SetWide(ScrW() * 0.11)
 		ToggleButton.DoClick = function(me)
-			print(ent)
 			net.Start("DockTogglezzz")
 			net.WriteEntity(ent)
 			net.SendToServer()

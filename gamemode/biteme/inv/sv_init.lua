@@ -237,7 +237,7 @@ function AddItemsToGmodeS(ply, name, dur, wep, amount)
     return left < want, left
 end
 
-function AddItemsToGmodCount(ply, name, dur, wep, amount)
+function AddItemsToGmodCount(ply, name, dur, wep, amount, clipz)
     if not IsValid(ply) then return false end
     local cont, slot, existing = FindItem(ply, name)
     if not cont then return false end
@@ -248,7 +248,8 @@ function AddItemsToGmodCount(ply, name, dur, wep, amount)
         if not AddItemsToGmod(ply, cont, slot, name, dur, wep, amount) then return false end
     end
 
-    if wep ~= nil and def and def.func then def.func(ply) end
+    local def = RustOfficial.GetItem(name)
+    if wep ~= nil and def and def.func and clipz ~= nil then def.func(ply, clipz or 0) end
     SendInv(ply)
     return true
 end
@@ -281,6 +282,13 @@ local function DropItem(ply, cont, slot)
     ent:SetItemName(item.id)
     ent:SetSizeItem(item.Count or 1)
     ent:SetPos(ply:GetShootPos() + ply:GetAimVector() * 50)
+    local wep = ply:GetActiveWeapon()
+    if IsValid(wep) then
+        ent:SetClipz(wep:Clip1())
+    else
+        ent:SetClipz(0)
+    end
+
     ent:Spawn()
     ent:Activate()
     SetItem(ply, cont, slot, nil)
