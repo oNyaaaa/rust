@@ -30,3 +30,19 @@ function GRUST_GHOST:ReleaseGhostEntity()
         self.GhostEntity = nil
     end
 end
+
+hook.Add("HUDPaint", "ConfigureGRust", function()
+    local ent = LocalPlayer():GetEyeTrace().Entity
+    if not (IsValid(ent) and ent.GetHealthz) then return end
+    local mins, maxs = ent:WorldSpaceAABB()
+    local topPos = Vector((mins.x + maxs.x) / 2, (mins.y + maxs.y) / 2, maxs.z + 5)
+    local scr = topPos:ToScreen()
+    if not scr.visible then return end
+    local hp = ent:GetHealthz()
+    local maxHp = 100 -- change to the entity's real max health
+    local w, h = 100, 8
+    local frac = math.Clamp(hp / maxHp, 0, 1)
+    if hp >= 100 then return end
+    draw.RoundedBox(0, scr.x - w / 2, scr.y, w, h, Color(0, 0, 0, 180))
+    draw.RoundedBox(0, scr.x - w / 2, scr.y, w * frac, h, Color(255, 255, 255))
+end)

@@ -38,6 +38,7 @@ if SERVER then
     }
 
     net.Receive("GarageDoorPlaceL", function(len, ply)
+        if ply.CanBuild then return end
         local bang = net.ReadString()
         local pos, ang, name = DEPLOY:GetSocket(ply, bang)
         if name ~= "doorwayl" and IDS[bang] == "GarageDoor" then return end
@@ -61,6 +62,28 @@ RustOfficial.ITEMS = {
         weapon = "rust_rock",
         Max = 1,
         wModel = "models/weapons/darky_m/rust/w_rock.mdl",
+        Craftable = true,
+        BluePrint = false,
+    },
+    RoadSign = {
+        name = "RoadSign",
+        color = Color(200, 60, 60),
+        image = "materials/items/resources/road_signs.png",
+        func = function(ply) end,
+        weapon = nil,
+        Max = 2000,
+        wModel = "models/items/roadsigns.mdl",
+        Craftable = true,
+        BluePrint = false,
+    },
+    MetalPipe = {
+        name = "MetalPipe",
+        color = Color(200, 60, 60),
+        image = "materials/items/resources/metal_pipe.png",
+        func = function(ply) end,
+        weapon = nil,
+        Max = 2000,
+        wModel = "models/items/metalpipe.mdl",
         Craftable = true,
         BluePrint = false,
     },

@@ -1,21 +1,24 @@
 AddCSLuaFile()
-
-ENT.Base      = "base_anim"
-ENT.Type      = "anim"
+ENT.Base = "base_anim"
+ENT.Type = "anim"
 ENT.PrintName = "Tool Cupboard"
-ENT.Radius    = 625
+ENT.Radius = 625
 ENT.Models = "models/deployable/tool_cupboard.mdl"
+function ENT:SetupDataTables()
+    self:NetworkVar("Float", 0, "Healthz")
+    self:NetworkVar("Float", 1, "MaxHealthz")
+end
+
 if SERVER then
     util.AddNetworkString("TC_rust_Authorize")
     util.AddNetworkString("TC_rust_Authorize_Snd")
-
     function ENT:Initialize()
         self:SetModel("models/deployable/tool_cupboard.mdl")
         self:PhysicsInitStatic(SOLID_VPHYSICS)
         self:SetMoveType(MOVETYPE_VPHYSICS)
         self:SetSolid(SOLID_VPHYSICS)
         self:SetUseType(SIMPLE_USE)
-
+        self:SetHealthz(1000)
         self.Authorized = {}
         self.IsRustCupboard = true
         self.Viewers = {}
@@ -23,6 +26,15 @@ if SERVER then
         self.Cost = {}
         RustCupboard.Init(self)
         self.NextUpkeep = CurTime() + RustCupboard.UpkeepTick
+    end
+
+    function ENT:OnTakeDamage(dmg)
+        self:SetHealthz(self:GetHealthz() - dmg:GetDamage())
+        if self:GetHealthz() <= 0 then
+            table.Empty(self.Authorized)
+            table.Empty(self.Viewers)
+            self:Remove()
+        end
     end
 
     function ENT:Use(activator)
@@ -42,11 +54,10 @@ if SERVER then
             self:NextThink(CurTime() + 1)
             return true
         end
-        self.NextUpkeep = CurTime() + RustCupboard.UpkeepTick
 
+        self.NextUpkeep = CurTime() + RustCupboard.UpkeepTick
         -- recalculate the cost from the pieces around the cupboard
         RustCupboard.Refresh(self)
-
         -- each tick consumes tick/86400 of the 24h cost
         local frac = RustCupboard.UpkeepTick / 86400
         for _, c in ipairs(self.Cost) do
@@ -59,10 +70,13 @@ if SERVER then
         local protected = RustCupboard.ProtectedSeconds(self) > 0
         self:SetNWBool("Decaying", not protected)
         if not protected then hook.Run("RustCupboardDecay", self) end
-
         -- refresh anyone who has it open
         for ply in pairs(self.Viewers) do
-            if IsValid(ply) then SendCupboard(ply, self) else self.Viewers[ply] = nil end
+            if IsValid(ply) then
+                SendCupboard(ply, self)
+            else
+                self.Viewers[ply] = nil
+            end
         end
 
         self:NextThink(CurTime() + 1)

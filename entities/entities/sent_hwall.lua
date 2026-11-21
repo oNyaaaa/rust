@@ -34,7 +34,6 @@ if SERVER then
 		self:DrawShadow()
 		self.SpawnTime = 0
 		self.EntCount = 0
-		self:SetNWInt("health_" .. self:GetClass(), self.Ent_Health)
 	end
 
 	function ENT:SpawnFunction(ply, tr)
@@ -82,7 +81,7 @@ if CLIENT then
 	function ENT:Draw(flags)
 		-- Draw the model
 		self:DrawModel(flags)
-		local WALL_LENGTH = 137.78 + 14-- match your DEPLOY.ClassDist entry for the wall class
+		local WALL_LENGTH = 137.78 + 14 -- match your DEPLOY.ClassDist entry for the wall class
 		local mins, maxs = self:OBBMins(), self:OBBMaxs()
 		local sx, sy = maxs.x - mins.x, maxs.y - mins.y
 		local len = math.max(sx, sy)
@@ -100,5 +99,7 @@ if CLIENT then
 			m:Translate(-pivot)
 			self:EnableMatrix("RenderMultiply", m)
 		end
+
+		
 	end
 end

@@ -15,15 +15,38 @@ function AddTurret(ent, pos, ang, shelt)
     return entz
 end
 
-function ENT:Initialize()
-    if CLIENT then return end
-    self:SetModel("models/deployable/turret_base.mdl")
-    self:PhysicsInitStatic(SOLID_VPHYSICS)
-    self:SetMoveType(MOVETYPE_VPHYSICS)
-    self:SetSolid(SOLID_VPHYSICS)
-    self:SetUseType(SIMPLE_USE)
-    self.yaw_pos = AddTurret(self, self:GetPos() + Vector(0, 0, 30), Angle(0, 0, 0), "rust_yaw_turret")
-    self.pitch = AddTurret(self.yaw_pos, self:GetPos() + Vector(0, 0, 35), Angle(0, 0, 0), "rust_pitch_turret")
+function ENT:SetupDataTables()
+    self:NetworkVar("Float", 0, "Healthz")
+    self:NetworkVar("Float", 1, "MaxHealthz")
+end
+
+if SERVER then
+    function ENT:Initialize()
+        self:SetModel("models/deployable/turret_base.mdl")
+        self:PhysicsInitStatic(SOLID_VPHYSICS)
+        self:SetMoveType(MOVETYPE_VPHYSICS)
+        self:SetSolid(SOLID_VPHYSICS)
+        self:SetUseType(SIMPLE_USE)
+        self.yaw_pos = AddTurret(self, self:GetPos() + Vector(0, 0, 30), Angle(0, 0, 0), "rust_yaw_turret")
+        self.pitch = AddTurret(self.yaw_pos, self:GetPos() + Vector(0, 0, 35), Angle(0, 0, 0), "rust_pitch_turret")
+        --local FOUNDATION_WIDTH = 145.78 -- from your foundation's OBB
+        --local mins, maxs = self:OBBMins(), self:OBBMaxs()
+        --local length = math.max(maxs.x - mins.x, maxs.y - mins.y)
+        --if length > 0 then self:SetModelScale(FOUNDATION_WIDTH / length, 0) end
+        self:SetHealthz(100)
+        self.Ent_Health = 25
+        self.Ent_HealthMax = 25
+        --self:SetMaterial("Model/effects/vol_light001")
+        self:DrawShadow()
+        self.SpawnTime = 0
+        self.EntCount = 0
+        self:DropToFloor()
+    end
+
+    function ENT:OnTakeDamage(dmg)
+        self:SetHealthz(self:GetHealthz() - dmg:GetDamage())
+        if self:GetHealthz() <= 0 then self:Remove() end
+    end
 end
 
 function FindTarget(ent)

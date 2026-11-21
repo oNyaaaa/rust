@@ -6,25 +6,40 @@ ENT.Category = ""
 ENT.Spawnable = true
 ENT.AdminOnly = false
 ENT.Models = "models/building/twig_lst.mdl"
+function ENT:SetupDataTables()
+	self:NetworkVar("Float", 0, "Healthz")
+	self:NetworkVar("Float", 1, "MaxHealthz")
+end
+
 if SERVER then
 	function ENT:Initialize()
-		self.Entity:SetModel("models/building/twig_lst.mdl")
+		self.Entity:SetModel(self.Models)
 		self:PhysicsInitStatic(SOLID_VPHYSICS)
 		self:SetMoveType(MOVETYPE_NONE)
 		self:SetSolid(SOLID_VPHYSICS)
 		local phys = self:GetPhysicsObject()
 		if phys:IsValid() then
 			phys:Wake()
-			phys:EnableMotion(false)
+			--phys:EnableMotion(false)
 		end
 
-		self.Ent_Health = 5000
-		self.Ent_HealthMax = 5000
+		--local FOUNDATION_WIDTH = 145.78 -- from your foundation's OBB
+		--local mins, maxs = self:OBBMins(), self:OBBMaxs()
+		--local length = math.max(maxs.x - mins.x, maxs.y - mins.y)
+		--if length > 0 then self:SetModelScale(FOUNDATION_WIDTH / length, 0) end
+		self:SetHealthz(100)
+		self.Ent_Health = 25
+		self.Ent_HealthMax = 25
 		--self:SetMaterial("Model/effects/vol_light001")
 		self:DrawShadow()
 		self.SpawnTime = 0
 		self.EntCount = 0
-		self:SetNWInt("health_" .. self:GetClass(), self.Ent_Health)
+		self:DropToFloor()
+	end
+
+	function ENT:OnTakeDamage(dmg)
+		self:SetHealthz(self:GetHealthz() - dmg:GetDamage())
+		if self:GetHealthz() <= 0 then self:Remove() end
 	end
 
 	function ENT:SpawnFunction(ply, tr)
@@ -37,16 +52,6 @@ if SERVER then
 	end
 
 	function ENT:Think()
-	end
-
-	function ENT:OnTakeDamage(dmg)
-		local ply = dmg:GetAttacker()
-		local inflictor = dmg:GetInflictor()
-		if type(inflictor) == "Entity" then return end
-		if self.PropOwned ~= ply then return end
-		self.Ent_Health = self.Ent_Health - dmg:GetDamage()
-		if self.Ent_Health <= 0 then self:Remove() end
-		self:SetNWInt("health_" .. self:GetClass(), self.Ent_Health)
 	end
 
 	function ENT:Use(btn, ply)

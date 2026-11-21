@@ -30,7 +30,6 @@ if SERVER then
         self.SpawnTime = 0
         self.EntCount = 0
         self.DoorOpen = false
-        self:SetNWInt("health_" .. self:GetClass(), self.Ent_Health)
     end
 
     --[[ function ENT:SpawnFunction( ply, tr )

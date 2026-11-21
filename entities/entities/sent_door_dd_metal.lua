@@ -6,6 +6,11 @@ ENT.Category = ""
 ENT.Spawnable = true
 ENT.AdminOnly = false
 ENT.Models = "models/deployable/metal_double_door.mdl"
+function ENT:SetupDataTables()
+	self:NetworkVar("Float", 0, "Healthz")
+	self:NetworkVar("Float", 1, "MaxHealthz")
+end
+
 if SERVER then
 	function ENT:Initialize()
 		self:SetModel("models/deployable/metal_double_door.mdl")
@@ -28,6 +33,7 @@ if SERVER then
 		self.RghtDoor:SetParent(self)
 		--constraint.Weld(self, Entity(0), 0, 0, 0, true, true)
 		self.Ent_Health = 2500
+		self:SetHealthz(2000)
 		self.Ent_HealthMax = 100
 		--self:SetMaterial("Model/effects/vol_light001")
 		self:DrawShadow()
@@ -71,13 +77,8 @@ end ]]
 	end
 
 	function ENT:OnTakeDamage(dmg)
-		local ply = dmg:GetAttacker()
-		local inflictor = dmg:GetInflictor()
-		--if type(inflictor) == "Entity" then return end
-		--if self.PropOwned != ply then return end
-		self.Ent_Health = self.Ent_Health - dmg:GetDamage()
-		if self.Ent_Health <= 0 then self:Remove() end
-		self:SetNWInt("health_" .. self:GetClass(), self.Ent_Health)
+		self:SetHealthz(self:GetHealthz() - dmg:GetDamage())
+		if self:GetHealthz() <= 0 then self:Remove() end
 	end
 
 	function ENT:Use(btn, ply)
