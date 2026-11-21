@@ -330,8 +330,8 @@ net.Receive("grust_MoveItem", function(_, ply)
 
     if not toCont or not ValidSlot(toCont, to) then return end
     if fromCont == toCont and from == to then return end
+    if toCont == "Inventory" then ply:SelectWeapon("rust_hands") end
     local b = GetItem(ply, toCont, to)
-    -- Stack same items.
     if b and a.id == b.id then
         local def = RustOfficial.GetItem(a.id)
         local max = def and (def.Max or 1) or 1
@@ -562,6 +562,7 @@ hook.Add("PlayerSpawn", "sendinv", function(ply)
         ply:SetPos(saved[2])
         ply:SetEyeAngles(saved[1])
     end
+
     ply:SetJumpPower(200)
 end)
 

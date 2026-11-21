@@ -8,7 +8,7 @@ ENT.Models = "models/deployable/bed.mdl"
 function ENT:Initialize()
     if CLIENT then return end
     self:SetModel("models/deployable/bed.mdl")
-    self:PhysicsInit(SOLID_VPHYSICS)
+    self:PhysicsInitStatic(SOLID_VPHYSICS)
     self:SetMoveType(MOVETYPE_NONE)
     self:SetSolid(SOLID_VPHYSICS)
     self:SetUseType(SIMPLE_USE)

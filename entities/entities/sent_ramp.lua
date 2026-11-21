@@ -9,7 +9,7 @@ ENT.Models = "models/vasey/wood_house/wood_ramp.mdl"
 if SERVER then
 	function ENT:Initialize()
 		self.Entity:SetModel("models/vasey/wood_house/wood_ramp.mdl")
-		self:PhysicsInit(SOLID_VPHYSICS)
+		self:PhysicsInitStatic(SOLID_VPHYSICS)
 		self:SetMoveType(MOVETYPE_VPHYSICS)
 		self:SetSolid(SOLID_VPHYSICS)
 		local phys = self:GetPhysicsObject()

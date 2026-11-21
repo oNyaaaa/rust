@@ -34,6 +34,7 @@ DEPLOY.AllowedOn = {
     },
     sent_doorwayl = {
         sent_garagedoor = true,
+        sent_shopfront = true,
         sent_doorwayl = false,
         sent_wall = false,
         sent_arm_door = true,
@@ -47,6 +48,8 @@ DEPLOY.AllowedOn = {
     sent_window = {
         sent_windowbars = true,
         sent_windowglass = true,
+        sent_embrasureh = true,
+        sent_vembrasureh = true,
     }
 }
 
@@ -60,6 +63,7 @@ DEPLOY.ClassDist = {
     sent_stairs = 0,
     sent_ceiling = 0,
     sent_garagedoor = 72.9,
+    sent_shopfront = 72.9,
     sent_doorwayl = 72.9,
     sent_door_dd_metal = 72.9,
     sent_door_dd_wood = 72.9,
@@ -67,6 +71,8 @@ DEPLOY.ClassDist = {
     sent_window = 72.9,
     sent_windowbars = 72.9,
     sent_windowglass = 72.9,
+    sent_embrasureh = 72.9,
+    sent_vembrasureh = 72.9,
 }
 
 DEPLOY.DefaultDist = 72.9
@@ -81,7 +87,8 @@ DEPLOY.ClassRot = {
     sent_doorway = 90,
     sent_stairs = 90,
     sent_ceiling = 0,
-    sent_garagedoor = 0,
+    sent_garagedoor = 90,
+    sent_shopfront = 90,
     sent_doorwayl = 90,
     sent_door_dd_metal = 90,
     sent_door_dd_wood = 90,
@@ -89,6 +96,8 @@ DEPLOY.ClassRot = {
     sent_window = 90,
     sent_windowbars = 90,
     sent_windowglass = 90,
+    sent_embrasureh = 90,
+    sent_vembrasureh = 90,
 }
 
 -- false = keep the foundation's own yaw instead of facing the edge
@@ -109,6 +118,7 @@ DEPLOY.ClassZ = {
     sent_stairs = 0,
     sent_ceiling = 0,
     sent_garagedoor = 0,
+    sent_shopfront = 0,
     sent_doorwayl = 0,
     sent_door_dd_metal = 0,
     sent_door_dd_wood = 0,
@@ -117,6 +127,8 @@ DEPLOY.ClassZ = {
     sent_window = 0,
     sent_windowbars = 0,
     sent_windowglass = 0,
+    sent_embrasureh = 42,
+    sent_vembrasureh = 42,
 }
 
 local EDGES = {
@@ -146,6 +158,7 @@ DEPLOY.CeilingZ = {
     sent_doorway = 0,
     sent_ceiling = 128,
     sent_garagedoor = 0,
+    sent_shopfront = 0,
     sent_doorwayl = 0,
     sent_hwall = 0,
     sent_door_dd_metal = 0,
@@ -382,6 +395,7 @@ DEPLOY.SkipUpper = {
     sent_doorway = true,
     sent_doorwayl = true,
     sent_garagedoor = true,
+    sent_shopfront = true,
     sent_hwall = false,
     rust_keylock = true,
     rust_keypad = true,
@@ -401,6 +415,7 @@ DEPLOY.GroundTolerance = 8
 local IDS = {
     ["rust_furnace"] = "rust_furnace",
     ["sent_garagedoor"] = "sent_garagedoor",
+    ["sent_shopfront"] = "sent_shopfront",
     ["sent_door_dd_metal"] = "sent_door_dd_metal",
     ["sent_door_dd_wood"] = "sent_door_dd_wood",
     ["sent_door_dd_hq"] = "sent_door_dd_hq",
@@ -508,7 +523,14 @@ function DEPLOY:GetSocket(ply, class)
     if class == "sent_garagedoor" then
         local door = self:GetDoorwayL(ply)
         if not IsValid(door) then return fallbackPos, fallbackAng, "none", tr.Entity end
-        local pos, ang = LocalToWorld(self.GarageOffset, Angle(0, 90, 0), door:GetPos(), door:GetAngles())
+        local pos, ang = LocalToWorld(self.GarageOffset, Angle(0, 0, 0), door:GetPos(), door:GetAngles())
+        return pos, ang, "doorwayl", tr.Entity
+    end
+
+    if class == "sent_shopfront" then
+        local door = self:GetDoorwayL(ply)
+        if not IsValid(door) then return fallbackPos, fallbackAng, "none", tr.Entity end
+        local pos, ang = LocalToWorld(self.GarageOffset, Angle(0, 0, 0), door:GetPos(), door:GetAngles())
         return pos, ang, "doorwayl", tr.Entity
     end
 

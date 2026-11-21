@@ -14,7 +14,7 @@ end
 if SERVER then
 	function ENT:Initialize()
 		self.Entity:SetModel("models/deployable/wooden_door.mdl")
-		self:PhysicsInit(SOLID_VPHYSICS)
+		self:PhysicsInitStatic(SOLID_VPHYSICS)
 		self:SetMoveType(MOVETYPE_VPHYSICS)
 		self:SetSolid(SOLID_VPHYSICS)
 		local phys = self:GetPhysicsObject()

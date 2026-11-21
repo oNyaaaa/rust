@@ -9,7 +9,7 @@ if SERVER then
 		-- default model until we set proper model from item data
 		local defmodel = "models/environment/misc/loot_bag.mdl"
 		self:SetModel(defmodel)
-		self:PhysicsInit(SOLID_VPHYSICS)
+		self:PhysicsInitStatic(SOLID_VPHYSICS)
 		self:SetMoveType(MOVETYPE_VPHYSICS)
 		self:SetSolid(SOLID_VPHYSICS)
 		local phys = self:GetPhysicsObject()

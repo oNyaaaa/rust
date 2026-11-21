@@ -423,15 +423,16 @@ ITEMS:RegisterItem("WindowGlass", {
     end,
 }, "Construction")
 
-ITEMS:RegisterItem("rust_deploy_embrasureh", {
+ITEMS:RegisterItem("Embrasureh", {
     Name = "Metal Horizontal Embrasure",
     Info = "For windows",
+    InfoTag = "Embrasureh",
     Category = "Construction",
     model = "materials/items/deployable/metal_horizontal_embrasure.png",
-    Weapon = "rust_deploy_embrasureh",
+    Weapon = nil,
     Count = 50,
     Stackable = true,
-    StackSize = 150,
+    StackSize = 1,
     IzAdmin = true,
     Craft = function()
         return {
@@ -447,15 +448,16 @@ ITEMS:RegisterItem("rust_deploy_embrasureh", {
     end,
 }, "Construction")
 
-ITEMS:RegisterItem("rust_deploy_v_embrasureh", {
+ITEMS:RegisterItem("vEmbrasureh", {
     Name = "Metal Vertical Embrasure",
     Info = "For windows",
+    InfoTag = "vEmbrasureh",
     Category = "Construction",
     model = "materials/items/deployable/metal_vertical_embrasure.png",
     Weapon = "rust_deploy_v_embrasureh",
     Count = 50,
     Stackable = true,
-    StackSize = 150,
+    StackSize = 1,
     IzAdmin = true,
     Craft = function()
         return {
@@ -471,15 +473,16 @@ ITEMS:RegisterItem("rust_deploy_v_embrasureh", {
     end,
 }, "Construction")
 
-ITEMS:RegisterItem("rust_deploy_metal_sf", {
+ITEMS:RegisterItem("ShopFront", {
     Name = "Metal Shop Front",
     Info = "For windows",
+    InfoTag = "ShopFront",
     Category = "Construction",
     model = "materials/items/deployable/metal_shop_front.png",
-    Weapon = "rust_deploy_metal_sf",
+    Weapon = nil,
     Count = 50,
     Stackable = true,
-    StackSize = 150,
+    StackSize = 1,
     IzAdmin = true,
     Craft = function()
         return {

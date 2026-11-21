@@ -9,7 +9,7 @@ ENT.Models = "models/environment/misc/loot_bag.mdl"
 if SERVER then
 	function ENT:Initialize()
 		self:SetModel(self.Models)
-		self:PhysicsInit(SOLID_VPHYSICS)
+		self:PhysicsInitStatic(SOLID_VPHYSICS)
 		self:SetMoveType(MOVETYPE_VPHYSICS)
 		self:SetSolid(SOLID_VPHYSICS)
 		local phys = self:GetPhysicsObject()

@@ -8,7 +8,7 @@ ENT.Models = "models/building_re/twig_wind.mdl"
 function ENT:Initialize()
     if CLIENT then return end
     self:SetModel("models/building_re/twig_wind.mdl")
-    self:PhysicsInit(SOLID_VPHYSICS)
+    self:PhysicsInitStatic(SOLID_VPHYSICS)
     self:SetMoveType(MOVETYPE_NONE)
     self:SetSolid(SOLID_VPHYSICS)
     self:SetHealth(500)

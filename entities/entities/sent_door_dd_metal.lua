@@ -9,7 +9,7 @@ ENT.Models = "models/deployable/metal_double_door.mdl"
 if SERVER then
 	function ENT:Initialize()
 		self:SetModel("models/deployable/metal_double_door.mdl")
-		self:PhysicsInit(SOLID_VPHYSICS)
+		self:PhysicsInitStatic(SOLID_VPHYSICS)
 		self:SetMoveType(MOVETYPE_NONE)
 		self:SetSolid(SOLID_VPHYSICS)
 		local phys = self:GetPhysicsObject()

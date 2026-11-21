@@ -9,7 +9,7 @@ ENT.CodeLockable = true
 if SERVER then
 	function ENT:Initialize()
 		self:SetModel("models/darky_m/rust/armored_door_l.mdl")
-		self:PhysicsInit(SOLID_VPHYSICS)
+		self:PhysicsInitStatic(SOLID_VPHYSICS)
 		self:SetMoveType(MOVETYPE_NONE)
 		self:SetSolid(SOLID_VPHYSICS)
 		local phys = self:GetPhysicsObject()

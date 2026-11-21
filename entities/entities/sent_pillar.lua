@@ -9,7 +9,7 @@ ENT.Models = "models/galaxy/rust/wood_pillar.mdl"
 if SERVER then
 	function ENT:Initialize()
 		self.Entity:SetModel("models/galaxy/rust/wood_pillar.mdl")
-		self:PhysicsInit(SOLID_VPHYSICS)
+		self:PhysicsInitStatic(SOLID_VPHYSICS)
 		self:SetMoveType(MOVETYPE_VPHYSICS)
 		self:SetSolid(SOLID_VPHYSICS)
 		local phys = self:GetPhysicsObject()

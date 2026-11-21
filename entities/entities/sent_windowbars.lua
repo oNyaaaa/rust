@@ -8,7 +8,7 @@ ENT.Models = "models/darky_m/rust/woodenbars.mdl"
 function ENT:Initialize()
     if CLIENT then return end
     self:SetModel("models/darky_m/rust/woodenbars.mdl")
-    self:PhysicsInit(SOLID_VPHYSICS)
+    self:PhysicsInitStatic(SOLID_VPHYSICS)
     self:SetMoveType(MOVETYPE_NONE)
     self:SetSolid(SOLID_VPHYSICS)
     self:SetUseType(SIMPLE_USE)
@@ -18,6 +18,12 @@ end
 
 function ENT:Think()
     if CLIENT then return end
+    local doors = 0
+    for k, v in pairs(ents.FindInSphere(self:GetPos(), 30)) do
+        if v:GetClass() == "sent_window" then doors = doors + 1 end
+    end
+
+    if doors <= 0 then self:Remove() end
 end
 
 if CLIENT then

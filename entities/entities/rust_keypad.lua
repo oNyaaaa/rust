@@ -15,7 +15,7 @@ if SERVER then
     util.AddNetworkString("CodeLock_Result")
     function ENT:Initialize()
         self:SetModel(self.Model)
-        self:PhysicsInit(SOLID_VPHYSICS)
+        self:PhysicsInitStatic(SOLID_VPHYSICS)
         self:SetMoveType(MOVETYPE_NONE)
         self:SetUseType(SIMPLE_USE)
         self.Code, self.GuestCode = nil, nil

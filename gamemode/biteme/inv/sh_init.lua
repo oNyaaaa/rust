@@ -32,12 +32,16 @@ if SERVER then
         ["sent_bed"] = "Bed",
         ["sent_windowbars"] = "WindowBars",
         ["sent_windowglass"] = "WindowGlass",
+        ["sent_embrasureh"] = "Embrasureh",
+        ["sent_vembrasureh"] = "vEmbrasureh",
+        ["sent_shopfront"] = "ShopFront",
     }
 
     net.Receive("GarageDoorPlaceL", function(len, ply)
         local bang = net.ReadString()
         local pos, ang, name = DEPLOY:GetSocket(ply, bang)
         if name ~= "doorwayl" and IDS[bang] == "GarageDoor" then return end
+        if name ~= "doorwayl" and IDS[bang] == "ShopFront" then return end
         if name ~= "doorwayl" and IDS[bang] == "DoubleDoorMetal" then return end
         if name ~= "doorwayl" and IDS[bang] == "DoubleDoorWood" then return end
         if name ~= "doorwayl" and IDS[bang] == "Arm_Double_Door" then return end
@@ -133,6 +137,63 @@ RustOfficial.ITEMS = {
                 net.Start("SendClientinfoGDL")
                 net.WriteBool(true)
                 net.WriteString("sent_windowglass")
+                net.Send(ply)
+            end
+        end,
+        weapon = nil,
+        Max = 1,
+        wModel = "models/environment/misc/loot_bag.mdl",
+        Craftable = true,
+        BluePrint = true,
+    },
+    ShopFront = {
+        name = "Metal Shop Front",
+        color = Color(200, 60, 60),
+        image = "materials/items/deployable/metal_shop_front.png",
+        func = function(ply)
+            if SERVER then
+                ply.SelectedGarageDoor = nil
+                net.Start("SendClientinfoGDL")
+                net.WriteBool(true)
+                net.WriteString("sent_shopfront")
+                net.Send(ply)
+            end
+        end,
+        weapon = nil,
+        Max = 1,
+        wModel = "models/environment/misc/loot_bag.mdl",
+        Craftable = true,
+        BluePrint = true,
+    },
+    vEmbrasureh = {
+        name = "Metal Vertical Embrasure",
+        color = Color(200, 60, 60),
+        image = "materials/items/deployable/metal_horizontal_embrasure.png",
+        func = function(ply)
+            if SERVER then
+                ply.SelectedGarageDoor = nil
+                net.Start("SendClientinfoGDL")
+                net.WriteBool(true)
+                net.WriteString("sent_vembrasureh")
+                net.Send(ply)
+            end
+        end,
+        weapon = nil,
+        Max = 1,
+        wModel = "models/environment/misc/loot_bag.mdl",
+        Craftable = true,
+        BluePrint = true,
+    },
+    Embrasureh = {
+        name = "Metal Horizontal Embrasure",
+        color = Color(200, 60, 60),
+        image = "materials/items/deployable/metal_horizontal_embrasure.png",
+        func = function(ply)
+            if SERVER then
+                ply.SelectedGarageDoor = nil
+                net.Start("SendClientinfoGDL")
+                net.WriteBool(true)
+                net.WriteString("sent_embrasureh")
                 net.Send(ply)
             end
         end,
