@@ -24,9 +24,10 @@ ITEMS:RegisterItem("Furnace", {
     end,
 }, "Items")
 
-ITEMS:RegisterItem("rust_deploy_smalloil", {
+ITEMS:RegisterItem("SmallOilRifinary", {
     Name = "Small Oil Refinery",
     Info = "Small Oil Refinery refine lowgrade fuel!",
+    InfoTag = "SmallOilRifinary",
     Category = "Items",
     model = "materials/items/deployable/small_oil_refinery.png",
     Weapon = "rust_deploy_smalloil",
@@ -49,12 +50,13 @@ ITEMS:RegisterItem("rust_deploy_smalloil", {
     end,
 }, "Items")
 
-ITEMS:RegisterItem("rust_deploy_large_bx", {
+ITEMS:RegisterItem("LargeBox", {
     Name = "Large Wood Box",
     Info = "Storage",
+    InfoTag = "LargeBox",
     Category = "Items",
     model = "materials/items/deployable/large_wood_box.png",
-    Weapon = "rust_deploy_large_bx",
+    Weapon = nil,
     Count = 1,
     Craft = function()
         return {

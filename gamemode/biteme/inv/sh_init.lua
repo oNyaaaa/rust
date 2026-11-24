@@ -35,6 +35,8 @@ if SERVER then
         ["sent_embrasureh"] = "Embrasureh",
         ["sent_vembrasureh"] = "vEmbrasureh",
         ["sent_shopfront"] = "ShopFront",
+        ["sent_auto_turret"] = "Turret",
+        ["rust_largebox"] = "LargeBox",
     }
 
     net.Receive("GarageDoorPlaceL", function(len, ply)
@@ -626,10 +628,78 @@ RustOfficial.ITEMS = {
         Craftable = true,
         BluePrint = false,
     },
+    Turret = {
+        name = "Turret",
+        color = Color(200, 60, 60),
+        image = "materials/items/deployable/auto_turret.png",
+        func = function(ply)
+            if SERVER then
+                ply.SelectedGarageDoor = nil
+                net.Start("SendClientinfoGDL")
+                net.WriteBool(true)
+                net.WriteString("sent_auto_turret")
+                net.Send(ply)
+            end
+        end,
+        weapon = nil,
+        Max = 1,
+        wModel = "models/environment/misc/loot_bag.mdl",
+        Craftable = true,
+        BluePrint = false,
+    },
+    SmallOilRifinary = {
+        name = "SmallOilRifinary",
+        color = Color(200, 60, 60),
+        image = "materials/items/deployable/small_oil_refinery.png",
+        func = function(ply)
+            if SERVER then
+                ply.SelectedGarageDoor = nil
+                net.Start("SendClientinfoGDL")
+                net.WriteBool(true)
+                net.WriteString("rust_oilrefinary")
+                net.Send(ply)
+            end
+        end,
+        weapon = nil,
+        Max = 1,
+        wModel = "models/environment/misc/loot_bag.mdl",
+        Craftable = true,
+        BluePrint = false,
+    },
+    LargeBox = {
+        name = "LargeBox",
+        color = Color(200, 60, 60),
+        image = "materials/items/deployable/large_wood_box.png",
+        func = function(ply)
+            if SERVER then
+                ply.SelectedGarageDoor = nil
+                net.Start("SendClientinfoGDL")
+                net.WriteBool(true)
+                net.WriteString("rust_largebox")
+                net.Send(ply)
+            end
+        end,
+        weapon = nil,
+        Max = 1,
+        wModel = "models/environment/misc/loot_bag.mdl",
+        Craftable = true,
+        BluePrint = false,
+    },
     LowGradeFueld = {
-        name = "Low Grade fuel",
+        name = "LowGradeFuel",
         color = Color(200, 60, 60),
         image = "materials/items/resources/low_grade_fuel.png",
+        func = function(ply) end,
+        weapon = nil,
+        Max = 150,
+        wModel = "models/environment/misc/loot_bag.mdl",
+        Craftable = true,
+        BluePrint = false,
+    },
+    Crude = {
+        name = "Crude",
+        color = Color(200, 60, 60),
+        image = "materials/items/resources/crude_oil.png",
         func = function(ply) end,
         weapon = nil,
         Max = 150,

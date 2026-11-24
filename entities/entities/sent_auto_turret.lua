@@ -4,6 +4,7 @@ ENT.Type = "anim"
 ENT.PrintName = "Turret"
 ENT.Radius = 360
 ENT.Idle = true
+ENT.Models = "models/deployable/turret_base.mdl"
 function AddTurret(ent, pos, ang, shelt)
     if CLIENT then return end
     local entz = ents.Create(shelt)
@@ -49,12 +50,13 @@ if SERVER then
     end
 end
 
-function FindTarget(ent)
+function FindTarget(ent,ply)
     local targ = NULL
     for k, v in pairs(player.GetAll()) do
         local distance = v:GetPos():Distance(ent:GetPos())
         if v == ent then continue end
         if ent.Owners == v then continue end
+        if not v:Alive() then continue end
         if distance >= 0 then targ = v end
     end
     return targ
@@ -62,21 +64,21 @@ end
 
 function ENT:Think()
     if CLIENT then return end
-    local target = FindTarget(self)
+    local target = FindTarget(self,ply)
     if target == NULL then
         self.yaw_pos:SetAngles(Angle(0, math.sin(CurTime() * 0.5) * 90, 0))
         self.pitch:SetAngles(Angle(math.sin(CurTime() * 0.5) * 1, math.sin(CurTime() * 0.5) * 90, 0))
     elseif target and IsValid(target) then
         self.yaw_pos:SetAngles((self:GetPos() - target:GetPos()):Angle())
         self.pitch:SetAngles((self:GetPos() - target:GetPos()):Angle())
-        --[[local bullet = {}
+       local bullet = {}
         bullet.Num = 1
         bullet.Src = self:GetPos() + Vector(0, 0, 30)
         bullet.Dir = target:GetPos() - self:GetPos()
         bullet.Spread = Vector(0.01, 0.01, 0)
         bullet.Tracer = 1
         bullet.Force = 2
-        bullet.Damage = 0
-        self:FireBullets(bullet)]]
+        bullet.Damage = 13
+        self:FireBullets(bullet)
     end
 end

@@ -1,12 +1,13 @@
-ITEMS:RegisterItem("rust_deploy_auto_turret", {
+ITEMS:RegisterItem("Turret", {
     Name = "Auto Turret",
     Info = "Auto Turret to kill enemies",
+    InfoTag = "Turret",
     Category = "Electrical",
     model = "materials/items/deployable/auto_turret.png",
-    Weapon = "rust_deploy_auto_turret",
+    Weapon = nil,
     Count = 50,
     Stackable = true,
-    StackSize = 150,
+    StackSize = 1,
     IzAdmin = true,
     Craft = function()
         return {

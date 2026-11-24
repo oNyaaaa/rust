@@ -261,10 +261,7 @@ local function SlotAtCursor(grid)
     end
 end
 
--- =========================================================
--- Scoreboard inventory
--- =========================================================
-hook.Add("ScoreboardShow", "Scoreboard_Open", function()
+function OpenInventory()
     if IsValid(GRUST_TEST) then GRUST_TEST:Remove() end
     local bg = vgui.Create("DPanel")
     if not IsValid(bg) then return true end
@@ -345,6 +342,13 @@ hook.Add("ScoreboardShow", "Scoreboard_Open", function()
 
     net.Start("grust_RequestInv")
     net.SendToServer()
+end
+
+-- =========================================================
+-- Scoreboard inventory
+-- =========================================================
+hook.Add("ScoreboardShow", "Scoreboard_Open", function()
+    OpenInventory()
     return true
 end)
 
@@ -354,6 +358,7 @@ hook.Add("ScoreboardHide", "Scoreboard_Close", function()
         GRUST_HOTBAR:SetMouseInputEnabled(false)
     end
 
+    if IsValid(BoxPanel) then BoxPanel:Remove() end
     if IsValid(GRUST_TEST) then GRUST_TEST:Remove() end
 end)
 

@@ -1,7 +1,7 @@
 ITEMS:RegisterItem("Cloth", {
     Name = "Cloth",
     Info = "For bandages etc",
-    Category = "ADMIN",
+    Category = "ITEMS",
     InfoTag = "Cloth",
     model = "materials/items/resources/cloth.png",
     Weapon = "",
@@ -21,7 +21,7 @@ ITEMS:RegisterItem("Cloth", {
             },
         }
     end,
-}, "ADMIN")
+}, "ITEMS")
 
 ITEMS:RegisterItem("AnimalFat", {
     Name = "Animal Fat",
@@ -122,3 +122,4 @@ ITEMS:RegisterItem("HQMetal", {
         }
     end,
 }, "ADMIN")
+

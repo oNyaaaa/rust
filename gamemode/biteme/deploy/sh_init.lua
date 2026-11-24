@@ -333,6 +333,7 @@ function DEPLOY:SetSocket(ply, class, pos, ang)
     if not IsValid(ent) then return end
     ent:SetPos(pos)
     ent:SetAngles(ang)
+    ent.Owners = ply
     ent:Spawn()
     ent:Activate()
     if class == "sent_foundation" then
@@ -420,6 +421,9 @@ local IDS = {
     ["sent_door_dd_wood"] = "sent_door_dd_wood",
     ["sent_door_dd_hq"] = "sent_door_dd_hq",
     ["rust_tc"] = "rust_tc",
+    ["rust_auto_turret"] = "rust_auto_turret",
+    ["rust_oilrefinary"] = "rust_oilrefinary",
+    ["rust_largebox"] = "rust_largebox",
 }
 
 function DEPLOY:HasGroundSupport(pos, ang)
