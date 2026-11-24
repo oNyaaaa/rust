@@ -81,6 +81,16 @@ function PANEL:MoveItem(item, target)
     if item.takeFn then return item.takeFn() end
     local fromSlot = item:GetParent()
     if not IsValid(fromSlot) then return end
+
+    -- Box -> player inventory
+    if IsValid(fromSlot.BoxEnt) then
+        net.Start("grust_LargeBoxTake")
+        net.WriteEntity(fromSlot.BoxEnt)
+        net.WriteUInt(fromSlot.SlotID, 6)
+        net.SendToServer()
+        return
+    end
+
     local fromCont = fromSlot.Container
     local from = fromSlot.SlotID
     local toCont = target.Container
@@ -275,6 +285,16 @@ function OpenInventory()
         local item = panels[1]
         local fromSlot = IsValid(item) and item:GetParent()
         if not IsValid(fromSlot) or not fromSlot.SlotID then return end
+
+        -- Box item dropped on background -> take to player inventory
+        if IsValid(fromSlot.BoxEnt) then
+            net.Start("grust_LargeBoxTake")
+            net.WriteEntity(fromSlot.BoxEnt)
+            net.WriteUInt(fromSlot.SlotID, 6)
+            net.SendToServer()
+            return
+        end
+
         local target = SlotAtCursor(GRUST_HOTBAR) or SlotAtCursor(GRUST_HB2)
         if target then
             if IsValid(GRUST_SLOTS) then GRUST_SLOTS:MoveItem(item, target) end
