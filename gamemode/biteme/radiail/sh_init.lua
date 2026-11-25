@@ -215,70 +215,7 @@ if SERVER then
         ent:SetPos(anchor + (ent:GetPos() - bottomCentre))
     end
 
-    net.Receive("RadialMenu_Spawn", function(_, ply) end)
-    net.Receive("RadialMenu_Spawn", function(_, ply)
-        if not IsValid(ply) or not ply:Alive() then return end
-        local wep = ply:GetActiveWeapon()
-        if not IsDeployWeapon(wep) then return end
-        local idx = net.ReadUInt(8)
-        if not RadialMenu.Items[idx] then return end
-        wep:SetSelected(idx)
-        if not item then return end
-        if RadialMenu.AdminOnly and not ply:IsAdmin() then
-            ply:ChatPrint("[Radial] Admins only.")
-            return
-        end
-
-        if (lastSpawn[ply] or 0) + RadialMenu.Cooldown > CurTime() then return end
-        lastSpawn[ply] = CurTime()
-        if not scripted_ents.GetStored(item.class) and not scripted_ents.Get(item.class) then
-            ply:ChatPrint("[Radial] Entity '" .. item.class .. "' doesn't exist.")
-            return
-        end
-
-        -- respect sandbox limits / permissions
-        if hook.Run("PlayerSpawnSENT", ply, item.class) == false then return end
-        local tr = util.TraceLine({
-            start = ply:GetShootPos(),
-            endpos = ply:GetShootPos() + ply:GetAimVector() * RadialMenu.SpawnDistance,
-            filter = ply,
-        })
-
-        local cfg = RadialMenu.Snap[item.class]
-        local snap = FindSnap(item.class, tr.HitPos)
-        if cfg and not cfg.free and not snap then
-            ply:ChatPrint("[Radial] " .. item.name .. " must be placed on a valid piece.")
-            return
-        end
-
-        local ent = ents.Create(item.class)
-        if not IsValid(ent) then return end
-        ent:SetPos(tr.HitPos + tr.HitNormal * 8)
-        ent:SetAngles(Angle(0, ply:EyeAngles().y, 0))
-        ent:Spawn()
-        ent:Activate()
-        if snap then
-            ApplySnap(ent, snap)
-            -- block duplicate pieces in the same spot
-            for _, other in ipairs(ents.FindInSphere(ent:GetPos(), 8)) do
-                if other ~= ent and other:GetClass() == item.class then
-                    ent:Remove()
-                    ply:ChatPrint("[Radial] Something is already placed there.")
-                    return
-                end
-            end
-
-            local phys = ent:GetPhysicsObject()
-            if IsValid(phys) then phys:EnableMotion(false) end
-        end
-
-        if ent.CPPISetOwner then ent:CPPISetOwner(ply) end
-        hook.Run("PlayerSpawnedSENT", ply, ent)
-        undo.Create(item.name)
-        undo.AddEntity(ent)
-        undo.SetPlayer(ply)
-        undo.Finish()
-    end)
+    net.Receive("RadialMenu_Spawn", function() end)
 
     hook.Add("PlayerDisconnected", "RadialMenu_Cleanup", function(ply) lastSpawn[ply] = nil end)
     return

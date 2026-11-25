@@ -470,55 +470,7 @@ end
 if SERVER then
     util.AddNetworkString("gRust_RadialDeployment")
     util.AddNetworkString("RadialMenu2_Spawn")
-    net.Receive("RadialMenu2_Spawn", function(_, ply)
-        if not IsValid(ply) or not ply:Alive() then return end
-        if ply.CooldownRMS == nil then ply.CooldownRMS = 0 end
-        if ply.CooldownRMS >= CurTime() then return end
-        ply.CooldownRMS = CurTime() + 0.1
-        local tr = ply:GetEyeTrace()
-        local upgr = net.ReadString()
-        if upgr == "Rotate" then
-            local ent = ply:GetEyeTrace().Entity
-            local ang = ent:GetAngles()
-            ang:RotateAroundAxis(ent:GetUp(), -180)
-            ent:SetAngles(ang)
-            return
-        end
-
-        if upgr == "Demolish" then
-            local ent = ply:GetEyeTrace().Entity
-            ent:Remove()
-            return
-        end
-
-        local a, b, c, ent = DEPLOY:GetSocket(ply, tr.Entity:GetClass())
-        for k, v in pairs(RadialMenu2.Items) do
-            if v.class == upgr and v.Model[tr.Entity:GetClass()] ~= nil then
-                local ok, taken = GInv_RemoveItem(ply, v.Cost[1], v.Cost[2])
-                if ok == false then return end
-                if not IsValid(ent) then return end
-                local curLevel = ent.Upgradelevel or 0
-                if v.UpgradeLevel and v.UpgradeLevel <= curLevel then -- same or lower: refuse
-                    return
-                end
-
-                ent.Upgradelevel = v.UpgradeLevel
-                net.Start("gRust_RadialDeployment")
-                net.WriteEntity(ent)
-                net.WriteFloat(ent.Upgradelevel)
-                net.Send(ply)
-                ent:SetModel(v.Model[tr.Entity:GetClass()][1])
-                ent:SetHealth(v.HP)
-                ent:PhysicsInitStatic(SOLID_VPHYSICS)
-                ent:SetMoveType(MOVETYPE_NONE)
-                ent:SetSolid(SOLID_VPHYSICS)
-                ply:EmitSound(v.Sound)
-                function ent:Draw()
-                    if v.Model[tr.Entity:GetClass()].DoFuncWhat then v.Model[tr.Entity:GetClass()].DoFuncWhat(self) end
-                end
-            end
-        end
-    end)
+    net.Receive("RadialMenu2_Spawn", function() end)
     return
 end
 

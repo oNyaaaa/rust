@@ -84,7 +84,8 @@ function PANEL:MoveItem(item, target)
 
     -- Box -> player inventory
     if IsValid(fromSlot.BoxEnt) then
-        net.Start("grust_LargeBoxTake")
+        local boxClass = fromSlot.BoxEnt:GetClass()
+        net.Start(boxClass == "rust_smallbox" and "grust_SmallTake" or "grust_LargeBoxTake")
         net.WriteEntity(fromSlot.BoxEnt)
         net.WriteUInt(fromSlot.SlotID, 6)
         net.SendToServer()
@@ -288,7 +289,8 @@ function OpenInventory()
 
         -- Box item dropped on background -> take to player inventory
         if IsValid(fromSlot.BoxEnt) then
-            net.Start("grust_LargeBoxTake")
+            local boxClass = fromSlot.BoxEnt:GetClass()
+            net.Start(boxClass == "rust_smallbox" and "grust_SmallTake" or "grust_LargeBoxTake")
             net.WriteEntity(fromSlot.BoxEnt)
             net.WriteUInt(fromSlot.SlotID, 6)
             net.SendToServer()

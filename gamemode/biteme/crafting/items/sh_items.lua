@@ -76,9 +76,10 @@ ITEMS:RegisterItem("LargeBox", {
     end,
 }, "Items")
 
-ITEMS:RegisterItem("rust_deploy_woodsmallbox", {
+ITEMS:RegisterItem("WoodSmallBox", {
     Name = "Wood Storage Box",
     Info = "Storage",
+    InfoTag = "WoodSmallBox",
     Category = "Items",
     model = "materials/items/deployable/wood_box.png",
     Weapon = "rust_deploy_woodsmallbox",

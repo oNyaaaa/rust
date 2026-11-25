@@ -37,6 +37,7 @@ if SERVER then
         ["sent_shopfront"] = "ShopFront",
         ["sent_auto_turret"] = "Turret",
         ["rust_largebox"] = "LargeBox",
+        ["rust_smallbox"] = "WoodSmallBox",
     }
 
     net.Receive("GarageDoorPlaceL", function(len, ply)
@@ -676,6 +677,25 @@ RustOfficial.ITEMS = {
                 net.Start("SendClientinfoGDL")
                 net.WriteBool(true)
                 net.WriteString("rust_largebox")
+                net.Send(ply)
+            end
+        end,
+        weapon = nil,
+        Max = 1,
+        wModel = "models/environment/misc/loot_bag.mdl",
+        Craftable = true,
+        BluePrint = false,
+    },
+    WoodSmallBox = {
+        name = "WoodSmallBox",
+        color = Color(200, 60, 60),
+        image = "materials/items/deployable/wood_box.png",
+        func = function(ply)
+            if SERVER then
+                ply.SelectedGarageDoor = nil
+                net.Start("SendClientinfoGDL")
+                net.WriteBool(true)
+                net.WriteString("rust_smallbox")
                 net.Send(ply)
             end
         end,

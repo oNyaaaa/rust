@@ -113,7 +113,7 @@ function AddItemsToGmod(ply, cont, slot, name, dur, wep, count)
     local item = MakeItem(name, dur, wep, count, slot)
     if not item then return false end
     SetItem(ply, cont, slot, item)
-    if wep ~= nil and def.func then def.func(ply) end
+    if wep ~= nil and def.func and cont == HOT then def.func(ply) end
     SendInv(ply)
     return true
 end
