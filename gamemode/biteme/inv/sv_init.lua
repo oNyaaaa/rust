@@ -242,13 +242,13 @@ function AddItemsToGmodCount(ply, name, dur, wep, amount, clipz)
     local cont, slot, existing = FindItem(ply, name)
     if not cont then return false end
     local item = GetItem(ply, cont, slot)
+    local def = RustOfficial.GetItem(name)
     if existing and item then
-        item.Count = (item.Count or 1) + amount
+        item.Count = math.Clamp((item.Count or 1) + amount, 0, def.Max)
     else
         if not AddItemsToGmod(ply, cont, slot, name, dur, wep, amount) then return false end
     end
 
-    local def = RustOfficial.GetItem(name)
     if wep ~= nil and def and def.func and clipz ~= nil then def.func(ply, clipz or 0) end
     SendInv(ply)
     return true

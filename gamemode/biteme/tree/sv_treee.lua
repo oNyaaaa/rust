@@ -7,7 +7,8 @@ local function BackwardsEnums(enumname)
 end
 
 local multiPlyer = {
-    ["rust_rock"] = 1
+    ["rust_rock"] = 1,
+    ["rust_stone_hatchet"] = 3,
 }
 
 local function MakeTreeFall(ent)
@@ -137,13 +138,13 @@ hook.Add("EntityTakeDamage", "TakeWoodDmg", function(ent, dmginfo)
         local mult = multiPlyer[wepClass] or 1
         local base = placeHolster[ent.amount] * mult
         if oldMarker and dmgpos:DistToSqr(oldMarker) <= 8 * 8 then
-            AddItemsToGmodCount(dmginfo_Attk, item.name, 100, nil, base * 1.2)
+            AddItemsToGmodCount(dmginfo_Attk, item.name, 100, nil, base * 3)
             ent:EmitSound("farming/tree_spray.wav")
             ent:RemoveAllDecals()
             ent.markerPos = nil
             FookerTreeMarker(ent, dmginfo, dmginfo_Attk)
         else
-            AddItemsToGmodCount(dmginfo_Attk, item.name, 100, nil, base)
+            AddItemsToGmodCount(dmginfo_Attk, item.name, 100, nil, base * 1)
         end
 
         local maxHP = TREE_MODELS[ent:GetModel()]

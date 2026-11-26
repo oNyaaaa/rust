@@ -102,33 +102,40 @@ ITEMS:RegisterItem("WoodSmallBox", {
     end,
 }, "Items")
 
-ITEMS:RegisterItem("rust_deploy_workbenchlvl1", {
+ITEMS:RegisterItem("WorkBench1", {
     Name = "Workbench Level 1",
-    Info = "Unlocking tiers 1 etc",
+    Info = "Craft advanced items and blueprints",
+    InfoTag = "WorkBench1",
     Category = "Items",
     model = "materials/items/deployable/workbench_tier1.png",
-    Weapon = "rust_deploy_workbenchlvl1",
-    Count = 50,
-    Stackable = true,
-    StackSize = 150,
-    IzAdmin = true,
+    Weapon = nil,
+    Count = 1,
     Craft = function()
         return {
             {
-                Time = 0,
-                CanCraft = false,
+                CanCraft = true,
+                Time = 30,
                 {
-                    ITEM = "Cloth",
-                    AMOUNT = 0,
+                    ITEM = "Wood",
+                    AMOUNT = 500,
+                },
+                {
+                    ITEM = "MetalFragments",
+                    AMOUNT = 100,
+                },
+                {
+                    ITEM = "Scrap",
+                    AMOUNT = 50,
                 },
             },
         }
     end,
 }, "Items")
 
-ITEMS:RegisterItem("rust_deploy_workbenchlvl2", {
+ITEMS:RegisterItem("WorkBench2", {
     Name = "Workbench Level 2",
     Info = "Unlocking tiers 2 etc",
+    InfoTag = "WorkBench2",
     Category = "Items",
     model = "materials/items/deployable/workbench_tier2.png",
     Weapon = "rust_deploy_workbenchlvl2",
@@ -150,9 +157,10 @@ ITEMS:RegisterItem("rust_deploy_workbenchlvl2", {
     end,
 }, "Items")
 
-ITEMS:RegisterItem("rust_deploy_workbenchlvl3", {
+ITEMS:RegisterItem("WorkBench3", {
     Name = "Workbench Level 3",
     Info = "Unlocking tiers 3 etc",
+    InfoTag = "WorkBench3",
     Category = "Items",
     model = "materials/items/deployable/workbench_tier3.png",
     Weapon = "rust_deploy_workbenchlvl3",

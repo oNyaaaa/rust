@@ -64,9 +64,10 @@ ITEMS:RegisterItem("Hammer", {
     end,
 }, "Tools")
 
-ITEMS:RegisterItem("rust_stone_hatchet", {
+ITEMS:RegisterItem("StoneHatchet", {
     Name = "Stone Hatchet",
     Info = "Good for gathering minerals and wood",
+    InfoTag = "StoneHatchet",
     Category = "Tools",
     model = "materials/items/tools/stone_hatchet.png",
     Weapon = "rust_stone_hatchet",

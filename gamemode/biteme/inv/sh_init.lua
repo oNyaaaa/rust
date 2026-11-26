@@ -38,6 +38,9 @@ if SERVER then
         ["sent_auto_turret"] = "Turret",
         ["rust_largebox"] = "LargeBox",
         ["rust_smallbox"] = "WoodSmallBox",
+        ["rust_workbench_1"] = "WorkBench1",
+        ["rust_workbench_2"] = "WorkBench2",
+        ["rust_workbench_3"] = "WorkBench3",
     }
 
     net.Receive("GarageDoorPlaceL", function(len, ply)
@@ -258,6 +261,63 @@ RustOfficial.ITEMS = {
                 net.Start("SendClientinfoGDL")
                 net.WriteBool(true)
                 net.WriteString("sent_woodbarricade")
+                net.Send(ply)
+            end
+        end,
+        weapon = nil,
+        Max = 1,
+        wModel = "models/environment/misc/loot_bag.mdl",
+        Craftable = true,
+        BluePrint = true,
+    },
+    WorkBench1 = {
+        name = "WorkBench1",
+        color = Color(200, 60, 60),
+        image = "materials/items/deployable/workbench_tier1.png",
+        func = function(ply)
+            if SERVER then
+                ply.SelectedGarageDoor = nil
+                net.Start("SendClientinfoGDL")
+                net.WriteBool(true)
+                net.WriteString("rust_workbench_1")
+                net.Send(ply)
+            end
+        end,
+        weapon = nil,
+        Max = 1,
+        wModel = "models/environment/misc/loot_bag.mdl",
+        Craftable = true,
+        BluePrint = true,
+    },
+    WorkBench2 = {
+        name = "WorkBench2",
+        color = Color(200, 60, 60),
+        image = "materials/items/deployable/workbench_tier2.png",
+        func = function(ply)
+            if SERVER then
+                ply.SelectedGarageDoor = nil
+                net.Start("SendClientinfoGDL")
+                net.WriteBool(true)
+                net.WriteString("rust_workbench_2")
+                net.Send(ply)
+            end
+        end,
+        weapon = nil,
+        Max = 1,
+        wModel = "models/environment/misc/loot_bag.mdl",
+        Craftable = true,
+        BluePrint = true,
+    },
+    WorkBench3 = {
+        name = "WorkBench3",
+        color = Color(200, 60, 60),
+        image = "materials/items/deployable/workbench_tier3.png",
+        func = function(ply)
+            if SERVER then
+                ply.SelectedGarageDoor = nil
+                net.Start("SendClientinfoGDL")
+                net.WriteBool(true)
+                net.WriteString("rust_workbench_3")
                 net.Send(ply)
             end
         end,
@@ -755,6 +815,17 @@ RustOfficial.ITEMS = {
         image = "materials/items/weapons/salvaged_cleaver.png",
         func = function(ply) ply:Give("rust_salvagedcleaver") end,
         weapon = "rust_salvagedcleaver",
+        Max = 1,
+        wModel = "models/environment/misc/loot_bag.mdl",
+        Craftable = true,
+        BluePrint = false,
+    },
+    StoneHatchet = {
+        name = "StoneHatchet",
+        color = Color(200, 60, 60),
+        image = "materials/items/tools/stone_hatchet.png",
+        func = function(ply) ply:Give("rust_stone_hatchet") end,
+        weapon = "rust_stone_hatchet",
         Max = 1,
         wModel = "models/environment/misc/loot_bag.mdl",
         Craftable = true,

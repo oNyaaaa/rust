@@ -405,6 +405,9 @@ DEPLOY.SkipUpper = {
     sent_door_dd_hq = true,
     rust_tc = true,
     sent_window = true,
+    rust_workbench_1 = true,
+    rust_workbench_2 = true,
+    rust_workbench_3 = true,
 }
 
 DEPLOY.SkipUpper = DEPLOY.SkipUpper or {}
@@ -424,6 +427,9 @@ local IDS = {
     ["rust_auto_turret"] = "rust_auto_turret",
     ["rust_oilrefinary"] = "rust_oilrefinary",
     ["rust_largebox"] = "rust_largebox",
+    ["rust_workbench_1"] = "rust_workbench_1",
+    ["rust_workbench_2"] = "rust_workbench_2",
+    ["rust_workbench_3"] = "rust_workbench_3",
 }
 
 function DEPLOY:HasGroundSupport(pos, ang)
@@ -487,8 +493,8 @@ function DEPLOY:GetSocket(ply, class)
     local base = entTRR or DEPLOY:GetGround(ply, class)
     local pitch = ply:EyeAngles().p -- negative when looking up
     -- free-placement raised foundation (looking up, not aiming at another base)
-    if class == "sent_bed" or class == "sent_stonebarricade" or class == "sent_woodbarricade" or class == "sent_repairbench" or class == "sent_repairtable" or class == "sent_sleepingbag" then
-        local posty = tr.HitPos + tr.HitNormal * 2
+    if class == "sent_bed" or class == "sent_stonebarricade" or class == "sent_woodbarricade" or class == "sent_repairbench" or class == "sent_repairtable" or class == "sent_sleepingbag" or class == "rust_workbench_1" or class == "rust_workbench_2" or class == "rust_workbench_3" then
+        local posty = tr.HitPos + tr.HitNormal * 0.5
         local yaw = (ply:GetPos() - posty):Angle().y
         return posty, Angle(0, yaw, 0), "sent_stonebarricade", tr.Entity
     end
