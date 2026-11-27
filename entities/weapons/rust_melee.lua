@@ -67,6 +67,29 @@ local function DroppableBag(ply, name, count, model)
     return ent
 end
 
+local ItemID = {
+    ["rust_rock"] = {
+        Name = "Rock",
+        WorldModel = "models/weapons/darky_m/rust/w_rock.mdl"
+    },
+    ["rust_salvagedcleaver"] = {
+        Name = "SalavedClever",
+        WorldModel = "models/weapons/darky_m/rust/w_salvaged_Cleaver.mdl"
+    },
+    ["rust_salvagedsword"] = {
+        Name = "SalavedSword",
+        WorldModel = "models/weapons/darky_m/rust/w_salvaged_sword.mdl"
+    },
+    ["rust_woodenspear"] = {
+        Name = "WoodenSpear",
+        WorldModel = "models/weapons/darky_m/rust/w_stone_spear.mdl"
+    },
+    ["rust_stonespear"] = {
+        Name = "StoneSpear",
+        WorldModel = "models/weapons/darky_m/rust/w_stone_spear.mdl"
+    },
+}
+
 function SWEP:Think()
     if CLIENT then return end
     local pl = self:GetOwner()
@@ -74,9 +97,17 @@ function SWEP:Think()
     if self.Throwing and pl:KeyDown(IN_ATTACK2) and pl:KeyPressed(IN_ATTACK) then
         self:SendWeaponAnim(ACT_VM_THROW)
         pl:DoAnimationEvent(ACT_GMOD_GESTURE_ITEM_THROW)
-        local bag = DroppableBag(pl, "Rock", 1, "models/weapons/darky_m/rust/w_rock.mdl")
+        local itmWep = pl:GetActiveWeapon()
+        if not IsValid(itmWep) then return end
+        local itm = ItemID[itmWep:GetClass()]
+        local bag = DroppableBag(pl, itm.Name, 1, itm.WorldModel)
         local phys = bag:GetPhysicsObject()
         if phys and IsValid(phys) then phys:SetVelocity(pl:EyeAngles():Forward() * 1500) end
+        local ang = pl:EyeAngles()
+        ang.p = 0
+        ang.r = 0
+        ang:RotateAroundAxis(ang:Forward(), 90) -- try 90, -90, or 180
+        bag:SetAngles(ang)
         return
     elseif self.Throwing and not pl:KeyDown(IN_ATTACK2) then
         self.Throwing = false

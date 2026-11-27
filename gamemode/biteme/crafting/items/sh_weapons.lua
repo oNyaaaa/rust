@@ -1,7 +1,7 @@
-ITEMS:RegisterItem("SalavedSword", {
+ITEMS:RegisterItem("SalavedClever", {
     Name = "Salvaged Cleaver",
     Info = "Killing, Havesting",
-    InfoTag = "SalavedSword",
+    InfoTag = "SalavedClever",
     Category = "Weapons",
     model = "materials/items/weapons/salvaged_cleaver.png",
     Weapon = "rust_salvagedcleaver",
@@ -22,9 +22,10 @@ ITEMS:RegisterItem("SalavedSword", {
     end,
 }, "Weapons")
 
-ITEMS:RegisterItem("rust_salvagedsword", {
+ITEMS:RegisterItem("SalavedSword", {
     Name = "Salvaged Sword",
     Info = "Killing, Havesting",
+    InfoTag = "SalavedSword",
     Category = "Weapons",
     model = "materials/items/weapons/salvaged_sword.png",
     Weapon = "rust_salvagedsword",
@@ -45,9 +46,10 @@ ITEMS:RegisterItem("rust_salvagedsword", {
     end,
 }, "Weapons")
 
-ITEMS:RegisterItem("rust_woodenspear", {
+ITEMS:RegisterItem("WoodenSpear", {
     Name = "Wooden Spear",
     Info = "Killing, Havesting",
+    InfoTag = "WoodenSpear",
     Category = "Weapons",
     model = "materials/items/weapons/wooden_spear.png",
     Weapon = "rust_woodenspear",
@@ -68,9 +70,10 @@ ITEMS:RegisterItem("rust_woodenspear", {
     end,
 }, "Weapons")
 
-ITEMS:RegisterItem("rust_stonespear", {
+ITEMS:RegisterItem("StoneSpear", {
     Name = "Stone Spear",
     Info = "Killing, Havesting",
+    InfoTag = "StoneSpear",
     Category = "Weapons",
     model = "materials/items/weapons/stone_spear.png",
     Weapon = "rust_stonespear",
@@ -115,9 +118,10 @@ ITEMS:RegisterItem("AssaultRifle", {
     end,
 }, "Weapons")
 
-ITEMS:RegisterItem("rust_m39_rifle", {
+ITEMS:RegisterItem("M39Rifle", {
     Name = "M39 Rifle",
     Info = "Killing/Defending",
+    InfoTag = "M39Rifle",
     Category = "Weapons",
     model = "materials/items/weapons/m39.png",
     Weapon = "rust_m39_rifle",

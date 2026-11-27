@@ -809,7 +809,40 @@ RustOfficial.ITEMS = {
         Craftable = true,
         BluePrint = false,
     },
+    WoodenSpear = {
+        name = "WoodenSpear",
+        color = Color(200, 60, 60),
+        image = "materials/items/weapons/wooden_spear.png",
+        func = function(ply) ply:Give("rust_woodenspear") end,
+        weapon = "rust_woodenspear",
+        Max = 1,
+        wModel = "models/environment/misc/loot_bag.mdl",
+        Craftable = true,
+        BluePrint = false,
+    },
+    StoneSpear = {
+        name = "StoneSpear",
+        color = Color(200, 60, 60),
+        image = "materials/items/weapons/stone_spear.png",
+        func = function(ply) ply:Give("rust_stonespear") end,
+        weapon = "rust_stonespear",
+        Max = 1,
+        wModel = "models/environment/misc/loot_bag.mdl",
+        Craftable = true,
+        BluePrint = false,
+    },
     SalavedSword = {
+        name = "Salvaged Sword",
+        color = Color(200, 60, 60),
+        image = "materials/items/weapons/salvaged_sword.png",
+        func = function(ply) ply:Give("rust_salvagedsword") end,
+        weapon = "rust_salvagedsword",
+        Max = 1,
+        wModel = "models/environment/misc/loot_bag.mdl",
+        Craftable = true,
+        BluePrint = false,
+    },
+    SalavedClever = {
         name = "Salvaged Cleaver",
         color = Color(200, 60, 60),
         image = "materials/items/weapons/salvaged_cleaver.png",
@@ -864,6 +897,22 @@ RustOfficial.ITEMS = {
             timer.Simple(0, function() if IsValid(wep) and clips ~= nil then wep:SetClip1(clips) end end)
         end,
         weapon = "rust_assaultrifle",
+        Max = 1,
+        wModel = "models/environment/misc/loot_bag.mdl",
+        Craftable = true,
+        BluePrint = false,
+    },
+    M39Rifle = {
+        name = "M39Rifle",
+        color = Color(200, 60, 60),
+        image = "materials/items/weapons/m39.png",
+        func = function(ply, clips)
+            ply:Give("rust_m39_rifle")
+            ply:SelectWeapon("rust_m39_rifle")
+            local wep = ply:GetActiveWeapon()
+            timer.Simple(0, function() if IsValid(wep) and clips ~= nil then wep:SetClip1(clips) end end)
+        end,
+        weapon = "rust_m39_rifle",
         Max = 1,
         wModel = "models/environment/misc/loot_bag.mdl",
         Craftable = true,
