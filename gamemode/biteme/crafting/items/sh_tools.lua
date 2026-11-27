@@ -90,9 +90,36 @@ ITEMS:RegisterItem("StoneHatchet", {
     end,
 }, "Tools")
 
-ITEMS:RegisterItem("rust_pickaxe", {
+ITEMS:RegisterItem("StonePickaxe", {
+    Name = "Stone Pickaxe",
+    Info = "Good for gathering minerals and wood",
+    InfoTag = "StonePickaxe",
+    Category = "Tools",
+    model = "materials/items/tools/stone_pickaxe.png",
+    Weapon = "rust_stone_pickaxe",
+    Count = 1,
+    Craft = function()
+        return {
+            {
+                CanCraft = true,
+                Time = 30,
+                {
+                    ITEM = "Wood",
+                    AMOUNT = 200,
+                },
+                {
+                    ITEM = "Stone",
+                    AMOUNT = 100,
+                },
+            },
+        }
+    end,
+}, "Tools")
+
+ITEMS:RegisterItem("PickAxe", {
     Name = "Pickaxe",
     Info = "Good for harvesting ores (Metal,stone,sulfur)",
+    InfoTag = "PickAxe",
     Category = "Tools",
     model = "materials/items/tools/pickaxe.png",
     Weapon = "rust_pickaxe",

@@ -125,6 +125,8 @@ hook.Add("EntityTakeDamage", "TakeWoodDmg", function(ent, dmginfo)
     local item = RustOfficial.GetItem("Wood")
     local tr = dmginfo_Attk:GetEyeTrace()
     if not tr.Entity then return end
+    local wepClass = dmginfo_Attk:GetActiveWeapon():GetClass()
+    if not multiPlyer[wepClass] then return end
     if MAT[ent:GetMaterialType()] == "MAT_WOOD" and TREE_MODELS[tr.Entity:GetModel()] then
         local oldMarker = ent.markerPos
         if not oldMarker then FookerTreeMarker(ent, dmginfo, dmginfo_Attk) end
@@ -134,7 +136,6 @@ hook.Add("EntityTakeDamage", "TakeWoodDmg", function(ent, dmginfo)
         ent.amount = ent.amount + 1
         if mathd >= item.Max then ent.amount = 1 end
         local dmgpos = dmginfo:GetDamagePosition()
-        local wepClass = dmginfo_Attk:GetActiveWeapon():GetClass()
         local mult = multiPlyer[wepClass] or 1
         local base = placeHolster[ent.amount] * mult
         if oldMarker and dmgpos:DistToSqr(oldMarker) <= 8 * 8 then

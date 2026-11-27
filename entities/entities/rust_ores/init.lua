@@ -1,7 +1,7 @@
 AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
 include("shared.lua")
-local matr = {"models/blacksnow/rust_rock", "models/blacksnow/rock_ore"}
+
 function ENT:Initialize()
     self:SetModel("models/environment/ores/ore_node_stage1.mdl")
     self:SetSkin(math.random(1, 3))
@@ -34,6 +34,16 @@ function ENT:RecoveryTime(pos)
         ent:Activate()
     end)
 end
+
+local allowedWeps = {
+    ["rust_stone_pickaxe"] = true,
+    ["rust_pickaxe"] = true,
+}
+
+local MultiPly = {
+    ["rust_stone_pickaxe"] = 1.5,
+    ["rust_pickaxe"] = 1.8,
+}
 
 function ENT:NewWeakspot()
     local mins, maxs = self:OBBMins(), self:OBBMaxs()
@@ -74,6 +84,9 @@ function ENT:OnTakeDamage(dmg)
     if not IsValid(self) then return end
     local attacker = dmg:GetAttacker()
     if not (IsValid(attacker) and attacker:IsPlayer()) then return end
+    local wep = attacker:GetActiveWeapon()
+    if not IsValid(wep) then return end
+    if not allowedWeps[wep:GetClass()] then return end
     local ws = self:GetNW2Vector("Weakspot")
     if self.SetHealthz == nil then self.SetHealthz = 300 end
     self.SetHealthz = self.SetHealthz - 30
@@ -86,7 +99,8 @@ function ENT:OnTakeDamage(dmg)
         ent.amount = ent.amount + 1
         if mathd >= item.Max then ent.amount = 1 end
         if ws ~= vector_origin and attacker:GetEyeTrace().HitPos:DistToSqr(ws) < 25 * 25 then
-            AddItemsToGmodCount(attacker, item.name, 100, nil, placeHolster[ent.amount])
+            local Multi = MultiPly[wep:GetClass()]
+            AddItemsToGmodCount(attacker, item.name, 100, nil, placeHolster[ent.amount] * Multi)
         else
             AddItemsToGmodCount(attacker, item.name, 100, nil, 30)
         end
@@ -98,7 +112,8 @@ function ENT:OnTakeDamage(dmg)
         ent.amount = ent.amount + 1
         if mathd >= item.Max then ent.amount = 1 end
         if ws ~= vector_origin and attacker:GetEyeTrace().HitPos:DistToSqr(ws) < 25 * 25 then
-            AddItemsToGmodCount(attacker, item.name, 100, nil, placeHolster[ent.amount])
+            local Multi = MultiPly[wep:GetClass()]
+            AddItemsToGmodCount(attacker, item.name, 100, nil, placeHolster[ent.amount] * Multi)
         else
             AddItemsToGmodCount(attacker, item.name, 100, nil, 30)
         end
@@ -110,7 +125,8 @@ function ENT:OnTakeDamage(dmg)
         ent.amount = ent.amount + 1
         if mathd >= item.Max then ent.amount = 1 end
         if ws ~= vector_origin and attacker:GetEyeTrace().HitPos:DistToSqr(ws) < 25 * 25 then
-            AddItemsToGmodCount(attacker, item.name, 100, nil, placeHolster[ent.amount])
+            local Multi = MultiPly[wep:GetClass()]
+            AddItemsToGmodCount(attacker, item.name, 100, nil, placeHolster[ent.amount] * Multi)
         else
             AddItemsToGmodCount(attacker, item.name, 100, nil, 30)
         end
