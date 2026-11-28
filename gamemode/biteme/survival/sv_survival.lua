@@ -7,7 +7,6 @@ timer.Create("GRust_Survival", 30, 0, function()
         net.WriteFloat(v.Food)
         net.WriteFloat(v.Water)
         net.Send(v)
-        print(v.Food,v.Water)
         if v.Food <= 0 and v.Water <= 0 then
             v:SetHealth(v:Health() - math.random(10, 15))
             if v:Alive() and v:Health() <= 0 then v:Kill() end
