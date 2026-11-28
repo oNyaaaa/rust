@@ -382,9 +382,10 @@ ITEMS:RegisterItem("RustThompson", {
     end,
 }, "Weapons")
 
-ITEMS:RegisterItem("rust_lr300", {
+ITEMS:RegisterItem("RustLR300", {
     Name = "LR-300 Assault Rifle",
     Info = "Killing/Defending",
+    InfoTag = "RustLR300",
     Category = "Weapons",
     model = "materials/items/weapons/lr300.png",
     Weapon = "rust_lr300",
@@ -405,9 +406,10 @@ ITEMS:RegisterItem("rust_lr300", {
     end,
 }, "Weapons")
 
-ITEMS:RegisterItem("rust_crossbow", {
+ITEMS:RegisterItem("RustCrossBow", {
     Name = "Crossbow",
     Info = "Killing/Defending",
+    InfoTag = "RustCrossBow",
     Category = "Weapons",
     model = "materials/items/weapons/crossbow.png",
     Weapon = "rust_crossbow",
@@ -428,9 +430,10 @@ ITEMS:RegisterItem("rust_crossbow", {
     end,
 }, "Weapons")
 
-ITEMS:RegisterItem("rust_huntingbow", {
+ITEMS:RegisterItem("RustHuntingBow", {
     Name = "Hunting Bow",
     Info = "Killing/Defending",
+    InfoTag = "RustHuntingBow",
     Category = "Weapons",
     model = "materials/items/weapons/hunting_bow.png",
     Weapon = "rust_huntingbow",

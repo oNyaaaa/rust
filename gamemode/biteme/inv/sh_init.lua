@@ -820,6 +820,17 @@ RustOfficial.ITEMS = {
         Craftable = true,
         BluePrint = false,
     },
+    Ammo_Arrow = {
+        name = "Arrow Ammo",
+        color = Color(200, 60, 60),
+        image = "materials/entities/arrow.wooden.png",
+        func = function(ply) end,
+        weapon = nil,
+        Max = 128,
+        wModel = "models/environment/misc/loot_bag.mdl",
+        Craftable = true,
+        BluePrint = false,
+    },
     Ammo_Nails = {
         name = "NailGun Ammo",
         color = Color(200, 60, 60),
@@ -1082,6 +1093,48 @@ RustOfficial.ITEMS = {
             ply:SelectWeapon("rust_thompson")
         end,
         weapon = "rust_thompson",
+        Max = 1,
+        wModel = "models/environment/misc/loot_bag.mdl",
+        Craftable = true,
+        BluePrint = false,
+    },
+    RustLR300 = {
+        name = "LR-300 Assault Rifle",
+        color = Color(200, 60, 60),
+        image = "materials/items/weapons/lr300.png",
+        func = function(ply, clips)
+            ply:Give("rust_lr300")
+            ply:SelectWeapon("rust_lr300")
+        end,
+        weapon = "rust_lr300",
+        Max = 1,
+        wModel = "models/environment/misc/loot_bag.mdl",
+        Craftable = true,
+        BluePrint = false,
+    },
+    RustCrossBow = {
+        name = "Crossbow",
+        color = Color(200, 60, 60),
+        image = "materials/items/weapons/crossbow.png",
+        func = function(ply, clips)
+            ply:Give("rust_crossbow")
+            ply:SelectWeapon("rust_crossbow")
+        end,
+        weapon = "rust_crossbow",
+        Max = 1,
+        wModel = "models/environment/misc/loot_bag.mdl",
+        Craftable = true,
+        BluePrint = false,
+    },
+    RustHuntingBow = {
+        name = "Hunting Bow",
+        color = Color(200, 60, 60),
+        image = "materials/items/weapons/hunting_bow.png",
+        func = function(ply, clips)
+            ply:Give("rust_huntingbow")
+            ply:SelectWeapon("rust_huntingbow")
+        end,
+        weapon = "rust_huntingbow",
         Max = 1,
         wModel = "models/environment/misc/loot_bag.mdl",
         Craftable = true,

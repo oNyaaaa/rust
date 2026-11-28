@@ -1,43 +1,15 @@
 AddCSLuaFile()
+SWEP.Base = "rust_gun"
 SWEP.ViewModel = "models/weapons/darky_m/rust/c_bow.mdl"
 SWEP.WorldModel = "models/weapons/darky_m/rust/w_bow.mdl"
 SWEP.DrawCrosshair = true
 SWEP.UseHands = true
-SWEP.Primary.Automatic = true
-function SWEP:Initialize()
-    self:SetHoldType("ar2")
-    self.delay = 0
-    self.Clicked = false
-end
-
-function SWEP:PrimaryAttack()
-    local pl = self:GetOwner()
-    if not IsValid(pl) then return end
-    self:SendWeaponAnim(ACT_VM_PRIMARYATTACK)
-    self:SetNextPrimaryFire(CurTime() + 2)
-    local bullet = {}
-    bullet.Num = 1
-    bullet.Src = pl:GetShootPos()
-    bullet.Dir = pl:GetAimVector()
-    bullet.Spread = 0.4
-    bullet.Tracer = 3
-    bullet.Force = 1
-    bullet.Damage = 40
-    bullet.Attacker = pl
-    pl:FireBullets(bullet)
-    local BulletsFire = math.random(0.4, 0.5)
-    pl:SetEyeAngles(pl:GetAngles() - Angle(BulletsFire, BulletsFire, 0))
-    self.Reloaded = false
-end
-
-function SWEP:Reload()
-    if self.Reloaded then return end
-    self:SendWeaponAnim(ACT_VM_DEPLOY)
-    self.Reloaded = true
-end
-
-function SWEP:Think()
-end
-
-function SWEP:SecondaryAttack()
-end
+SWEP.Primary.Automatic = false
+SWEP.Primary.Sound = "weapons/rust_mp3/bow-attack-1.mp3"
+SWEP.Primary.NextFire = 0.4
+SWEP.IronSightsPos = Vector(-4.5, -2, 1.5)
+SWEP.IronSightsAng = Vector(-2, 0.012, 0)
+SWEP.TakeAmmo = "Ammo_Arrow"
+SWEP.Primary.Damage = 35
+SWEP.UsesThisArrow = true
+SWEP.DelayPrice = 1.5

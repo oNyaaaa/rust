@@ -12,13 +12,16 @@ SWEP.Secondary.ClipSize = 120
 SWEP.Secondary.DefaultClip = 0
 SWEP.Secondary.Automatic = false
 SWEP.Secondary.Ammo = "none"
+SWEP.Loaded = false
+SWEP.ShootBullets = 30
+SWEP.MaxBullets = 30
 function SWEP:Initialize()
     self:SetHoldType("ar2")
     self.delay = 0
     self.Clicked = false
     self.Reloaded = false
     self.Clapped = 0
-    self:SetClip1(30)
+    if SERVER then self:SetNWInt("ShootBullets", self.MaxBullets) end
 end
 
 SWEP.IronSightsPos = Vector(-4, -5.2, 2.1)
@@ -55,8 +58,20 @@ end
 function SWEP:PrimaryAttack()
     local pl = self:GetOwner()
     if not IsValid(pl) then return end
-    -- only the server knows about inventory ammo
+    if not self.Loaded and self.UsesThisArrow then
+        self.Loaded = false
+        return
+    end
+
     if not self:FindAmmo(pl) then return end
+    if self:GetNWInt("ShootBullets", 0) <= 0 then return end
+    if SERVER then
+        if self.ShootBullets <= 0 then return end
+        self.ShootBullets = self.ShootBullets - 1
+        self:SetNWInt("ShootBullets", self.ShootBullets)
+    end
+
+    -- only the server knows about inventory ammo
     self:SetNextPrimaryFire(CurTime() + self.Primary.NextFire)
     self:EmitSound(self.Primary.Sound)
     pl:SetAnimation(PLAYER_ATTACK1)
@@ -78,13 +93,22 @@ function SWEP:PrimaryAttack()
     if SERVER then self:TakeAmmos(pl) end
 end
 
-function SWEP:Think()
+function SWEP:Reload()
+    if self:GetNWInt("ShootBullets", 0) >= 30 then return end
+    self:SendWeaponAnim(ACT_VM_DEPLOY)
+    self:SendWeaponAnim(ACT_VM_RELOAD)
+    if SERVER then
+        self.ShootBullets = self.MaxBullets
+        self:SetNWInt("ShootBullets", self.ShootBullets)
+    end
+
+    timer.Simple(self.DelayPrice or 4, function() self.Loaded = true end)
 end
 
 function SWEP:Think()
     if CLIENT then return end
     local pl = self:GetOwner()
-    if IsValid(pl) then self:SetNWBool("IronSights", pl:KeyDown(IN_ATTACK2)) end
+    if IsValid(pl) and not self.UsesThisArrow then self:SetNWBool("IronSights", pl:KeyDown(IN_ATTACK2)) end
     if not IsValid(pl) then return end
     local has = FindExistingItemBool(pl, self.TakeAmmo) and true or false
     if self:GetNWBool("HasAmmo", false) ~= has then self:SetNWBool("HasAmmo", has) end
