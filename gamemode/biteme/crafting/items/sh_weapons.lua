@@ -478,9 +478,10 @@ ITEMS:RegisterItem("RustBoltRifle", {
     end,
 }, "Weapons")
 
-ITEMS:RegisterItem("rust_waterpipe", {
+ITEMS:RegisterItem("RustWaterPipe", {
     Name = "Waterpipe Shotgun",
     Info = "Killing/Defending",
+    InfoTag = "RustWaterPipe",
     Category = "Weapons",
     model = "materials/items/weapons/waterpipe.png",
     Weapon = "rust_waterpipe",
@@ -501,9 +502,10 @@ ITEMS:RegisterItem("rust_waterpipe", {
     end,
 }, "Weapons")
 
-ITEMS:RegisterItem("rust_rpg", {
+ITEMS:RegisterItem("RustRPG", {
     Name = "Rocket Launcher",
     Info = "Killing/Defending",
+    InfoTag = "RustRPG",
     Category = "Weapons",
     model = "materials/items/weapons/rocket_launcher.png",
     Weapon = "rust_rpg",

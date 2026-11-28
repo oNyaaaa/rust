@@ -145,3 +145,77 @@ game.AddAmmoType({
     minsplash = 10,
     maxsplash = 5
 })
+
+ITEMS:RegisterItem("Ammo_ShotGun", {
+    Name = "ShotGun Ammo",
+    Info = "For bandages etc",
+    Category = "AMMO",
+    InfoTag = "Ammo_ShotGun",
+    model = "materials/entities/ammo.handmade.shell.png",
+    Weapon = "",
+    Count = 50,
+    Stackable = true,
+    StackSize = 128,
+    IzAdmin = true,
+    Craft = function()
+        return {
+            {
+                Time = 0,
+                CanCraft = false,
+                {
+                    ITEM = "Cloth",
+                    AMOUNT = 0,
+                },
+            },
+        }
+    end,
+}, "AMMO")
+
+game.AddAmmoType({
+    name = "Ammo_ShotGun", -- Note that whenever picked up, the localization string will be '#BULLET_PLAYER_556MM_ammo'
+    dmgtype = DMG_BUCKSHOT,
+    tracer = TRACER_LINE,
+    plydmg = 0, -- This can either be a number or a ConVar name.
+    npcdmg = 0, -- Ditto.
+    force = 2000,
+    maxcarry = 120, -- Ditto.
+    minsplash = 10,
+    maxsplash = 5
+})
+
+ITEMS:RegisterItem("Ammo_Rocket", {
+    Name = "RPG Ammo",
+    Info = "For bandages etc",
+    Category = "AMMO",
+    InfoTag = "Ammo_Rocket",
+    model = "materials/entities/ammo.handmade.shell.png",
+    Weapon = "",
+    Count = 50,
+    Stackable = true,
+    StackSize = 3,
+    IzAdmin = true,
+    Craft = function()
+        return {
+            {
+                Time = 0,
+                CanCraft = false,
+                {
+                    ITEM = "Cloth",
+                    AMOUNT = 0,
+                },
+            },
+        }
+    end,
+}, "AMMO")
+
+game.AddAmmoType({
+    name = "Ammo_Rocket", -- Note that whenever picked up, the localization string will be '#BULLET_PLAYER_556MM_ammo'
+    dmgtype = DMG_BLAST,
+    tracer = TRACER_LINE,
+    plydmg = 0, -- This can either be a number or a ConVar name.
+    npcdmg = 0, -- Ditto.
+    force = 2000,
+    maxcarry = 120, -- Ditto.
+    minsplash = 10,
+    maxsplash = 5
+})

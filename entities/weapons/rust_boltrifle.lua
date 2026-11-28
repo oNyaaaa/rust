@@ -15,7 +15,6 @@ SWEP.Primary.NextFire = 1
 SWEP.IronSightsPos = Vector(-4.5, -2, 1.5)
 SWEP.IronSightsAng = Vector(-2, 0.012, 0)
 SWEP.TakeAmmo = "Ammo_556"
-SWEP.Primary.Damage = 35
 SWEP.ShootBullets = 3
 SWEP.MaxBullets = 3
 SWEP.AnimDraw = true

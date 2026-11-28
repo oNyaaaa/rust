@@ -815,6 +815,28 @@ RustOfficial.ITEMS = {
         image = "materials/items/ammo/rifle_ammo.png",
         func = function(ply) end,
         weapon = nil,
+        Max = 3,
+        wModel = "models/environment/misc/loot_bag.mdl",
+        Craftable = true,
+        BluePrint = false,
+    },
+    Ammo_Rocket = {
+        name = "556 Ammo",
+        color = Color(200, 60, 60),
+        image = "materials/items/ammo/rocket.png",
+        func = function(ply) end,
+        weapon = nil,
+        Max = 128,
+        wModel = "models/environment/misc/loot_bag.mdl",
+        Craftable = true,
+        BluePrint = false,
+    },
+    Ammo_ShotGun = {
+        name = "Shell Ammo",
+        color = Color(200, 60, 60),
+        image = "materials/entities/ammo.handmade.shell.png",
+        func = function(ply) end,
+        weapon = nil,
         Max = 128,
         wModel = "models/environment/misc/loot_bag.mdl",
         Craftable = true,
@@ -1149,6 +1171,34 @@ RustOfficial.ITEMS = {
             ply:SelectWeapon("rust_boltrifle")
         end,
         weapon = "rust_boltrifle",
+        Max = 1,
+        wModel = "models/environment/misc/loot_bag.mdl",
+        Craftable = true,
+        BluePrint = false,
+    },
+    RustWaterPipe = {
+        name = "Waterpipe Shotgun",
+        color = Color(200, 60, 60),
+        image = "materials/items/weapons/waterpipe.png",
+        func = function(ply, clips)
+            ply:Give("rust_waterpipe")
+            ply:SelectWeapon("rust_waterpipe")
+        end,
+        weapon = "rust_waterpipe",
+        Max = 1,
+        wModel = "models/environment/misc/loot_bag.mdl",
+        Craftable = true,
+        BluePrint = false,
+    },
+    RustRPG = {
+        name = "Rocket Launcher",
+        color = Color(200, 60, 60),
+        image = "materials/items/weapons/rocket_launcher.png",
+        func = function(ply, clips)
+            ply:Give("rust_rpg")
+            ply:SelectWeapon("rust_rpg")
+        end,
+        weapon = "rust_rpg",
         Max = 1,
         wModel = "models/environment/misc/loot_bag.mdl",
         Craftable = true,
