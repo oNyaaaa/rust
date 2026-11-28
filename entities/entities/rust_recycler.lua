@@ -39,7 +39,6 @@ if SERVER then
 			input = self.InputSlots,
 			output = self.OutputSlots,
 		})
-
 		net.Send(ply)
 	end
 
@@ -168,22 +167,29 @@ if SERVER then
 		table.insert(ent.data, {slotid, str})
 	end)
 
+	function ENT:SetOn(state)
+		if state == self.On then return end
+		self.On = state
+		if state then
+			self:EmitSound("farming/recycle_start.wav")
+			timer.Simple(1, function()
+				if IsValid(self) and self.On then
+					self.EmitSoundO = self:StartLoopingSound("farming/recycle_loop.wav")
+				end
+			end)
+		else
+			self:EmitSound("farming/recycle_stop.wav")
+			self:StopLoopingSound(self.EmitSoundO)
+		end
+	end
+
 	net.Receive("DockTogglezzz", function(_, ply)
 		local ent = net.ReadEntity()
 		if not IsValid(ent) or ent:GetClass() ~= "rust_recycler" then return end
 		if ply:GetPos():DistToSqr(ent:GetPos()) > 250 * 250 then return end
-		ent.On = not ent.On
+		ent:SetOn(not ent.On)
 		ent.NextCycle = CurTime() + CYCLE_TIME
 		ent:SendContents(ply)
-		if not ent.Dockered then ent.Dockered = false end
-		ent.Dockered = not ent.Dockered
-		if ent.Dockered then
-			ent:EmitSound("farming/recycle_start.wav")
-			timer.Simple(1, function() ent.EmitSoundO = ent:StartLoopingSound("farming/recycle_loop.wav") end)
-		else
-			ent:EmitSound("farming/recycle_stop.wav")
-			ent:StopLoopingSound(ent.EmitSoundO)
-		end
 	end)
 
 	net.Receive("DockRelease", function(_, ply)
@@ -196,7 +202,7 @@ if SERVER then
 	end)
 
 	function ENT:Refresh()
-		local v = self.viewer
+		local v = self.OccupiedBy
 		if IsValid(v) and v:GetPos():DistToSqr(self:GetPos()) < 250 * 250 then self:SendContents(v) end
 	end
 
@@ -206,6 +212,7 @@ if SERVER then
 			self.OccupiedBy = nil
 			self.viewer = nil
 		end
+		self:Refresh()
 		if not self.On or CurTime() < (self.NextCycle or 0) then return true end
 		local did = false
 		for i = 1, 6 do
@@ -226,20 +233,18 @@ if SERVER then
 		if did then
 			self.NextCycle = CurTime() + CYCLE_TIME
 		else
-			self.On = false -- nothing to recycle, or outputs full
-			self:StopLoopingSound(self.EmitSoundO)
+			self:SetOn(false) -- nothing to recycle, or outputs full
 		end
 
-		self:Refresh()
 		return true
 	end
 
-	function ENT:Use(btn, ply)
-		if not IsValid(ply) or not ply:IsPlayer() then return end
-		if self.OccupiedBy and IsValid(self.OccupiedBy) and self.OccupiedBy ~= ply then return end
-		self.OccupiedBy = ply
-		self.viewer = ply
-		self:SendContents(ply)
+	function ENT:Use(activator)
+		if not IsValid(activator) or not activator:IsPlayer() then return end
+		if self.OccupiedBy and IsValid(self.OccupiedBy) and self.OccupiedBy ~= activator then return end
+		self.OccupiedBy = activator
+		self.viewer = activator
+		self:SendContents(activator)
 		self:EmitSound("farming/recycler_open.wav")
 	end
 
@@ -264,15 +269,6 @@ if CLIENT then
 	function ENT:Initialize()
 	end
 
-	local ContainerR = NULL
-	local ent = NULL
-	-- opens your inventory (same as the scoreboard key) and returns it as the parent
-	local function DockInventory()
-		if not IsValid(GRUST_TEST) then hook.Run("ScoreboardShow") end
-		if not IsValid(GRUST_TEST) then return {} end
-		return {GRUST_TEST}
-	end
-
 	function GRUST_RecyclerMove(ent, mode, kind, idx, name)
 		net.Start("grust_RecyclerMove")
 		net.WriteEntity(ent)
@@ -283,116 +279,199 @@ if CLIENT then
 		net.SendToServer()
 	end
 
-	net.Receive("DockMain", function()
-		ent = net.ReadEntity()
-		local data = net.ReadTable()
-		if IsValid(ContainerR) then ContainerR:Remove() end
-		local frameWork = DockInventory()
-		if not frameWork[1] then return end
-		-- ===== drag and drop helpers (must be defined before the slots) =====
-		local GRID = vgui.GetControlTable("grust_SlotsGrid")
-		local function DoDrop(target, panels, dropped)
-			if not dropped then return end
-			local item = panels[1]
-			local name = IsValid(item) and item.ItemID
-			if not name or item.takeFn then -- ignore items already in the recycler
-				return
+	local function S(n)
+		return math.Round(n * ScrH() / 1080)
+	end
+
+	surface.CreateFont("gRustRec_Title", {
+		font = "Roboto Condensed",
+		size = S(44),
+		weight = 800
+	})
+	surface.CreateFont("gRustRec_Label", {
+		font = "Roboto Condensed",
+		size = S(20),
+		weight = 800
+	})
+	surface.CreateFont("gRustRec_Amount", {
+		font = "Roboto Condensed",
+		size = S(20),
+		weight = 700
+	})
+
+	local COL_TEXT = Color(240, 232, 224)
+	local COL_LABEL = Color(200, 195, 190, 200)
+	local COL_PANEL = Color(90, 90, 90, 90)
+	local COL_SLOT = Color(0, 0, 0, 90)
+	local COL_EMPTY = Color(120, 120, 120, 120)
+	local COL_GREEN = Color(112, 140, 52)
+	local COL_RED = Color(177, 68, 52)
+	local COL_HOVER = Color(255, 255, 255, 20)
+
+	local iconCache = {}
+	local function GetIcon(path)
+		if not path then return end
+		iconCache[path] = iconCache[path] or Material(path, "smooth")
+		return iconCache[path]
+	end
+
+	local function DrawSlot(x, y, size, slot)
+		draw.RoundedBox(0, x, y, size, size, COL_SLOT)
+		if slot and (slot.count or 0) > 0 then
+			local info = RustOfficial.GetItem(slot.id)
+			local mat = GetIcon(info and info.image)
+			if mat then
+				local pad = size * 0.12
+				surface.SetMaterial(mat)
+				surface.SetDrawColor(255, 255, 255)
+				surface.DrawTexturedRect(x + pad, y + pad, size - pad * 2, size - pad * 2)
 			end
 
-			GRUST_RecyclerMove(target.IDEnt, "put", target.Kind, target.IDID, name)
+			draw.SimpleText("x" .. string.Comma(slot.count), "gRustRec_Amount", x + size - S(6), y + size - S(4), COL_TEXT, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM)
+		else
+			local cx, cy, r = x + size / 2, y + size / 2, size * 0.22
+			surface.SetDrawColor(COL_EMPTY)
+			surface.DrawLine(cx - r, cy - r * 0.3, cx, cy - r)
+			surface.DrawLine(cx, cy - r, cx + r, cy - r * 0.3)
+			surface.DrawLine(cx + r, cy - r * 0.3, cx, cy + r)
+			surface.DrawLine(cx, cy + r, cx - r, cy - r * 0.3)
+			surface.DrawLine(cx - r, cy - r * 0.3, cx + r, cy - r * 0.3)
 		end
+	end
 
-		local function FillSlot(slot, i, it)
-			if not it then return end
-			local fake = {
-				Slots = {
-					[i] = slot
-				},
-				MoveItem = function(_, item, target) DoDrop(target, {item}, true) end,
-			}
+	local GRUST_RecyclerUI = NULL
 
-			local item = GRID.AddItem(fake, i, it.id, it.dur, it.count)
-			if item then item.takeFn = function() GRUST_RecyclerMove(ent, "take", slot.Kind, i) end end
-		end
+	local function OpenRecycler(ent, data)
+		if IsValid(GRUST_RecyclerUI) then GRUST_RecyclerUI:Remove() end
+		local SLOT, GAP = S(86), S(7)
+		local PW = S(570)
+		local TITLE_H = S(55)
+		local ROWS = 4
+		local PH = ROWS * (SLOT + GAP) + GAP
+		local CTRL_H = S(48)
+		local W, H = PW, TITLE_H + PH + S(9) + CTRL_H
 
-		-- ===== layout =====
-		ContainerR = vgui.Create("Panel", frameWork[1])
-		ContainerR:Dock(RIGHT)
-		ContainerR:SetWide(500)
-		ContainerR.OnRemove = function()
-			net.Start("DockRelease")
-			net.WriteEntity(ent)
-			net.SendToServer()
-		end
-		local S, P = 84, 4 -- same size as inventory slots
-		local SlotsPanel = vgui.Create("Panel", ContainerR)
-		SlotsPanel:Dock(TOP)
-		SlotsPanel:SetTall(4 * (S + P) + P + 10)
-		SlotsPanel:DockMargin(0, ScrH() * 0.4, 0, 0)
-		local function MakeSlot(x, y, label, kind, idx, accepts)
-			local slot = vgui.Create("DPanel", SlotsPanel)
-			slot:SetSize(S, S)
-			slot:SetPos(x, y)
-			slot.IDEnt, slot.IDID, slot.Kind = ent, idx, kind
-			if accepts then slot:Receiver("grust_item", DoDrop) end
-			slot.Paint = function(me, w, h)
-				surface.SetDrawColor(80, 76, 70, 100)
-				surface.DrawRect(0, 0, w, h)
-				draw.SimpleText(label, "Default", 4, 3, Color(255, 255, 255, 200))
+		hook.Run("ScoreboardShow")
+		if not IsValid(GRUST_TEST) then return end
+
+		local pnl = vgui.Create("DPanel", GRUST_TEST)
+		GRUST_RecyclerUI = pnl
+		pnl.ent, pnl.data = ent, data
+		pnl:SetSize(W, H)
+		local invBox = IsValid(GRUST_SLOTS) and GRUST_SLOTS:GetParent()
+		local px = invBox and (invBox:GetX() + invBox:GetWide() + S(30)) or (ScrW() - W) / 2
+		pnl:SetPos(math.min(px, ScrW() - W - S(10)), (ScrH() - H) / 2)
+
+		pnl.Paint = function(self, w, h)
+			local d = self.data or {}
+			draw.SimpleText("RECYCLER", "gRustRec_Title", 0, 0, COL_TEXT)
+			draw.RoundedBox(0, 0, TITLE_H, w, PH, COL_PANEL)
+
+			local gridW = SLOT * 5 + GAP * 4
+			local ox = (w - gridW) / 2
+
+			draw.SimpleText("INPUT", "gRustRec_Label", ox, TITLE_H + S(8), COL_LABEL, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+			for i = 1, 5 do
+				local col, row = (i - 1) % 5, math.floor((i - 1) / 5)
+				DrawSlot(ox + col * (SLOT + GAP), TITLE_H + S(20) + row * (SLOT + GAP), SLOT, d.input and d.input[i])
 			end
-			return slot
+
+			local oy = TITLE_H + S(20) + 2 * (SLOT + GAP) + S(10)
+			draw.SimpleText("OUTPUT", "gRustRec_Label", ox, oy, COL_LABEL, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+			for i = 1, 5 do
+				local col, row = (i - 1) % 5, math.floor((i - 1) / 5)
+				DrawSlot(ox + col * (SLOT + GAP), oy + S(12) + row * (SLOT + GAP), SLOT, d.output and d.output[i])
+			end
+
+			local cy = TITLE_H + PH + S(9)
+			draw.RoundedBox(0, 0, cy, w, CTRL_H, COL_PANEL)
+			draw.SimpleText("CONTROLS", "gRustRec_Label", S(12), cy + CTRL_H / 2, COL_TEXT, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 		end
 
-		-- rows 2-3: inputs
-		for i = 1, 5 do
-			local col, row = (i - 1) % 5, math.floor((i - 1) / 5)
-			local s = MakeSlot(P + col * (S + P), P + (row + 2) * (S + P), "INPUT", "input", i, true)
-			FillSlot(s, i, data.input and data.input[i])
+		local btn = vgui.Create("DButton", pnl)
+		btn:SetText("")
+		btn:SetSize(S(135), CTRL_H)
+		btn:SetPos(W - S(135), TITLE_H + PH + S(9))
+		btn.Paint = function(self, w, h)
+			local on = pnl.data and pnl.data.on
+			draw.RoundedBox(0, 0, 0, w, h, on and COL_RED or COL_GREEN)
+			if self:IsHovered() then draw.RoundedBox(0, 0, 0, w, h, COL_HOVER) end
+			draw.SimpleText(on and "TURN OFF" or "TURN ON", "gRustRec_Label", w / 2, h / 2, COL_TEXT, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 		end
 
-		-- rows 4-5: outputs (take-only)
-		for i = 1, 5 do
-			local col, row = (i - 1) % 5, math.floor((i - 1) / 5)
-			local s = MakeSlot(P + col * (S + P), P + (row + 3) * (S + P) + 10, "OUTPUT", "output", i, false)
-			FillSlot(s, i, data.output and data.output[i])
-		end
-
-		-- ===== controls bar =====
-		local Container = ContainerR:Add("Panel")
-		Container:Dock(FILL)
-		local Controls = Container:Add("Panel")
-		Controls:Dock(TOP)
-		Controls:SetTall(ScrH() * 0.13)
-		Controls:DockMargin(0, ScrH() * 0.01, 0, 0)
-		local Title = Controls:Add("Panel")
-		Title:Dock(TOP)
-		Title:SetTall(ScrH() * 0.03)
-		Title:DockMargin(0, 0, 0, ScrH() * 0.003)
-		Title.Paint = function(me, w, h)
-			surface.SetDrawColor(80, 76, 70, 100)
-			surface.DrawRect(0, 0, w, h)
-			draw.SimpleText("CONTROLS", "Default", 6, h / 2, Color(255, 255, 255, 200), 0, 1)
-		end
-
-		local ButtonPanel = Controls:Add("Panel")
-		ButtonPanel:Dock(FILL)
-		ButtonPanel.Paint = function(me, w, h)
-			surface.SetDrawColor(80, 76, 70, 100)
-			surface.DrawRect(0, 0, w, h)
-		end
-
-		local Margin = ScrH() * 0.01
-		local ToggleButton = ButtonPanel:Add("DButton")
-		ToggleButton:Dock(LEFT)
-		ToggleButton:SetText(data.on and "Turned On" or "Turn On")
-		ToggleButton:DockMargin(Margin, Margin, Margin, Margin)
-		ToggleButton:SetWide(ScrW() * 0.11)
-		ToggleButton.DoClick = function(me)
+		btn.DoClick = function()
 			net.Start("DockTogglezzz")
 			net.WriteEntity(ent)
 			net.SendToServer()
-			me:SetText(me:GetText() == "Turn On" and "Turned On" or "Turn Off")
 		end
+
+		local function MakeSlot(kind, idx, x, y)
+			local sp = vgui.Create("DButton", pnl)
+			sp:SetText("")
+			sp:SetPos(x, y)
+			sp:SetSize(SLOT, SLOT)
+			sp.recEnt, sp.kind, sp.idx = ent, kind, idx
+
+			local function slotData()
+				local d = pnl.data or {}
+				return d[kind] and d[kind][idx]
+			end
+
+			sp.Paint = function(self)
+				if self:IsHovered() then draw.RoundedBox(0, 0, 0, SLOT, SLOT, COL_HOVER) end
+				if self:IsDragging() then
+					local s = slotData()
+					if s then DrawSlot(0, 0, SLOT, s) end
+				end
+			end
+
+			local function take()
+				if slotData() then GRUST_RecyclerMove(ent, "take", kind, idx) end
+			end
+
+			sp.DoRightClick, sp.DoDoubleClick = take, take
+			if kind ~= "output" then
+				sp:Droppable("grust_item")
+				sp:Receiver("grust_item", function(self, panels, dropped)
+					if not dropped then return end
+					local name = panels[1] and panels[1].ItemID
+					if name then GRUST_RecyclerMove(ent, "put", kind, idx, name) end
+				end)
+			end
+		end
+
+		local gridW = SLOT * 5 + GAP * 4
+		local ox = (W - gridW) / 2
+		for i = 1, 5 do
+			local col, row = (i - 1) % 5, math.floor((i - 1) / 5)
+			MakeSlot("input", i, ox + col * (SLOT + GAP), TITLE_H + S(20) + row * (SLOT + GAP))
+		end
+
+		local oy = TITLE_H + S(20) + 2 * (SLOT + GAP) + S(10)
+		for i = 1, 5 do
+			local col, row = (i - 1) % 5, math.floor((i - 1) / 5)
+			MakeSlot("output", i, ox + col * (SLOT + GAP), oy + S(12) + row * (SLOT + GAP))
+		end
+
+		pnl.Think = function(self)
+			if not IsValid(self.ent) or LocalPlayer():GetPos():DistToSqr(self.ent:GetPos()) > 250 * 250 or gui.IsGameUIVisible() then
+				gui.HideGameUI()
+				hook.Run("ScoreboardHide")
+			end
+		end
+	end
+
+	net.Receive("DockMain", function()
+		local ent = net.ReadEntity()
+		local data = net.ReadTable()
+		if not IsValid(ent) then return end
+
+		if IsValid(GRUST_RecyclerUI) and GRUST_RecyclerUI.ent == ent then
+			GRUST_RecyclerUI.data = data
+			return
+		end
+
+		OpenRecycler(ent, data)
 	end)
 
 	function ENT:Draw(flags)

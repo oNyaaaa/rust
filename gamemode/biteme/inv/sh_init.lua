@@ -915,8 +915,6 @@ RustOfficial.ITEMS = {
         func = function(ply, clips)
             ply:Give("rust_assaultrifle")
             ply:SelectWeapon("rust_assaultrifle")
-            local wep = ply:GetActiveWeapon()
-            timer.Simple(0, function() if IsValid(wep) and clips ~= nil then wep:SetClip1(clips) end end)
         end,
         weapon = "rust_assaultrifle",
         Max = 1,
@@ -931,8 +929,6 @@ RustOfficial.ITEMS = {
         func = function(ply, clips)
             ply:Give("rust_m39_rifle")
             ply:SelectWeapon("rust_m39_rifle")
-            local wep = ply:GetActiveWeapon()
-            timer.Simple(0, function() if IsValid(wep) and clips ~= nil then wep:SetClip1(clips) end end)
         end,
         weapon = "rust_m39_rifle",
         Max = 1,
@@ -947,10 +943,36 @@ RustOfficial.ITEMS = {
         func = function(ply, clips)
             ply:Give("rust_m92")
             ply:SelectWeapon("rust_m92")
-            local wep = ply:GetActiveWeapon()
-            timer.Simple(0, function() if IsValid(wep) and clips ~= nil then wep:SetClip1(clips) end end)
         end,
         weapon = "rust_m92",
+        Max = 1,
+        wModel = "models/environment/misc/loot_bag.mdl",
+        Craftable = true,
+        BluePrint = false,
+    },
+    RustM249 = {
+        name = "RustM249",
+        color = Color(200, 60, 60),
+        image = "materials/items/weapons/m249.png",
+        func = function(ply, clips)
+            ply:Give("rust_m249")
+            ply:SelectWeapon("rust_m249")
+        end,
+        weapon = "rust_m249",
+        Max = 1,
+        wModel = "models/environment/misc/loot_bag.mdl",
+        Craftable = true,
+        BluePrint = false,
+    },
+    RustMP5 = {
+        name = "RustMP5",
+        color = Color(200, 60, 60),
+        image = "materials/items/weapons/mp5.png",
+        func = function(ply, clips)
+            ply:Give("rust_mp5")
+            ply:SelectWeapon("rust_mp5")
+        end,
+        weapon = "rust_mp5",
         Max = 1,
         wModel = "models/environment/misc/loot_bag.mdl",
         Craftable = true,

@@ -166,9 +166,10 @@ ITEMS:RegisterItem("RustM92", {
     end,
 }, "Weapons")
 
-ITEMS:RegisterItem("rust_m249", {
+ITEMS:RegisterItem("RustM249", {
     Name = "M249",
     Info = "Killing/Defending",
+    InfoTag = "RustM249",
     Category = "Weapons",
     model = "materials/items/weapons/m249.png",
     Weapon = "rust_m249",
@@ -189,9 +190,10 @@ ITEMS:RegisterItem("rust_m249", {
     end,
 }, "Weapons")
 
-ITEMS:RegisterItem("rust_mp5", {
+ITEMS:RegisterItem("RustMP5", {
     Name = "MP5",
     Info = "Killing/Defending",
+    InfoTag = "RustMP5",
     Category = "Weapons",
     model = "materials/items/weapons/mp5.png",
     Weapon = "rust_mp5",
