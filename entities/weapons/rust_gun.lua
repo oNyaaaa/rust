@@ -3,13 +3,14 @@ SWEP.ViewModel = "models/weapons/darky_m/rust/c_ak47u.mdl"
 SWEP.WorldModel = "models/weapons/darky_m/rust/w_ak47u.mdl"
 SWEP.DrawCrosshair = true
 SWEP.UseHands = true
+SWEP.DrawAmmo = false
 SWEP.Primary.Automatic = true
 SWEP.Primary.DefaultClip = 30
 SWEP.Primary.ClipSize = 120
-SWEP.Primary.Ammo = "AR2"
+SWEP.Primary.Ammo = SWEP.TakeAmmo
 SWEP.Primary.Sound = "weapons/rust_distant/ak74u-attack.mp3"
 SWEP.Primary.NextFire = 0.1
-SWEP.Secondary.ClipSize = 0
+SWEP.Secondary.ClipSize = 120
 SWEP.Secondary.DefaultClip = 0
 SWEP.Secondary.Automatic = false
 SWEP.Secondary.Ammo = "none"
@@ -20,7 +21,6 @@ function SWEP:Initialize()
     self.Reloaded = false
     self.Clapped = 0
     self:SetClip1(30)
-    self:SetClip2(120)
 end
 
 SWEP.IronSightsPos = Vector(-4, -5.2, 2.1)
@@ -42,20 +42,27 @@ function SWEP:GetViewModelPosition(pos, ang)
     return pos, ang
 end
 
+function SWEP:TakeAmmos(ply)
+    if CLIENT then return end
+    local hasitem = GInv_RemoveItem(ply, self.TakeAmmo, 1)
+    self:SetNWBool("HasAmmo", FindExistingItemBool(ply, self.TakeAmmo) and true or false)
+    return hasitem
+end
+
+function SWEP:FindAmmo(ply)
+    if CLIENT then return self:GetNWBool("HasAmmo", false) end
+    return FindExistingItemBool(ply, self.TakeAmmo) and true or false
+end
+
 function SWEP:PrimaryAttack()
     local pl = self:GetOwner()
-    if self.Primary.DefaultClip <= 0 then return end
-    if not self:CanPrimaryAttack() then
-        self.Reloaded = false
-        return
-    end
-
     if not IsValid(pl) then return end
-    if SERVER and pl.ConsumeDurabilityForWeapon then pl:ConsumeDurabilityForWeapon(self) end
-    pl:SetAnimation(PLAYER_ATTACK1)
-    self:EmitSound(self.Primary.Sound)
-    self:SendWeaponAnim(ACT_VM_PRIMARYATTACK)
+    -- only the server knows about inventory ammo
+    if not self:FindAmmo(pl) then return end
     self:SetNextPrimaryFire(CurTime() + self.Primary.NextFire)
+    self:EmitSound(self.Primary.Sound)
+    pl:SetAnimation(PLAYER_ATTACK1)
+    self:SendWeaponAnim(ACT_VM_PRIMARYATTACK)
     local bullet = {}
     bullet.Num = 1
     bullet.Src = pl:GetShootPos()
@@ -65,29 +72,26 @@ function SWEP:PrimaryAttack()
     bullet.Force = 1
     bullet.Damage = 25
     bullet.Attacker = pl
+    if SERVER then pl:LagCompensation(true) end
     pl:FireBullets(bullet)
-    local BulletsFire = math.random(0.4, 0.5)
-    pl:SetEyeAngles(pl:GetAngles() - Angle(BulletsFire, BulletsFire, 0))
-    self:TakePrimaryAmmo(1)
+    if SERVER then pl:LagCompensation(false) end
+    -- recoil after the shot so it doesn't affect the aim vector
+    pl:ViewPunch(Angle(-math.Rand(0.4, 0.5), math.Rand(-0.2, 0.2), 0))
+    if SERVER then self:TakeAmmos(pl) end
     self.Reloaded = false
-    self.Clapped = self.Clapped + 1
-end
-
-function SWEP:Reload()
-    if self.delay >= CurTime() then return end
-    self.delay = CurTime() + 1
-    if self.Reloaded then return end
-    self:SendWeaponAnim(ACT_VM_RELOAD)
-    self.Clapped = 0
-    timer.Simple(5, function() self.Reloaded = true end)
-    self:SetNextPrimaryFire(CurTime() + 5)
+    self.Clapped = (self.Clapped or 0) + 1
 end
 
 function SWEP:Think()
-    if SERVER then
-        local pl = self:GetOwner()
-        if IsValid(pl) then self:SetNWBool("IronSights", pl:KeyDown(IN_ATTACK2)) end
-    end
+end
+
+function SWEP:Think()
+    if CLIENT then return end
+    local pl = self:GetOwner()
+    if IsValid(pl) then self:SetNWBool("IronSights", pl:KeyDown(IN_ATTACK2)) end
+    if not IsValid(pl) then return end
+    local has = FindExistingItemBool(pl, self.TakeAmmo) and true or false
+    if self:GetNWBool("HasAmmo", false) ~= has then self:SetNWBool("HasAmmo", has) end
 end
 
 function SWEP:SecondaryAttack()

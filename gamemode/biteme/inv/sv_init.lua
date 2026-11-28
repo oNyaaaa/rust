@@ -133,6 +133,17 @@ function FindExistingItem(ply, itemID)
     return nil
 end
 
+function FindExistingItemBool(ply, itemID)
+    if not IsValid(ply) or not ply.GInv then return nil end
+    for _, cont in ipairs(SEARCH) do
+        for i = 1, SIZE[cont] do
+            local item = GetItem(ply, cont, i)
+            if item and item.id == itemID then return true, i end
+        end
+    end
+    return false, 0
+end
+
 function GetSlots(ply, itemID)
     local cont, slot = FindExistingItem(ply, itemID)
     return slot, cont

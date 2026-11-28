@@ -809,6 +809,17 @@ RustOfficial.ITEMS = {
         Craftable = true,
         BluePrint = false,
     },
+    Ammo_556 = {
+        name = "Ammo_556",
+        color = Color(200, 60, 60),
+        image = "materials/items/ammo/rifle_ammo.png",
+        func = function(ply) end,
+        weapon = nil,
+        Max = 128,
+        wModel = "models/environment/misc/loot_bag.mdl",
+        Craftable = true,
+        BluePrint = false,
+    },
     WoodenSpear = {
         name = "WoodenSpear",
         color = Color(200, 60, 60),

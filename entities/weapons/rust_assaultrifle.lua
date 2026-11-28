@@ -13,3 +13,4 @@ SWEP.Primary.Sound = "weapons/rust_distant/ak74u-attack.mp3"
 SWEP.Primary.NextFire = 0.1
 SWEP.IronSightsPos = Vector(-6.115, -6, 3.7)
 SWEP.IronSightsAng = Vector(-0.3, 0.012, 0)
+SWEP.TakeAmmo = "Ammo_556"
