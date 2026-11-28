@@ -30,10 +30,63 @@ if SERVER then
 	function ENT:Think()
 	end
 
+	local LootItems = {
+		{
+			Item = "Crude",
+			Model = "models/zohart/items/crude_oil.mdl",
+		},
+		{
+			Item = "LowGradeFueld",
+			Model = "models/zohart/items/lowgradefuel.mdl",
+		}
+	}
+
+	function ENT:RespawnItem()
+		local Pos = self:GetPos()
+		timer.Simple(300, function()
+			local ent = ents.Create("rust_barrel")
+			ent:SetPos(Pos)
+			ent:SetModel("models/environment/misc/barrel_v2.mdl")
+			ent:PhysicsInit(SOLID_VPHYSICS)
+			ent:SetMoveType(MOVETYPE_NONE)
+			ent:SetSolid(SOLID_VPHYSICS)
+			local phys = ent:GetPhysicsObject()
+			if phys:IsValid() then phys:Wake() end
+			local rnd = math.random(1, 2)
+			if rnd == 1 then
+				ent:SetHealth(35)
+				ent:SetColor(Color(200, 165, 115))
+			else
+				ent:SetHealth(50)
+				ent:SetColor(Color(80, 120, 205))
+			end
+
+			ent:Spawn()
+			ent:Activate()
+		end)
+	end
+
+	function ENT:SpawnLootable()
+		self:RespawnItem()
+		for i = 1, 2 do
+			local loot = LootItems[i]
+			local ent = ents.Create("item_bag")
+			ent:SetItemName(loot.Item)
+			ent:SetSizeItem(25)
+			ent:SetModel(loot.Model)
+			ent:Spawn()
+			ent:Activate()
+			ent:SetPos(self:GetPos() + self:GetForward() * 40 + self:GetUp() * 40)
+		end
+	end
+
 	function ENT:OnTakeDamage(dmg)
 		local dps = dmg:GetDamage()
 		self:SetHealth(self:Health() - dps)
-		if self:Health() <= 0 then self:Remove() end
+		if self:Health() <= 0 then
+			self:SpawnLootable()
+			self:Remove()
+		end
 	end
 
 	function ENT:OnRemove()

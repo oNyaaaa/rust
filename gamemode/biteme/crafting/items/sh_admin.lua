@@ -123,3 +123,77 @@ ITEMS:RegisterItem("HQMetal", {
     end,
 }, "ADMIN")
 
+ITEMS:RegisterItem("HQMetal", {
+    Name = "HQ Metal",
+    Info = "HQ Metal",
+    InfoTag = "HQMetal",
+    Category = "ADMIN",
+    model = "materials/items/resources/hqmetal.png",
+    Weapon = "",
+    Count = 50,
+    Stackable = true,
+    StackSize = 2000,
+    IzAdmin = true,
+    Craft = function()
+        return {
+            {
+                Time = 0,
+                CanCraft = false,
+                {
+                    ITEM = "HQMetal",
+                    AMOUNT = 0,
+                },
+            },
+        }
+    end,
+}, "ADMIN")
+
+ITEMS:RegisterItem("RoadSign", {
+    Name = "RoadSign",
+    Info = "RoadSign",
+    InfoTag = "RoadSign",
+    Category = "ADMIN",
+    model = "materials/items/resources/road_signs.png",
+    Weapon = "",
+    Count = 50,
+    Stackable = true,
+    StackSize = 150,
+    IzAdmin = true,
+    Craft = function()
+        return {
+            {
+                Time = 0,
+                CanCraft = false,
+                {
+                    ITEM = "HQMetal",
+                    AMOUNT = 0,
+                },
+            },
+        }
+    end,
+}, "ADMIN")
+
+ITEMS:RegisterItem("MetalPipe", {
+    Name = "MetalPipe",
+    Info = "MetalPipe",
+    InfoTag = "MetalPipe",
+    Category = "ADMIN",
+    model = "materials/items/resources/metal_pipe.png",
+    Weapon = "",
+    Count = 50,
+    Stackable = true,
+    StackSize = 150,
+    IzAdmin = true,
+    Craft = function()
+        return {
+            {
+                Time = 0,
+                CanCraft = false,
+                {
+                    ITEM = "HQMetal",
+                    AMOUNT = 0,
+                },
+            },
+        }
+    end,
+}, "ADMIN")

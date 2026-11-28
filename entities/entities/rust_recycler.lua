@@ -13,6 +13,7 @@ if SERVER then
 	util.AddNetworkString("Rust_recyclerInv")
 	util.AddNetworkString("DockTogglezzz")
 	util.AddNetworkString("grust_RecyclerMove")
+	util.AddNetworkString("DockRelease")
 	function ENT:Initialize()
 		self:SetModel("models/environment/misc/recycler.mdl")
 		self:PhysicsInitStatic(SOLID_VPHYSICS)
@@ -25,8 +26,9 @@ if SERVER then
 			phys:EnableMotion(false)
 		end
 
-		self.FuelSlots, self.InputSlots, self.OutputSlots = {}, {}, {}
+		self.InputSlots, self.OutputSlots = {}, {}
 		self.CD = 0
+		self.OccupiedBy = nil
 	end
 
 	function ENT:SendContents(ply)
@@ -34,7 +36,6 @@ if SERVER then
 		net.WriteEntity(self)
 		net.WriteTable({
 			on = self.On or false,
-			fuel = self.FuelSlots,
 			input = self.InputSlots,
 			output = self.OutputSlots,
 		})
@@ -42,19 +43,20 @@ if SERVER then
 		net.Send(ply)
 	end
 
-	local FUEL_ITEMS = {
-		LowGradeFueld = true
-	}
-
 	local SLOT_COUNT = {
-		fuel = 1,
 		input = 6,
 		output = 6
 	}
 
 	local RECIPES = {
 		GarageDoor = {
-			MetalOre = 25
+			Metal = 25
+		},
+		MetalPipe = {
+			Metal = 25
+		},
+		RoadSign = {
+			Metal = 25
 		},
 		Furnace = {
 			Stone = 100
@@ -118,7 +120,6 @@ if SERVER then
 		if ply:GetPos():DistToSqr(ent:GetPos()) > 250 * 250 then return end
 		if not SLOT_COUNT[kind] or idx < 1 or idx > SLOT_COUNT[kind] then return end
 		local tbl = ({
-			fuel = ent.FuelSlots,
 			input = ent.InputSlots,
 			output = ent.OutputSlots
 		})[kind]
@@ -126,11 +127,6 @@ if SERVER then
 		local slot = tbl[idx]
 		if mode == "put" then
 			if kind == "output" then return end
-			if kind == "fuel" and not FUEL_ITEMS[name] then return end
-			if kind == "input" and FUEL_ITEMS[name] then -- fuel can't go in input slots
-				return
-			end
-
 			if kind == "input" and not RECIPES[name] then return end
 			if not RustOfficial.GetItem(name) then return end
 			if slot and slot.id ~= name then return end
@@ -177,7 +173,6 @@ if SERVER then
 		if not IsValid(ent) or ent:GetClass() ~= "rust_recycler" then return end
 		if ply:GetPos():DistToSqr(ent:GetPos()) > 250 * 250 then return end
 		ent.On = not ent.On
-		if ent.On and not ent.FuelSlots[1] then ent.On = false end
 		ent.NextCycle = CurTime() + CYCLE_TIME
 		ent:SendContents(ply)
 		if not ent.Dockered then ent.Dockered = false end
@@ -191,6 +186,15 @@ if SERVER then
 		end
 	end)
 
+	net.Receive("DockRelease", function(_, ply)
+		local ent = net.ReadEntity()
+		if not IsValid(ent) or ent:GetClass() ~= "rust_recycler" then return end
+		if ent.OccupiedBy == ply then
+			ent.OccupiedBy = nil
+			ent.viewer = nil
+		end
+	end)
+
 	function ENT:Refresh()
 		local v = self.viewer
 		if IsValid(v) and v:GetPos():DistToSqr(self:GetPos()) < 250 * 250 then self:SendContents(v) end
@@ -198,31 +202,31 @@ if SERVER then
 
 	function ENT:Think()
 		self:NextThink(CurTime() + 1)
+		if self.OccupiedBy and (not IsValid(self.OccupiedBy) or self.OccupiedBy:GetPos():DistToSqr(self:GetPos()) > 250 * 250) then
+			self.OccupiedBy = nil
+			self.viewer = nil
+		end
 		if not self.On or CurTime() < (self.NextCycle or 0) then return true end
-		local fuel = self.FuelSlots[1]
 		local did = false
-		if fuel and fuel.count >= 1 then
-			for i = 1, 6 do
-				local it = self.InputSlots[i]
-				local recipe = it and RECIPES[it.id]
-				if recipe and CanFit(self.OutputSlots, recipe) then
-					it.count = it.count - 1
-					if it.count <= 0 then self.InputSlots[i] = nil end
-					for id, amt in pairs(recipe) do
-						AddOutput(self.OutputSlots, id, amt)
-					end
-
-					did = true
+		for i = 1, 6 do
+			local it = self.InputSlots[i]
+			local recipe = it and RECIPES[it.id]
+			if recipe and CanFit(self.OutputSlots, recipe) then
+				local process = math.max(1, math.floor(it.count / 2))
+				it.count = it.count - process
+				if it.count <= 0 then self.InputSlots[i] = nil end
+				for id, amt in pairs(recipe) do
+					AddOutput(self.OutputSlots, id, amt * process)
 				end
+
+				did = true
 			end
 		end
 
 		if did then
-			fuel.count = fuel.count - 1
-			if fuel.count <= 0 then self.FuelSlots[1] = nil end
 			self.NextCycle = CurTime() + CYCLE_TIME
 		else
-			self.On = false -- no fuel, nothing to recycle, or outputs full
+			self.On = false -- nothing to recycle, or outputs full
 			self:StopLoopingSound(self.EmitSoundO)
 		end
 
@@ -232,6 +236,8 @@ if SERVER then
 
 	function ENT:Use(btn, ply)
 		if not IsValid(ply) or not ply:IsPlayer() then return end
+		if self.OccupiedBy and IsValid(self.OccupiedBy) and self.OccupiedBy ~= ply then return end
+		self.OccupiedBy = ply
 		self.viewer = ply
 		self:SendContents(ply)
 		self:EmitSound("farming/recycler_open.wav")
@@ -313,6 +319,11 @@ if CLIENT then
 		ContainerR = vgui.Create("Panel", frameWork[1])
 		ContainerR:Dock(RIGHT)
 		ContainerR:SetWide(500)
+		ContainerR.OnRemove = function()
+			net.Start("DockRelease")
+			net.WriteEntity(ent)
+			net.SendToServer()
+		end
 		local S, P = 84, 4 -- same size as inventory slots
 		local SlotsPanel = vgui.Create("Panel", ContainerR)
 		SlotsPanel:Dock(TOP)
@@ -332,19 +343,16 @@ if CLIENT then
 			return slot
 		end
 
-		-- row 1: low grade fuel
-		local fuel = MakeSlot(P, P, "FUEL", "fuel", 1, true)
-		FillSlot(fuel, 1, data.fuel and data.fuel[1])
 		-- rows 2-3: inputs
-		for i = 1, 6 do
-			local col, row = (i - 1) % 3, math.floor((i - 1) / 3)
-			local s = MakeSlot(P + col * (S + P), P + (row + 1) * (S + P), "INPUT", "input", i, true)
+		for i = 1, 5 do
+			local col, row = (i - 1) % 5, math.floor((i - 1) / 5)
+			local s = MakeSlot(P + col * (S + P), P + (row + 2) * (S + P), "INPUT", "input", i, true)
 			FillSlot(s, i, data.input and data.input[i])
 		end
 
 		-- rows 4-5: outputs (take-only)
-		for i = 1, 6 do
-			local col, row = (i - 1) % 3, math.floor((i - 1) / 3)
+		for i = 1, 5 do
+			local col, row = (i - 1) % 5, math.floor((i - 1) / 5)
 			local s = MakeSlot(P + col * (S + P), P + (row + 3) * (S + P) + 10, "OUTPUT", "output", i, false)
 			FillSlot(s, i, data.output and data.output[i])
 		end
