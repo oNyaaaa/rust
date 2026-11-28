@@ -9,3 +9,4 @@ SWEP.Primary.ClipSize = 3
 SWEP.Primary.ClipSizeMaxSize = 30
 SWEP.Primary.DefaultClip = 3
 SWEP.Primary.Ammo = "ar2"
+SWEP.Primary.Damage = 65

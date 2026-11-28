@@ -14,3 +14,4 @@ SWEP.Primary.Sound = "weapons/rust_distant/m249-attack.mp3"
 SWEP.IronSightsPos = Vector(-1.115, -1, 3.7)
 SWEP.IronSightsAng = Vector(-0.3, 0.012, 0)
 SWEP.TakeAmmo = "Ammo_556"
+SWEP.Primary.Damage = 30

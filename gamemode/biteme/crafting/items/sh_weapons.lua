@@ -214,9 +214,10 @@ ITEMS:RegisterItem("RustMP5", {
     end,
 }, "Weapons")
 
-ITEMS:RegisterItem("rust_nailgun", {
+ITEMS:RegisterItem("RustNailGun", {
     Name = "Nailgun",
     Info = "Killing/Defending",
+    InfoTag = "RustNailGun",
     Category = "Weapons",
     model = "materials/items/weapons/nailgun.png",
     Weapon = "rust_nailgun",
@@ -237,9 +238,10 @@ ITEMS:RegisterItem("rust_nailgun", {
     end,
 }, "Weapons")
 
-ITEMS:RegisterItem("rust_python", {
+ITEMS:RegisterItem("RustPython", {
     Name = "Python Revolver",
     Info = "Killing/Defending",
+    InfoTag = "RustPython",
     Category = "Weapons",
     model = "materials/items/weapons/python.png",
     Weapon = "rust_python",
@@ -260,9 +262,10 @@ ITEMS:RegisterItem("rust_python", {
     end,
 }, "Weapons")
 
-ITEMS:RegisterItem("rust_revolver", {
+ITEMS:RegisterItem("RustRevolver", {
     Name = "Revolver",
     Info = "Killing/Defending",
+    InfoTag = "RustRevolver",
     Category = "Weapons",
     model = "materials/items/weapons/revolver.png",
     Weapon = "rust_revolver",
@@ -283,9 +286,10 @@ ITEMS:RegisterItem("rust_revolver", {
     end,
 }, "Weapons")
 
-ITEMS:RegisterItem("rust_sap", {
+ITEMS:RegisterItem("RustSap", {
     Name = "Semi-Automatic Pistol",
     Info = "Killing/Defending",
+    InfoTag = "RustSap",
     Category = "Weapons",
     model = "materials/items/weapons/sap.png",
     Weapon = "rust_sap",
@@ -306,9 +310,10 @@ ITEMS:RegisterItem("rust_sap", {
     end,
 }, "Weapons")
 
-ITEMS:RegisterItem("rust_sar", {
+ITEMS:RegisterItem("RustSar", {
     Name = "Semi-Automatic Rifle",
     Info = "Killing/Defending",
+    InfoTag = "RustSar",
     Category = "Weapons",
     model = "materials/items/weapons/sar.png",
     Weapon = "rust_sar",
@@ -329,9 +334,10 @@ ITEMS:RegisterItem("rust_sar", {
     end,
 }, "Weapons")
 
-ITEMS:RegisterItem("rust_smg", {
+ITEMS:RegisterItem("RustSMG", {
     Name = "Custom SMG",
     Info = "Killing/Defending",
+    InfoTag = "RustSMG",
     Category = "Weapons",
     model = "materials/items/weapons/custom_smg.png",
     Weapon = "rust_smg",
@@ -352,9 +358,10 @@ ITEMS:RegisterItem("rust_smg", {
     end,
 }, "Weapons")
 
-ITEMS:RegisterItem("rust_thompson", {
+ITEMS:RegisterItem("RustThompson", {
     Name = "Custom Thompson",
     Info = "Killing/Defending",
+    InfoTag = "RustThompson",
     Category = "Weapons",
     model = "materials/items/weapons/thompson.png",
     Weapon = "rust_thompson",

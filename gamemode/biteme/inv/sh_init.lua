@@ -820,6 +820,17 @@ RustOfficial.ITEMS = {
         Craftable = true,
         BluePrint = false,
     },
+    Ammo_Nails = {
+        name = "NailGun Ammo",
+        color = Color(200, 60, 60),
+        image = "materials/items/ammo/nailgun_nails.png",
+        func = function(ply) end,
+        weapon = nil,
+        Max = 128,
+        wModel = "models/environment/misc/loot_bag.mdl",
+        Craftable = true,
+        BluePrint = false,
+    },
     Ammo_Pistol = {
         name = "Pistol Ammo",
         color = Color(200, 60, 60),
@@ -973,6 +984,104 @@ RustOfficial.ITEMS = {
             ply:SelectWeapon("rust_mp5")
         end,
         weapon = "rust_mp5",
+        Max = 1,
+        wModel = "models/environment/misc/loot_bag.mdl",
+        Craftable = true,
+        BluePrint = false,
+    },
+    RustNailGun = {
+        name = "RustNailGun",
+        color = Color(200, 60, 60),
+        image = "materials/items/weapons/nailgun.png",
+        func = function(ply, clips)
+            ply:Give("rust_nailgun")
+            ply:SelectWeapon("rust_nailgun")
+        end,
+        weapon = "rust_nailgun",
+        Max = 1,
+        wModel = "models/environment/misc/loot_bag.mdl",
+        Craftable = true,
+        BluePrint = false,
+    },
+    RustPython = {
+        name = "Rust Python",
+        color = Color(200, 60, 60),
+        image = "materials/items/weapons/python.png",
+        func = function(ply, clips)
+            ply:Give("rust_python")
+            ply:SelectWeapon("rust_python")
+        end,
+        weapon = "rust_python",
+        Max = 1,
+        wModel = "models/environment/misc/loot_bag.mdl",
+        Craftable = true,
+        BluePrint = false,
+    },
+    RustRevolver = {
+        name = "Revolver",
+        color = Color(200, 60, 60),
+        image = "materials/items/weapons/revolver.png",
+        func = function(ply, clips)
+            ply:Give("rust_revolver")
+            ply:SelectWeapon("rust_revolver")
+        end,
+        weapon = "rust_revolver",
+        Max = 1,
+        wModel = "models/environment/misc/loot_bag.mdl",
+        Craftable = true,
+        BluePrint = false,
+    },
+    RustSap = {
+        name = "Semi-Automatic Pistol",
+        color = Color(200, 60, 60),
+        image = "materials/items/weapons/sap.png",
+        func = function(ply, clips)
+            ply:Give("rust_sap")
+            ply:SelectWeapon("rust_sap")
+        end,
+        weapon = "rust_sap",
+        Max = 1,
+        wModel = "models/environment/misc/loot_bag.mdl",
+        Craftable = true,
+        BluePrint = false,
+    },
+    RustSar = {
+        name = "Semi-Automatic Rifle",
+        color = Color(200, 60, 60),
+        image = "materials/items/weapons/sar.png",
+        func = function(ply, clips)
+            ply:Give("rust_sar")
+            ply:SelectWeapon("rust_sar")
+        end,
+        weapon = "rust_sar",
+        Max = 1,
+        wModel = "models/environment/misc/loot_bag.mdl",
+        Craftable = true,
+        BluePrint = false,
+    },
+    RustSMG = {
+        name = "Custom SMG",
+        color = Color(200, 60, 60),
+        image = "materials/items/weapons/custom_smg.png",
+        func = function(ply, clips)
+            ply:Give("rust_smg")
+            ply:SelectWeapon("rust_smg")
+        end,
+        weapon = "rust_smg",
+        Max = 1,
+        wModel = "models/environment/misc/loot_bag.mdl",
+        Craftable = true,
+        BluePrint = false,
+    },
+    RustThompson = {
+        name = "Custom Thompson",
+        color = Color(200, 60, 60),
+        image = "materials/items/weapons/thompson.png",
+        func = function(ply, clips)
+            ply:Give("rust_thompson")
+            ply:SelectWeapon("rust_thompson")
+        end,
+        weapon = "rust_thompson",
         Max = 1,
         wModel = "models/environment/misc/loot_bag.mdl",
         Craftable = true,

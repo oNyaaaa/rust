@@ -65,10 +65,10 @@ function SWEP:PrimaryAttack()
     bullet.Num = 1
     bullet.Src = pl:GetShootPos()
     bullet.Dir = pl:GetAimVector()
-    bullet.Spread = Vector(0.04, 0.04, 0)
+    bullet.Spread = Vector(0.01, 0.01, 0)
     bullet.Tracer = 1
     bullet.Force = 1
-    bullet.Damage = 25
+    bullet.Damage = self.Primary.Damage
     bullet.Attacker = pl
     if SERVER then pl:LagCompensation(true) end
     pl:FireBullets(bullet)

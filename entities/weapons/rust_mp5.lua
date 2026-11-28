@@ -15,3 +15,4 @@ SWEP.IronSightsPos = Vector(-1.115, -4, 3.7)
 SWEP.IronSightsAng = Vector(-0.3, 0.012, 0)
 SWEP.TakeAmmo = "Ammo_Pistol"
 SWEP.Primary.NextFire = 0.19
+SWEP.Primary.Damage = 40

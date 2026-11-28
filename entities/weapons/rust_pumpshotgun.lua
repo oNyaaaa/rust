@@ -11,3 +11,4 @@ SWEP.Primary.DefaultClip = 6
 SWEP.Primary.Ammo = "ar2"
 SWEP.Primary.Sound = "weapons/rust_distant/grenade-launcher-attack.mp3"
 SWEP.Primary.NextFire = 1
+SWEP.Primary.Damage = 50

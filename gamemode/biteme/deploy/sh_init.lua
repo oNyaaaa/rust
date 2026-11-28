@@ -408,6 +408,7 @@ DEPLOY.SkipUpper = {
     rust_workbench_1 = true,
     rust_workbench_2 = true,
     rust_workbench_3 = true,
+    rust_furnace = true,
 }
 
 DEPLOY.SkipUpper = DEPLOY.SkipUpper or {}
@@ -480,6 +481,19 @@ function DEPLOY:GetSocketTC(name)
     return self:LocalToWorld(s.pos), self:LocalToWorldAngles(s.ang)
 end
 
+local ShortenBuscuit = {
+    ["sent_bed"] = true,
+    ["sent_stonebarricade"] = true,
+    ["sent_woodbarricade"] = true,
+    ["sent_repairbench"] = true,
+    ["sent_repairtable"] = true,
+    ["sent_sleepingbag"] = true,
+    ["rust_workbench_1"] = true,
+    ["rust_workbench_2"] = true,
+    ["rust_workbench_3"] = true,
+    ["rust_furnace"] = true,
+}
+
 DEPLOY.KeylockOffset = Vector(49.11, 2.08, 45.4)
 DEPLOY.KeylockAngle = Angle(0, 0, 0)
 DEPLOY.TCLockOffset = Vector(14, 0, 38) -- guess, tune to the tool_cupboard model
@@ -493,10 +507,10 @@ function DEPLOY:GetSocket(ply, class)
     local base = entTRR or DEPLOY:GetGround(ply, class)
     local pitch = ply:EyeAngles().p -- negative when looking up
     -- free-placement raised foundation (looking up, not aiming at another base)
-    if class == "sent_bed" or class == "sent_stonebarricade" or class == "sent_woodbarricade" or class == "sent_repairbench" or class == "sent_repairtable" or class == "sent_sleepingbag" or class == "rust_workbench_1" or class == "rust_workbench_2" or class == "rust_workbench_3" then
+    if ShortenBuscuit[class] then
         local posty = tr.HitPos + tr.HitNormal * 0.5
         local yaw = (ply:GetPos() - posty):Angle().y
-        return posty, Angle(0, yaw, 0), "sent_stonebarricade", tr.Entity
+        return posty, Angle(0, yaw, 0), "ShortenBuscuit", tr.Entity
     end
 
     local ids = IDS[class]
