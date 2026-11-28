@@ -810,9 +810,20 @@ RustOfficial.ITEMS = {
         BluePrint = false,
     },
     Ammo_556 = {
-        name = "Ammo_556",
+        name = "556 Ammo",
         color = Color(200, 60, 60),
         image = "materials/items/ammo/rifle_ammo.png",
+        func = function(ply) end,
+        weapon = nil,
+        Max = 128,
+        wModel = "models/environment/misc/loot_bag.mdl",
+        Craftable = true,
+        BluePrint = false,
+    },
+    Ammo_Pistol = {
+        name = "Pistol Ammo",
+        color = Color(200, 60, 60),
+        image = "materials/items/ammo/pistol_bullet.png",
         func = function(ply) end,
         weapon = nil,
         Max = 128,
@@ -924,6 +935,22 @@ RustOfficial.ITEMS = {
             timer.Simple(0, function() if IsValid(wep) and clips ~= nil then wep:SetClip1(clips) end end)
         end,
         weapon = "rust_m39_rifle",
+        Max = 1,
+        wModel = "models/environment/misc/loot_bag.mdl",
+        Craftable = true,
+        BluePrint = false,
+    },
+    RustM92 = {
+        name = "M92 Pistol",
+        color = Color(200, 60, 60),
+        image = "materials/items/weapons/m92.png",
+        func = function(ply, clips)
+            ply:Give("rust_m92")
+            ply:SelectWeapon("rust_m92")
+            local wep = ply:GetActiveWeapon()
+            timer.Simple(0, function() if IsValid(wep) and clips ~= nil then wep:SetClip1(clips) end end)
+        end,
+        weapon = "rust_m92",
         Max = 1,
         wModel = "models/environment/misc/loot_bag.mdl",
         Craftable = true,

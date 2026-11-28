@@ -8,8 +8,6 @@ SWEP.Primary.Automatic = true
 SWEP.Primary.DefaultClip = 30
 SWEP.Primary.ClipSize = 120
 SWEP.Primary.Ammo = SWEP.TakeAmmo
-SWEP.Primary.Sound = "weapons/rust_distant/ak74u-attack.mp3"
-SWEP.Primary.NextFire = 0.1
 SWEP.Secondary.ClipSize = 120
 SWEP.Secondary.DefaultClip = 0
 SWEP.Secondary.Automatic = false
@@ -68,7 +66,7 @@ function SWEP:PrimaryAttack()
     bullet.Src = pl:GetShootPos()
     bullet.Dir = pl:GetAimVector()
     bullet.Spread = Vector(0.04, 0.04, 0)
-    bullet.Tracer = 3
+    bullet.Tracer = 1
     bullet.Force = 1
     bullet.Damage = 25
     bullet.Attacker = pl
@@ -78,8 +76,6 @@ function SWEP:PrimaryAttack()
     -- recoil after the shot so it doesn't affect the aim vector
     pl:ViewPunch(Angle(-math.Rand(0.4, 0.5), math.Rand(-0.2, 0.2), 0))
     if SERVER then self:TakeAmmos(pl) end
-    self.Reloaded = false
-    self.Clapped = (self.Clapped or 0) + 1
 end
 
 function SWEP:Think()

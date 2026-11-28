@@ -142,9 +142,10 @@ ITEMS:RegisterItem("M39Rifle", {
     end,
 }, "Weapons")
 
-ITEMS:RegisterItem("rust_m92", {
+ITEMS:RegisterItem("RustM92", {
     Name = "M92 Pistol",
     Info = "Killing/Defending",
+    InfoTag = "RustM92",
     Category = "Weapons",
     model = "materials/items/weapons/m92.png",
     Weapon = "rust_m92",

@@ -7,3 +7,5 @@ SWEP.UseHands = true
 SWEP.Primary.Automatic = true
 SWEP.SpecialIronSight = Vector(0, 0, 0)
 SWEP.TakeAmmo = "Ammo_556"
+SWEP.Primary.NextFire = 0.4
+SWEP.Primary.Sound = "weapons/rust_distant/m39-attack.mp3"

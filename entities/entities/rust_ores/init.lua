@@ -36,11 +36,13 @@ function ENT:RecoveryTime(pos)
 end
 
 local allowedWeps = {
+    ["rust_rock"] = true,
     ["rust_stone_pickaxe"] = true,
     ["rust_pickaxe"] = true,
 }
 
 local MultiPly = {
+    ["rust_rock"] = 1,
     ["rust_stone_pickaxe"] = 1.5,
     ["rust_pickaxe"] = 1.8,
 }
