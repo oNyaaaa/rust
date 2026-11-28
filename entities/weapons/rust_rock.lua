@@ -9,3 +9,4 @@ SWEP.Primary.Automatic = true
 SWEP.SNDSoundStrike = "tools/rock_strike_" .. math.random(1, 4) .. ".mp3"
 SWEP.SNDSoundSwing = "tools/rock_swing.mp3"
 SWEP.DelayOfSwing = 0.5
+SWEP.Primary.Damaged = 25

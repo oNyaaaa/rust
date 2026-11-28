@@ -8,3 +8,4 @@ SWEP.Primary.Automatic = true
 SWEP.SNDSoundStrike = "weapons/rust_mp3/2handed-cleaver-strike.mp3"
 SWEP.SNDSoundSwing = "tools/rock_swing.mp3"
 SWEP.DelayOfSwing = 0.1
+SWEP.Primary.Damaged = 45

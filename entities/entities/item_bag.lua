@@ -53,6 +53,7 @@ if SERVER then
 	end
 
 	function ENT:StartTouch(entity)
+		self:SetMoveType(MOVETYPE_NONE)
 		return false
 	end
 

@@ -118,12 +118,12 @@ function SWEP:Think()
     if self.delay < CurTime() then
         local tr = pl:GetEyeTrace()
         local dist = math.Round(pl:GetShootPos():Distance(tr.HitPos))
-        if dist >= 0 and dist <= 40 and self.Clicked == true then
+        if dist >= 0 and dist <= 120 and self.Clicked == true then
             self.SWING:Stop()
             self.HIT:Play()
             local findtwig = string.find(tr.Entity:GetModel(), "twig")
             local damage = 40
-            if findtwig then damage = 25 end
+            if findtwig then damage = self.Primary.Damaged end
             self:ShootBullet(damage, 1, 0, "", 0, 1)
             self:SendWeaponAnim(ACT_VM_SWINGHIT)
             self.Clicked = false
