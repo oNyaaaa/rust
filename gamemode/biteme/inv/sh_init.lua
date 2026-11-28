@@ -1140,6 +1140,20 @@ RustOfficial.ITEMS = {
         Craftable = true,
         BluePrint = false,
     },
+    RustBoltRifle = {
+        name = "Bolt Action Rifle",
+        color = Color(200, 60, 60),
+        image = "materials/items/weapons/bolt_rifle.png",
+        func = function(ply, clips)
+            ply:Give("rust_boltrifle")
+            ply:SelectWeapon("rust_boltrifle")
+        end,
+        weapon = "rust_boltrifle",
+        Max = 1,
+        wModel = "models/environment/misc/loot_bag.mdl",
+        Craftable = true,
+        BluePrint = false,
+    },
 }
 
 function RustOfficial.GetItem(key)

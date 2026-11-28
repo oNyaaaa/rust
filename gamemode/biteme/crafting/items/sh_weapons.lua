@@ -454,9 +454,10 @@ ITEMS:RegisterItem("RustHuntingBow", {
     end,
 }, "Weapons")
 
-ITEMS:RegisterItem("rust_boltrifle", {
+ITEMS:RegisterItem("RustBoltRifle", {
     Name = "Bolt Action Rifle",
     Info = "Killing/Defending",
+    InfoTag = "RustBoltRifle",
     Category = "Weapons",
     model = "materials/items/weapons/bolt_rifle.png",
     Weapon = "rust_boltrifle",

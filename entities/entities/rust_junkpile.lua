@@ -10,11 +10,11 @@ if SERVER then
 	function ENT:Initialize()
 		local model = self.Models[math.random(1, #self.Models)]
 		self:SetModel(model)
-		self:PhysicsInit(SOLID_VPHYSICS)
+		self:PhysicsInitStatic(SOLID_VPHYSICS)
 		self:SetMoveType(MOVETYPE_NONE)
 		self:SetSolid(SOLID_VPHYSICS)
 		local phys = self:GetPhysicsObject()
-		if phys:IsValid() then phys:Wake() end
+		if phys:IsValid() then phys:Sleep() end
 		for i = 2, 4 do
 			local attach = self:GetAttachment(i)
 			if attach then

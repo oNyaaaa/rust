@@ -12,9 +12,10 @@ SWEP.Secondary.ClipSize = 120
 SWEP.Secondary.DefaultClip = 0
 SWEP.Secondary.Automatic = false
 SWEP.Secondary.Ammo = "none"
-SWEP.Loaded = false
+SWEP.Loaded = true
 SWEP.ShootBullets = 30
 SWEP.MaxBullets = 30
+SWEP.AnimDraw = false
 function SWEP:Initialize()
     self:SetHoldType("ar2")
     self.delay = 0
@@ -22,6 +23,13 @@ function SWEP:Initialize()
     self.Reloaded = false
     self.Clapped = 0
     if SERVER then self:SetNWInt("ShootBullets", self.MaxBullets) end
+end
+
+function SWEP:Deploy()
+    self:SendWeaponAnim(ACT_VM_DEPLOY)
+    self:SendWeaponAnim(ACT_VM_RELOAD)
+    self.Loaded = true
+    return true
 end
 
 SWEP.IronSightsPos = Vector(-4, -5.2, 2.1)
@@ -94,9 +102,14 @@ function SWEP:PrimaryAttack()
 end
 
 function SWEP:Reload()
-    if self:GetNWInt("ShootBullets", 0) >= 30 then return end
+    if self:GetNWInt("ShootBullets", 0) >= self.MaxBullets then return end
     self:SendWeaponAnim(ACT_VM_DEPLOY)
     self:SendWeaponAnim(ACT_VM_RELOAD)
+    timer.Simple(1, function()
+        if not self.AnimDraw then return end
+        self:SendWeaponAnim(ACT_VM_DRAW)
+    end)
+
     if SERVER then
         self.ShootBullets = self.MaxBullets
         self:SetNWInt("ShootBullets", self.ShootBullets)

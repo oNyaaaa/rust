@@ -13,3 +13,5 @@ SWEP.TakeAmmo = "Ammo_Arrow"
 SWEP.Primary.Damage = 35
 SWEP.UsesThisArrow = true
 SWEP.DelayPrice = 1.5
+SWEP.ShootBullets = 1
+SWEP.MaxBullets = 1
